@@ -14,3 +14,4 @@ use Illuminate\Http\Request;
 */
 
 Route::post('login','LoginController@ingresar');
+Route::resource('user', 'UserController');
