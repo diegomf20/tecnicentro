@@ -43,7 +43,7 @@ class UserController extends Controller
             DB::commit();
             return response()->json([
                 "status"    =>  "OK",
-                "data"      =>  ($request->data==true) ? $usuario : "usuario Guardado",
+                "data"      =>  $usuario
             ]);
         } catch (\Exception $e) {
             DB::rollback();
@@ -102,7 +102,7 @@ class UserController extends Controller
             DB::commit();
             return response()->json([
                 "status"    =>  "OK",
-                "data"      =>  ($request->data==true) ? $usuario : "Usuario Actualizado",
+                "data"      =>  $usuario,
             ]);
         } catch (\Exception $e) {
             DB::rollback();
@@ -113,10 +113,9 @@ class UserController extends Controller
         }
     }
 
-    public function cambiar_Estado($id)
+    public function estado($id)
     {
         DB::beginTransaction();
-
         try {
 
             $usuario= User::where('id',$id)->first();
@@ -147,35 +146,4 @@ class UserController extends Controller
             ]);
         }
     }
-
-    public function cambiar_contrasenia(UsuarioPasswordUpdateValidation $request)
-    {
-        DB::beginTransaction();
-        $usuario=User::where('id',session('user_id'))->first();
-
-        if(Hash::check($request->passwordactual, $usuario->password)){
-            try{
-                // $usuario->password = Hash::make($request->password);
-                $usuario->password = bcrypt($request->passwordnuevo);
-                $usuario->save();
-                DB::commit();
-                return response()->json([
-                    "status"    =>  "OK",
-                    "data"      =>  "Nueva contraseña guardada correctamente",
-                ]);
-            }catch(\Exception $e){
-                DB::rollback();
-                return response()->json([
-                    "status"    =>  "DANGER",
-                    "data"      =>  $e->getMessage()
-                ]);
-            };
-        }else{
-            return response()->json([
-                "status"    =>  "WARNING",
-                "data"      =>  "La contraseña actual no es correcta",
-            ]);
-        }
-    }
-
 }

@@ -1,9 +1,7 @@
 <template>
-    <div>
-        <component :is="layout">
-            <router-view></router-view>
-        </component>
-    </div>	
+    <component :is="layout">
+        <router-view></router-view>
+    </component>	
 </template>
 <script>
 var default_layouts="panel";

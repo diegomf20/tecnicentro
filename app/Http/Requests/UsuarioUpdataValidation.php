@@ -8,7 +8,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 // use Illuminate\Http\JsonResponse;
 
-use App\Rules\CelularRule;
+// use App\Rules\CelularRule;
 
 class UsuarioUpdataValidation extends FormRequest
 {
@@ -32,8 +32,6 @@ class UsuarioUpdataValidation extends FormRequest
         return [
             'nombre'=>['required','max:30'],
             'apellido'=>['required','max:50'],
-            'numero'=>['required','max:12', new CelularRule()],
-            'email'=>['required','max:100','email'],
             'rol'=>['required'],
         ];
     }

@@ -37,20 +37,14 @@ export default {
 }
 </script>
 <template>
-    <div id="app">
-        <div class="wrapper ">
+    <div>
+        <div class="navbar-lateral full-reset">
+            <div class="visible-xs font-movile-menu mobile-menu-button"></div>
+            <navbar></navbar>
+        </div>
+        <div class="content-page-container full-reset custom-scroll-containers">
             <sidebar></sidebar>
-            <!-- Main -->
-            <div class="main-panel">
-                <div id="close-layer"></div>
-                <!-- Navbar -->
-                <navbar></navbar>
-                <div class="content">
-                    <div class="container-fluid">
-                        <slot/>
-                    </div>
-                </div>
-            </div>
+            <slot/>
         </div>
     </div>
 </template>

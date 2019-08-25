@@ -14,4 +14,10 @@ use Illuminate\Http\Request;
 */
 
 Route::post('login','LoginController@ingresar');
+Route::post('nota','ReparacionController@nota');
+Route::post('user/{id}/estado','UserController@estado');
 Route::resource('user', 'UserController');
+Route::resource('proveedor', 'ProveedorController');
+Route::resource('cliente', 'ClienteController');
+Route::resource('herramienta', 'HerramientaController');
+Route::resource('pieza', 'PiezaController');

@@ -8,8 +8,6 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 // use Illuminate\Http\JsonResponse;
 
-use App\Rules\DniRule;
-use App\Rules\CelularRule;
 
 
 class UsuarioValidation extends FormRequest
@@ -32,15 +30,8 @@ class UsuarioValidation extends FormRequest
     public function rules()
     {
         return [
-            'dni'=>['required',new DniRule(),
-                Rule::unique('user')->where(function ($query) {
-                    return $query->where('empresa_id',session('empresa_id'));
-                })
-            ],
             'nombre'=>['required','max:30'],
             'apellido'=>['required','max:50'],
-            'numero'=>['required','max:12', new CelularRule()],
-            'email'=>['required','max:100','email'],
             'rol'=>['required'],
             'password'=>['required','max:100'],
         ];

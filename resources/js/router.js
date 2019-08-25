@@ -30,9 +30,41 @@ var auth=(to, from,next)=>{
 
 var routes =[
     { 
+        path: '/comprobante1/:id', 
+        component: require('./view/comprobante/Comprobante1.vue').default,
+        meta:{
+            layout: "empty",
+        },
+    },
+    { 
+        path: '/nota', 
+        component: require('./view/Nota.vue').default,
+        // beforeEnter: auth
+    },
+    { 
+        path: '/herramienta', 
+        component: require('./view/Herramienta.vue').default,
+        // beforeEnter: auth
+    },
+    { 
+        path: '/pieza', 
+        component: require('./view/Pieza.vue').default,
+        // beforeEnter: auth
+    },
+    { 
         path: '/usuario', 
         component: require('./view/contactos/Usuario.vue').default,
-        beforeEnter: auth
+        // beforeEnter: auth
+    },
+    { 
+        path: '/cliente', 
+        component: require('./view/contactos/Cliente.vue').default,
+        // beforeEnter: auth
+    },
+    { 
+        path: '/proveedor', 
+        component: require('./view/contactos/Proveedor.vue').default,
+        // beforeEnter: auth
     },
     { 
         path: '/login', 
@@ -46,6 +78,6 @@ var router=new VueRouter({
     mode: 'history',
     routes,
     linkActiveClass: 'active',
-    exact: true
+    // exact: true
 });
 export default router;

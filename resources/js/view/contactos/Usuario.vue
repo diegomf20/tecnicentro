@@ -1,163 +1,188 @@
 <template>
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header card-header-info" style="margin-right: auto;">
-                    LISTA DE USUARIOS
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12">
-                            <button @click="abrir()" class="btn btn-danger">
-                                Agregar Usuario
-                            </button>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>DNI</th>
-                                        <th>NOMBRE DE USUARIO</th>
-                                        <th>NUMERO</th>
-                                        <th>E-MAIL</th>
-                                        <th>ESTADO</th>
-                                        <th>ROL</th>
-                                        <th>EDITAR</th>
-                                        <th>ESTADO</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="item in usuarios">
-                                        <td>{{item.dni}}</td>
-                                        <td>{{item.nombre}} {{item.apellido}}</td>
-                                        <td>{{item.numero}}</td>
-                                        <td>{{item.email}}</td>
-                                        <td  v-if="item.estado=='0'">Activo</td>
-                                        <td  v-if="item.estado=='1'">Inactivo</td>
-                                        <td>{{item.rol}}</td>
-                                        <td>
-                                            <button @click="abrirEditar(item.id)" type="button" class="btn btn-warning btn-link btn-sm">
-                                                <i class="material-icons">edit</i>
-                                            </button>
-                                        </td>
-                                        <td>
-                                            <button v-if="item.estado=='0'" @click="cambiarEstado(item.id)" type="button" class="btn btn-success btn-link btn-sm">
-                                                <i class="material-icons">
-                                                    radio_button_checked
-                                                </i>
-                                            </button>
-                                            <button v-if="item.estado=='1'" @click="cambiarEstado(item.id)" type="button" class="btn btn-default btn-link btn-sm">
-                                                <i class="material-icons">
-                                                    radio_button_unchecked
-                                                </i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+        <div class="container-fluid">
+            <div id="modal-nuevo" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <!-- <h4 class="modal-title text-center all-tittles">ayuda del sistema</h4> -->
+                            <i class="zmdi zmdi-account-box"></i> NUEVO USUARIO<br>
+                        </div>
+                        <div class="modal-body">
+                            <form v-on:submit.prevent="guardar()" class="form-padding">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="group-material">
+                                            <input v-model="usuario.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre del usuario" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del usuario">
+                                            <span class="highlight"></span>
+                                            <span class="bar"></span>
+                                            <label>Nombre</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="group-material">
+                                            <input v-model="usuario.apellido" type="text" class="tooltips-general material-control" placeholder="Escribe aquí los apellidos " required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el apellido del usuario">
+                                            <span class="highlight"></span>
+                                            <span class="bar"></span>
+                                            <label>Apellidos</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="group-material">
+                                            <input v-model="usuario.usuario" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el usuario " required="" maxlength="50" data-toggle="tooltip" data-placement="top" title="Escribe el usuario">
+                                            <span class="highlight"></span>
+                                            <span class="bar"></span>
+                                            <label>Usuario</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="group-material">
+                                            <input v-model="usuario.password" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el password " required="" maxlength="20">
+                                            <span class="highlight"></span>
+                                            <span class="bar"></span>
+                                            <label>Password</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="group-material">
+                                            <input v-model="usuario.numero" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el Número" required="" maxlength="20" >
+                                            <span class="highlight"></span>
+                                            <span class="bar"></span>
+                                            <label>Número</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <select v-model="usuario.rol" class="form-control">
+                                            <option value="Administrador">Administrador</option>
+                                            <option value="Secretaria">Secretaria</option>
+                                            <option value="Tecnico">Tecnico</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <p class="text-center">
+                                            <button type="submit" class="btn btn-primary" style="margin-right: 20px;"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
+                                        </p>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <div id="modal-nuevo" class="modal" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
+            <div id="modal-editar" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Nuevo Usuario</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <i class="zmdi zmdi-account-box"></i> NUEVO USUARIO<br>
                         </div>
-                        <form id="form-nuevo" v-on:submit.prevent="guardar">
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="">DNI:</label>
-                                    <input name="dni" v-on:keyup="consulta()" v-model="usuario.dni" type="text" class="form-control">
+                        <div class="modal-body">
+                            <form v-on:submit.prevent="update()" class="form-padding">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="group-material">
+                                            <input v-model="usuario_edit.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre del usuario" required="" maxlength="70"> 
+                                            <span class="highlight"></span>
+                                            <span class="bar"></span>
+                                            <label>Nombre</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="group-material">
+                                            <input v-model="usuario_edit.apellido" type="text" class="tooltips-general material-control" placeholder="Escribe aquí los apellidos " required="" maxlength="70">
+                                            <span class="highlight"></span>
+                                            <span class="bar"></span>
+                                            <label>Apellidos</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="group-material">
+                                            <input v-model="usuario_edit.usuario" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el usuario " required="" maxlength="50">
+                                            <span class="highlight"></span>
+                                            <span class="bar"></span>
+                                            <label>Usuario</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="group-material">
+                                            <input v-model="usuario_edit.password" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el password " required="" maxlength="20">
+                                            <span class="highlight"></span>
+                                            <span class="bar"></span>
+                                            <label>Password</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="group-material">
+                                            <input v-model="usuario_edit.numero" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el Número" required="" maxlength="20" >
+                                            <span class="highlight"></span>
+                                            <span class="bar"></span>
+                                            <label>Número</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <select v-model="usuario_edit.rol" class="form-control">
+                                            <option value="Administrador">Administrador</option>
+                                            <option value="Secretaria">Secretaria</option>
+                                            <option value="Tecnico">Tecnico</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <p class="text-center">
+                                            <button type="submit" class="btn btn-primary" style="margin-right: 20px;"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
+                                        </p>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="">Nombre de usuario:</label>
-                                    <input name="nombre" v-model="usuario.nombre" type="text" class="form-control" :readonly="bloquear">
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Apellidos de usuario:</label>
-                                    <input name="apellido" v-model="usuario.apellido" type="text" class="form-control" :readonly="bloquear">
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Número:</label>
-                                    <input name="numero" v-model="usuario.numero" type="text" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="">E-Mail:</label>
-                                    <input name="email" v-model="usuario.email" type="email" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Rol:</label>
-                                    <select name="rol" v-model="usuario.rol" id="" class="form-control">
-                                        <option value="Administrador" selected>Administrador</option>
-                                        <option value="Operador">Operador</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Contraseña:</label>
-                                    <input name="password" v-model="usuario.password" type="password" class="form-control">
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" @click="guardar()">Guardar</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div id="modal-editar" class="modal" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Editar Usuario</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
+            <div class="container-flat-form">
+                <div class="title-flat-form title-flat-blue">Lista de Usuarios</div>
+                    <div class="form-padding">
+                        <div class="row">
+                            <div class="col-xs-12 form-group">
+                                <button class="btn btn-primary" @click="abrir">Nuevo</button>
+                            </div>
                         </div>
-                        <form id="form-editar" v-on:submit.prevent="update">
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="">DNI:</label>
-                                    <input name="dni" v-model="usuario_edit.dni" type="text" class="form-control" :readonly=true>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Nombre de usuario:</label>
-                                    <input name="nombre" v-model="usuario_edit.nombre" type="text" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Apellidos de usuario:</label>
-                                    <input name="apellido" v-model="usuario_edit.apellido" type="text" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Número:</label>
-                                    <input name="numero" v-model="usuario_edit.numero" type="text" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="">E-Mail:</label>
-                                    <input name="email" v-model="usuario_edit.email" type="email" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Rol:</label>
-                                    <select name="rol" v-model="usuario_edit.rol"  class="form-control">
-                                        <option value="Administrador" :selected="usuario_edit.rol=='Administrador'" >Administrador</option>
-                                        <option value="Operador" :selected="usuario_edit.rol=='Operador'" >Operador</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" @click="update()">Guardar</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
-                        </form>
+                        <table class="table table-striped">
+                            <thead style="background-color:#DFF0D8; font-weight:bold;">
+                                <tr>
+                                    <th class="div-table-cell">Nombre</th>
+                                    <th class="div-table-cell">Apellido</th>
+                                    <th class="div-table-cell">Usuario</th>
+                                    <th class="div-table-cell">Número</th>
+                                    <th class="div-table-cell">Rol</th>
+                                    <th class="div-table-cell">Estado</th>
+                                    <th class="div-table-cell">Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="user in usuarios">
+                                    <td>{{ user.nombre }}</td>
+                                    <td>{{ user.apellido }}</td>
+                                    <td>{{ user.usuario }}</td>
+                                    <td>{{ user.numero }}</td>
+                                    <td>{{ user.rol }}</td>
+                                    <td>{{ (user.estado=="0")? 'Activo': 'Inactivo' }}</td>
+                                    <td>
+                                        <button @click="abrirEditar(user.id)" class="btn btn-success">
+                                            Editar
+                                        </button>
+                                        <button @click="cambiarEstado(user.id)" v-if="user.estado=='0'" class="btn btn-danger">
+                                            Desactivar
+                                        </button>
+                                        <button @click="cambiarEstado(user.id)" v-else class="btn btn-primary">
+                                            Activar
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </template>
 <script>
 export default {
@@ -226,14 +251,14 @@ export default {
             });
         },
         abrirEditar(id){
-            axios.get(api_url+'/usuario/'+id+'?api_token='+cuenta.token)
+            axios.get(api_url+'/user/'+id)
             .then(response=>{
                 this.usuario_edit=response.data;
             });
             $('#modal-editar').modal();
         },
         update(){
-            axios.post(api_url+'/usuario/'+this.usuario_edit.id+'?api_token='+cuenta.token+'&_method=PUT',this.usuario_edit)
+            axios.post(api_url+'/user/'+this.usuario_edit.id+'?_method=PUT',this.usuario_edit)
             .then(response=>{
                 this.error_editar=null;
                 var respuesta=response.data;
@@ -252,14 +277,11 @@ export default {
             });
         },
         cambiarEstado(id){
-            axios.post(api_url+'/usuario/estado/'+id+'?api_token='+cuenta.token+'&_method=PUT')
+            axios.post(api_url+'/user/'+id+'/estado')
             .then(response=>{
-                
                 var respuesta=response.data;
                 if (respuesta.status=="OK") {
-                    this.limpiarErrores();
                     this.listar();
-
                     swal({title: respuesta.data,icon: "success",timer: "2000"});
                 }
                 if(respuesta.status=='DANGER'){
