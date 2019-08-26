@@ -74,6 +74,21 @@
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <div class="dropdown-menu-button"><i class="zmdi zmdi-case zmdi-hc-fw"></i>&nbsp;&nbsp; Compras <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw icon-sub-menu"></i></div>
+                        <ul class="list-unstyled">
+                            <router-link tag="li" to="/compras">
+                                <a>
+                                    <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Compras
+                                </a>
+                            </router-link>
+                            <li>
+                                <router-link to="/lista_compras">
+                                    <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Listar Compras
+                                </router-link>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
                 <ul v-if="cuenta.rol=='Secretaria'" class="list-unstyled">
                     <router-link tag="li" to="/">

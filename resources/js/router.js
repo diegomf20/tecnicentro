@@ -94,6 +94,16 @@ var routes =[
         // beforeEnter: auth
     },
     { 
+        path: '/compras', 
+        component: require('./view/Compras.vue').default,
+        // beforeEnter: auth
+    },
+    { 
+        path: '/lista_compras', 
+        component: require('./view/ListaCompras.vue').default,
+        // beforeEnter: auth
+    },
+    { 
         path: '/finalizados', 
         component: require('./view/Finalizados.vue').default,
         // beforeEnter: auth
