@@ -1964,7 +1964,7 @@ __webpack_require__.r(__webpack_exports__);
         closeOnConfirm: false
       }, function () {
         cuenta = null;
-        local.cuenta = null;
+        local.removeItem('cuenta');
         t.$router.push({
           path: "/login"
         });
@@ -2011,40 +2011,6 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     'navbar': _capas_navbar_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     'sidebar': _capas_sidebar_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
-  },
-  mounted: function mounted() {
-    navigator.serviceWorker.register('./sw.js').then(function (registration) {
-      var messaging;
-      messaging = firebase.messaging();
-      messaging.useServiceWorker(registration);
-      messaging.requestPermission().then(function () {
-        return messaging.getToken();
-      }).then(function (token) {
-        if (local.getItem('push') === null) {
-          local.setItem('push', token);
-          /**
-           * Registrar
-           */
-
-          $.ajax({
-            type: 'POST',
-            url: "https://iid.googleapis.com/iid/v1:batchAdd",
-            headers: {
-              Authorization: 'key=AIzaSyCUpg8GjUxs56rQyDCO_yEu46Vmbxfpapg'
-            },
-            contentType: 'application/json',
-            dataType: 'json',
-            data: JSON.stringify({
-              "to": "/topics/sistema-general-" + 1,
-              "registration_tokens": [token]
-            }),
-            success: function success(response) {
-              console.log("Push Registrado");
-            }
-          });
-        }
-      });
-    });
   }
 });
 
@@ -62992,11 +62958,13 @@ var title = function title(to, from, next) {
 };
 
 var auth = function auth(to, from, next) {
+  console.log('hola');
+
   if (local.getItem("cuenta") === null) {
     next('/login');
   } else {
-    next();
-    var cuenta = JSON.parse(local.getItem("cuenta")); // if (to.meta.space == cuenta.tipo ){
+    var cuenta = JSON.parse(local.getItem("cuenta"));
+    next(); // if (to.meta.space == cuenta.tipo ){
     //     next();
     // }else{
     //     if(cuenta.tipo=="policia"){
@@ -63009,6 +62977,9 @@ var auth = function auth(to, from, next) {
 };
 
 var routes = [{
+  path: '/',
+  beforeEnter: auth
+}, {
   path: '/comprobante1/:id',
   component: __webpack_require__(/*! ./view/comprobante/Comprobante1.vue */ "./resources/js/view/comprobante/Comprobante1.vue")["default"],
   meta: {
@@ -63028,50 +62999,52 @@ var routes = [{
   }
 }, {
   path: '/resumen/:id',
-  component: __webpack_require__(/*! ./view/Resumen.vue */ "./resources/js/view/Resumen.vue")["default"]
+  component: __webpack_require__(/*! ./view/Resumen.vue */ "./resources/js/view/Resumen.vue")["default"],
+  beforeEnter: auth
 }, {
   path: '/diagnosticar/:id',
-  component: __webpack_require__(/*! ./view/Diagnosticar.vue */ "./resources/js/view/Diagnosticar.vue")["default"]
+  component: __webpack_require__(/*! ./view/Diagnosticar.vue */ "./resources/js/view/Diagnosticar.vue")["default"],
+  beforeEnter: auth
 }, {
   path: '/nota',
-  component: __webpack_require__(/*! ./view/Nota.vue */ "./resources/js/view/Nota.vue")["default"] // beforeEnter: auth
-
+  component: __webpack_require__(/*! ./view/Nota.vue */ "./resources/js/view/Nota.vue")["default"],
+  beforeEnter: auth
 }, {
   path: '/herramienta',
-  component: __webpack_require__(/*! ./view/Herramienta.vue */ "./resources/js/view/Herramienta.vue")["default"] // beforeEnter: auth
-
+  component: __webpack_require__(/*! ./view/Herramienta.vue */ "./resources/js/view/Herramienta.vue")["default"],
+  beforeEnter: auth
 }, {
   path: '/pieza',
-  component: __webpack_require__(/*! ./view/Pieza.vue */ "./resources/js/view/Pieza.vue")["default"] // beforeEnter: auth
-
+  component: __webpack_require__(/*! ./view/Pieza.vue */ "./resources/js/view/Pieza.vue")["default"],
+  beforeEnter: auth
 }, {
   path: '/usuario',
-  component: __webpack_require__(/*! ./view/contactos/Usuario.vue */ "./resources/js/view/contactos/Usuario.vue")["default"] // beforeEnter: auth
-
+  component: __webpack_require__(/*! ./view/contactos/Usuario.vue */ "./resources/js/view/contactos/Usuario.vue")["default"],
+  beforeEnter: auth
 }, {
   path: '/cliente',
-  component: __webpack_require__(/*! ./view/contactos/Cliente.vue */ "./resources/js/view/contactos/Cliente.vue")["default"] // beforeEnter: auth
-
+  component: __webpack_require__(/*! ./view/contactos/Cliente.vue */ "./resources/js/view/contactos/Cliente.vue")["default"],
+  beforeEnter: auth
 }, {
   path: '/proveedor',
-  component: __webpack_require__(/*! ./view/contactos/Proveedor.vue */ "./resources/js/view/contactos/Proveedor.vue")["default"] // beforeEnter: auth
-
+  component: __webpack_require__(/*! ./view/contactos/Proveedor.vue */ "./resources/js/view/contactos/Proveedor.vue")["default"],
+  beforeEnter: auth
 }, {
   path: '/reparaciones',
-  component: __webpack_require__(/*! ./view/Reparaciones.vue */ "./resources/js/view/Reparaciones.vue")["default"] // beforeEnter: auth
-
+  component: __webpack_require__(/*! ./view/Reparaciones.vue */ "./resources/js/view/Reparaciones.vue")["default"],
+  beforeEnter: auth
 }, {
   path: '/compras',
-  component: __webpack_require__(/*! ./view/Compras.vue */ "./resources/js/view/Compras.vue")["default"] // beforeEnter: auth
-
+  component: __webpack_require__(/*! ./view/Compras.vue */ "./resources/js/view/Compras.vue")["default"],
+  beforeEnter: auth
 }, {
   path: '/lista_compras',
-  component: __webpack_require__(/*! ./view/ListaCompras.vue */ "./resources/js/view/ListaCompras.vue")["default"] // beforeEnter: auth
-
+  component: __webpack_require__(/*! ./view/ListaCompras.vue */ "./resources/js/view/ListaCompras.vue")["default"],
+  beforeEnter: auth
 }, {
   path: '/finalizados',
-  component: __webpack_require__(/*! ./view/Finalizados.vue */ "./resources/js/view/Finalizados.vue")["default"] // beforeEnter: auth
-
+  component: __webpack_require__(/*! ./view/Finalizados.vue */ "./resources/js/view/Finalizados.vue")["default"],
+  beforeEnter: auth
 }, {
   path: '/login',
   component: __webpack_require__(/*! ./view/Login.vue */ "./resources/js/view/Login.vue")["default"],

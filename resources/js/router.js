@@ -9,12 +9,12 @@ var title=(to, from,next)=>{
     next();
 }
 var auth=(to, from,next)=>{
-    
+    console.log('hola');
     if(local.getItem("cuenta")===null){
         next('/login');
     }else{
-        next();
         var cuenta=JSON.parse(local.getItem("cuenta"));
+        next();
         // if (to.meta.space == cuenta.tipo ){
         //     next();
         // }else{
@@ -29,6 +29,10 @@ var auth=(to, from,next)=>{
 }
 
 var routes =[
+    { 
+        path: '/', 
+        beforeEnter: auth
+    },
     { 
         path: '/comprobante1/:id', 
         component: require('./view/comprobante/Comprobante1.vue').default,
@@ -53,60 +57,62 @@ var routes =[
     { 
         path: '/resumen/:id', 
         component: require('./view/Resumen.vue').default,
+        beforeEnter: auth
     },
     { 
         path: '/diagnosticar/:id', 
         component: require('./view/Diagnosticar.vue').default,
+        beforeEnter: auth
     },
     { 
         path: '/nota', 
         component: require('./view/Nota.vue').default,
-        // beforeEnter: auth
+        beforeEnter: auth
     },
     { 
         path: '/herramienta', 
         component: require('./view/Herramienta.vue').default,
-        // beforeEnter: auth
+        beforeEnter: auth
     },
     { 
         path: '/pieza', 
         component: require('./view/Pieza.vue').default,
-        // beforeEnter: auth
+        beforeEnter: auth
     },
     { 
         path: '/usuario', 
         component: require('./view/contactos/Usuario.vue').default,
-        // beforeEnter: auth
+        beforeEnter: auth
     },
     { 
         path: '/cliente', 
         component: require('./view/contactos/Cliente.vue').default,
-        // beforeEnter: auth
+        beforeEnter: auth
     },
     { 
         path: '/proveedor', 
         component: require('./view/contactos/Proveedor.vue').default,
-        // beforeEnter: auth
+        beforeEnter: auth
     },
     { 
         path: '/reparaciones', 
         component: require('./view/Reparaciones.vue').default,
-        // beforeEnter: auth
+        beforeEnter: auth
     },
     { 
         path: '/compras', 
         component: require('./view/Compras.vue').default,
-        // beforeEnter: auth
+        beforeEnter: auth
     },
     { 
         path: '/lista_compras', 
         component: require('./view/ListaCompras.vue').default,
-        // beforeEnter: auth
+        beforeEnter: auth
     },
     { 
         path: '/finalizados', 
         component: require('./view/Finalizados.vue').default,
-        // beforeEnter: auth
+        beforeEnter: auth
     },
     { 
         path: '/login', 

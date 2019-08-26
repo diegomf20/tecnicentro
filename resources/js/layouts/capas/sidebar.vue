@@ -48,7 +48,7 @@ export default {
                 closeOnConfirm: false 
             },function(){
                 cuenta=null;
-                local.cuenta=null;
+                local.removeItem('cuenta');
                 t.$router.push({path: "/login"} );
             });
         }
