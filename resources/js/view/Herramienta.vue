@@ -20,7 +20,7 @@
                                     </div>
                                     <div class="col-xs-12">
                                         <p class="text-center">
-                                            <button type="submit" class="btn btn-primary" style="margin-right: 20px;"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
+                                            <button :disabled="btn_bloquear" type="submit" class="btn btn-primary" style="margin-right: 20px;"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
                                         </p>
                                     </div>
                                 </div>
@@ -54,7 +54,7 @@
                 </div>
                 <div class="col-sm-7">
                     <div class="container-flat-form">
-                        <div class="title-flat-form title-flat-blue">Lista de herramientas</div>
+                            <div class="title-flat-form title-flat-blue">Lista de herramientas</div>
                             <div class="form-padding">
                                 <table class="table table-striped">
                                     <thead style="background-color:#DFF0D8; font-weight:bold;">
@@ -69,7 +69,7 @@
                                             <td>{{ herramienta.codigo }}</td>
                                             <td>{{ herramienta.nombre }}</td>
                                             <td>
-                                                <button @click="abrirEditar(herramienta.id)" class="btn btn-success">
+                                                <button :disabled="btn_bloquear" @click="abrirEditar(herramienta.id)" class="btn btn-success">
                                                     Editar
                                                 </button>
                                             </td>
@@ -81,12 +81,17 @@
                     </div>
                 </div>
             </div>
-        </div>
 </template>
 <script>
 export default {
     data() {
         return {
+
+            /**
+             * bloquear el btn guardar
+             */
+            btn_bloquear:false,
+
             herramienta: {
                 nombre:"",
             },
@@ -110,6 +115,7 @@ export default {
             $('#modal-nuevo').modal();
         },
         guardar(){
+             this.btn_bloquear=true;
             axios.post(api_url+'/herramienta',this.herramienta)
             .then(response=>{
                 var respuesta=response.data;
@@ -131,6 +137,7 @@ export default {
                 if(respuesta.status=='DANGER'){
                     swal({title: respuesta.data,icon: "error",timer: "4000"});
                 }
+                 this.btn_bloquear=false;
             });
         },
         abrirEditar(id){
@@ -141,6 +148,7 @@ export default {
             $('#modal-editar').modal();
         },
         update(){
+             this.btn_bloquear=true;
             axios.post(api_url+'/herramienta/'+this.herramienta_edit.id+'?_method=PUT',this.herramienta_edit)
             .then(response=>{
                 this.error_editar=null;
@@ -157,6 +165,7 @@ export default {
                 if(respuesta.status=='DANGER'){
                     swal({title: respuesta.data,icon: "error",timer: "4000"});
                 }
+                 this.btn_bloquear=false;
             });
         },
         cambiarEstado(id){

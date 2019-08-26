@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Model\DetalleDiagnostico;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Model\Reparacion;
@@ -21,10 +23,21 @@ class ReparacionController extends Controller
         return response()->json($Reparaciones);
     }
     public function show($id){
+
         $Reparacion=Reparacion::with('cliente')->with('herramienta')
                 ->with('diagnostico')
                 ->where('id',$id)->first();
-        return response()->json($Reparacion);
+        
+        $piezas=[];
+        if($Reparacion->diagnostico!=null){
+            $piezas=DetalleDiagnostico::with('pieza')->where('diagnostico_id',$Reparacion->diagnostico->id)->get();
+        }
+        return response()->json([
+            "reparacion"    =>  $Reparacion,
+            "piezas"      =>  $piezas,
+        ]);
+
+        // return response()->json($Reparacion);
     }
 
     public function nota(Request $request){
@@ -44,6 +57,7 @@ class ReparacionController extends Controller
     }
 
     public function diagnosticar(Request $request,$id){
+
         $Reparacion=Reparacion::where('id',$id)->first();
         $Reparacion->estado='1';
         $Reparacion->save();
@@ -53,6 +67,18 @@ class ReparacionController extends Controller
         $diagnostico->costo=$request->costo;
         $diagnostico->descripcion=$request->descripcion;
         $diagnostico->save();
+
+        /**
+         * detalle compra
+         */
+        foreach ($request->items as $key => $item) {
+            $detalleDiagnostico=new DetalleDiagnostico();
+            $detalleDiagnostico->cantidad=$item['cantidad'];
+            $detalleDiagnostico->pieza_id=$item['pieza_id'];
+            $detalleDiagnostico->diagnostico_id=$diagnostico->id;
+            $detalleDiagnostico->save();
+        }
+
         return response()->json([
             "status" => "OK",
             "data"  => $diagnostico

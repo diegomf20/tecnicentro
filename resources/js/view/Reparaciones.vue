@@ -7,7 +7,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="modal-body">
-                        <iframe :src="url" frameborder="0" width="200" height="500"></iframe>
+                        <iframe :src="url" frameborder="0" width="300" height="500"></iframe>
                     </div>
                 </div>
             </div>

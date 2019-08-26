@@ -43,6 +43,23 @@
                             </tr>
                         </table>
                     </div>
+                    <div class="col-xs-12" v-if="piezas.length!=0">
+                        <legend><i class="zmdi zmdi-account-box"></i> &nbsp; Piezas</legend><br>
+                        <table class="table-padding">
+                           <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Cantidad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(item) in piezas">
+                                    <td>{{item.pieza.nombre}}</td>
+                                    <td>{{item.cantidad}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -52,13 +69,16 @@
 export default {
     data() {
         return {
-            reparacion:null
+            reparacion:null,
+            piezas:null,
         }
     },
     mounted() {
         axios.get(api_url+'/reparacion/'+this.$route.params.id)
         .then(response=>{
-            this.reparacion=response.data;
+            var respuesta=response.data;
+            this.reparacion=respuesta.reparacion;
+            this.piezas=respuesta.piezas;
         });
     },
 }

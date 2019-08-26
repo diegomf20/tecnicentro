@@ -60,7 +60,7 @@
                                     </div>
                                     <div class="col-xs-12">
                                         <p class="text-center">
-                                            <button type="submit" class="btn btn-primary" style="margin-right: 20px;"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
+                                            <button :disabled="btn_bloquear" type="submit" class="btn btn-primary" style="margin-right: 20px;"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
                                         </p>
                                     </div>
                                 </div>
@@ -128,7 +128,7 @@
                                     </div>
                                     <div class="col-xs-12">
                                         <p class="text-center">
-                                            <button type="submit" class="btn btn-primary" style="margin-right: 20px;"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
+                                            <button :disabled="btn_bloquear" type="submit" class="btn btn-primary" style="margin-right: 20px;"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
                                         </p>
                                     </div>
                                 </div>
@@ -188,6 +188,11 @@
 export default {
     data() {
         return {
+            /**
+             * bloquear el btn guardar
+             */
+            btn_bloquear:false,
+
             usuario: {
                 nombre:"",
                 apellido:"",
@@ -221,6 +226,7 @@ export default {
             $('#modal-nuevo').modal();
         },
         guardar(){
+            this.btn_bloquear=true;
             axios.post(api_url+'/user',this.usuario)
             .then(response=>{
                 var respuesta=response.data;
@@ -248,6 +254,7 @@ export default {
                 if(respuesta.status=='DANGER'){
                     swal({title: respuesta.data,icon: "error",timer: "4000"});
                 }
+                this.btn_bloquear=false;
             });
         },
         abrirEditar(id){
@@ -258,6 +265,7 @@ export default {
             $('#modal-editar').modal();
         },
         update(){
+            this.btn_bloquear=true;
             axios.post(api_url+'/user/'+this.usuario_edit.id+'?_method=PUT',this.usuario_edit)
             .then(response=>{
                 this.error_editar=null;
@@ -274,6 +282,7 @@ export default {
                 if(respuesta.status=='DANGER'){
                     swal({title: respuesta.data,icon: "error",timer: "4000"});
                 }
+                this.btn_bloquear=false;
             });
         },
         cambiarEstado(id){

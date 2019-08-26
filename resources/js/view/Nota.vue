@@ -7,7 +7,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="modal-body">
-                        <iframe :src="url" frameborder="0" width="200" height="500"></iframe>
+                        <iframe :src="url" frameborder="0" width="300" height="500"></iframe>
                     </div>
                 </div>
             </div>
@@ -42,7 +42,7 @@
                     </div>
                     <div class="col-xs-12">
                         <p class="text-center">
-                            <button type="submit" class="btn btn-primary" style="margin-right: 20px;"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
+                            <button :disabled="btn_bloquear" type="submit" class="btn btn-primary" style="margin-right: 20px;"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
                         </p>
                     </div>
                 </div>
@@ -54,6 +54,12 @@
 export default {
     data() {
         return {
+
+            /**
+             * bloquear el btn guardar
+             */
+            btn_bloquear:false,
+
             url:"",
             clientes: [],
             herramientas:[],
@@ -91,6 +97,7 @@ export default {
     },
     methods: {
         guardar(){
+             this.btn_bloquear=true;
             axios.post(api_url+'/nota',{
                 cliente_id: this.nota.cliente.id,
                 herramienta_id:this.nota.herramienta.id,
@@ -117,6 +124,7 @@ export default {
                 if(respuesta.status=='DANGER'){
                     swal({title: respuesta.data,icon: "error",timer: "4000"});
                 }
+                 this.btn_bloquear=false;
             });
         }
     },

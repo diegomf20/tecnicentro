@@ -65,7 +65,7 @@
             </div>
             <div class="row">
                 <div class="text-center col-12">
-                    <button @click="guardar()" class="btn btn-success">Guardar</button>
+                    <button :disabled="btn_bloquear" @click="guardar()" class="btn btn-success">Guardar</button>
                 </div>
             </div>
         </div>
@@ -86,6 +86,12 @@
 export default {
     data() {
         return {
+
+            /**
+             * bloquear el btn guardar
+             */
+            btn_bloquear:false,
+
             proveedores:[],
             piezas: [],
             compra:{
@@ -148,6 +154,7 @@ export default {
             };
         },
         guardar(){
+            this.btn_bloquear=true;
             axios.post(api_url+'/compra',this.compra)
             .then(response=>{
                 var respuesta=response.data;
@@ -171,6 +178,7 @@ export default {
                         timer: "4000"
                     });
                 }
+                this.btn_bloquear=false;
             });
         }
     },

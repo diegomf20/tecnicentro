@@ -53,6 +53,13 @@ export default {
                         timer: "4000"
                     });
                 }
+                if (respuesta.status=="INFO") {
+                    swal({
+                        title: respuesta.data,
+                        icon: "warning",
+                        timer: "4000"
+                    });
+                }
             });
         }
     },
