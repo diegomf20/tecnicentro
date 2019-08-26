@@ -6,14 +6,10 @@
                     <img src="assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
                 </figure>
                 <li style="color:#fff; cursor:default;">
-                    <span class="all-tittles">usuario</span>
+                    <span class="all-tittles">{{cuenta.nombre}} - {{ cuenta.rol }}</span>
                 </li>
-                <li class="tooltips-general exit-system-button" data-href="index.html" data-placement="bottom" title="Salir del sistema">
+                <li @click="exit()" class="tooltips-general exit-system-button" data-href="index.html" data-placement="bottom" title="Salir del sistema">
                     <i class="zmdi zmdi-power"></i>
-                </li>
-                
-                <li class="tooltips-general btn-help" data-placement="bottom" title="Ayuda">
-                    <i class="zmdi zmdi-help-outline zmdi-hc-fw"></i>
                 </li>
                 <li class="mobile-menu-button visible-xs" style="float: left !important;">
                     <i class="zmdi zmdi-menu"></i>
@@ -30,3 +26,32 @@
         </div>
     </div>
 </template>
+<script>
+export default {
+    data() {
+        return {
+            cuenta: cuenta
+        }
+    },
+    methods: {
+        exit(){
+            var t=this;
+            swal({
+                title: "¿Estás seguro?",
+                text: "Quieres salir del sistema y cerrar la sesión actual",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#5cb85c",
+                confirmButtonText: "Si, salir",
+                cancelButtonText: "No, cancelar",
+                animation: "slide-from-top",
+                closeOnConfirm: false 
+            },function(){
+                cuenta=null;
+                local.cuenta=null;
+                t.$router.push({path: "/login"} );
+            });
+        }
+    },
+}
+</script>

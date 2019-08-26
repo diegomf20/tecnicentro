@@ -17,6 +17,8 @@ Route::post('login','LoginController@ingresar');
 Route::post('nota','ReparacionController@nota');
 Route::post('reparacion/{id}/diagnosticar','ReparacionController@diagnosticar');
 Route::post('reparacion/{id}/aprobar','ReparacionController@aprobar');
+Route::post('reparacion/{id}/reparar','ReparacionController@reparar');
+Route::post('reparacion/{id}/cobrar','ReparacionController@cobrar');
 Route::post('user/{id}/estado','UserController@estado');
 Route::resource('reparacion', 'ReparacionController');
 Route::resource('user', 'UserController');

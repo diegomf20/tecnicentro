@@ -3,7 +3,7 @@
         <button @click="imprimir()">
             imprimir
         </button>
-        Aqui va el comprobante de Orden de entrada
+        Aqui va el comprobante de Orden de Reparación
     </div>
 </template>
 <script>

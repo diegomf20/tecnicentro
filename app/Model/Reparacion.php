@@ -15,4 +15,8 @@ class Reparacion extends Model
     {
         return $this->belongsTo('App\Model\Herramienta');
     }    
+    public function diagnostico()
+    {
+        return $this->hasOne('App\Model\Diagnostico');
+    }    
 }

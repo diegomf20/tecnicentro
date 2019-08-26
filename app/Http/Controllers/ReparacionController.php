@@ -8,12 +8,21 @@ use App\Model\Diagnostico;
 
 class ReparacionController extends Controller
 {
-    public function index(){
-        $Reparaciones=Reparacion::with('cliente')->with('herramienta')->get();
+    public function index(Request $request){
+        if ($request->data=="Finalizado") {
+            $Reparaciones=Reparacion::with('cliente')->with('herramienta')
+                ->whereIn('estado',['4'])
+                ->get();
+        }else{
+            $Reparaciones=Reparacion::with('cliente')->with('herramienta')
+                ->whereNotIn('estado',['4'])
+                ->get();
+        }
         return response()->json($Reparaciones);
     }
     public function show($id){
         $Reparacion=Reparacion::with('cliente')->with('herramienta')
+                ->with('diagnostico')
                 ->where('id',$id)->first();
         return response()->json($Reparacion);
     }
@@ -41,6 +50,7 @@ class ReparacionController extends Controller
         $diagnostico=new Diagnostico();
         $diagnostico->reparacion_id=$id;
         $diagnostico->dias=$request->dias;
+        $diagnostico->costo=$request->costo;
         $diagnostico->descripcion=$request->descripcion;
         $diagnostico->save();
         return response()->json([
@@ -51,6 +61,22 @@ class ReparacionController extends Controller
     public function aprobar($id){
         $Reparacion=Reparacion::where('id',$id)->first();
         $Reparacion->estado='2';
+        $Reparacion->save();
+        return response()->json([
+            "status" => "OK",
+        ]);
+    }
+    public function reparar($id){
+        $Reparacion=Reparacion::where('id',$id)->first();
+        $Reparacion->estado='3';
+        $Reparacion->save();
+        return response()->json([
+            "status" => "OK",
+        ]);
+    }
+    public function cobrar($id){
+        $Reparacion=Reparacion::where('id',$id)->first();
+        $Reparacion->estado='4';
         $Reparacion->save();
         return response()->json([
             "status" => "OK",

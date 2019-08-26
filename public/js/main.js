@@ -20,7 +20,7 @@ $(document).ready(function(){
             ContentPage.addClass('desktopMenu');
         }
     });
-    $('.dropdown-menu-button').on('click', function(e){
+    $('body').on('click','.dropdown-menu-button', function(e){
         e.preventDefault();
         var icon=$(this).children('.icon-sub-menu');
         if(icon.hasClass('zmdi-chevron-down')){
@@ -34,23 +34,7 @@ $(document).ready(function(){
         var dropMenu=$(this).next('ul');
         dropMenu.slideToggle('slow');
     });
-    $('.exit-system-button').on('click', function(e){
-        e.preventDefault();
-        var LinkExitSystem=$(this).attr("data-href");
-        swal({
-            title: "¿Estás seguro?",
-            text: "Quieres salir del sistema y cerrar la sesión actual",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#5cb85c",
-            confirmButtonText: "Si, salir",
-            cancelButtonText: "No, cancelar",
-            animation: "slide-from-top",
-            closeOnConfirm: false 
-        },function(){
-            window.location=LinkExitSystem; 
-        });  
-    });
+    
     $('.search-book-button').click(function(e){
         e.preventDefault();
         var LinkSearchBook=$(this).attr("data-href");
@@ -82,19 +66,19 @@ $(document).ready(function(){
         });
     });
 });
-(function($){
-    $(window).load(function(){
-        $(".nav-lateral-scroll").mCustomScrollbar({
-            theme:"light-thin",
-            scrollbarPosition: "inside",
-            autoHideScrollbar: true,
-            scrollButtons:{ enable: true }
-        });
-        $(".custom-scroll-containers").mCustomScrollbar({
-            theme:"dark-thin",
-            scrollbarPosition: "inside",
-            autoHideScrollbar: true,
-            scrollButtons:{ enable: true }
-        });
-    });
-})(jQuery);
+// (function($){
+//     $(window).load(function(){
+//         $(".nav-lateral-scroll").mCustomScrollbar({
+//             theme:"light-thin",
+//             scrollbarPosition: "inside",
+//             autoHideScrollbar: true,
+//             scrollButtons:{ enable: true }
+//         });
+//         $(".custom-scroll-containers").mCustomScrollbar({
+//             theme:"dark-thin",
+//             scrollbarPosition: "inside",
+//             autoHideScrollbar: true,
+//             scrollButtons:{ enable: true }
+//         });
+//     });
+// })(jQuery);

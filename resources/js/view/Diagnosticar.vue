@@ -36,6 +36,14 @@
                                 <label>Tiempo de reparación (días)</label>
                             </div>
                         </div>
+                        <div class="col-xs-12 col-sm-4">
+                            <div class="group-material">
+                                <input v-model="diagnostico.costo" type="number" class="tooltips-general material-control" placeholder="Escribe aquí el DNI" required="" maxlength="50">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Costo</label>
+                            </div>
+                        </div>
                         <div class="col-sm-8 form-group">
                             <label for="">Descripción</label>
                             <textarea v-model="diagnostico.descripcion" class="form-control" rows="3"></textarea>
@@ -57,6 +65,7 @@ export default {
             diagnostico: {
                 descripcion:null,
                 dias: 1,
+                costo: 0
             }
         }
     },
@@ -75,6 +84,7 @@ export default {
                     this.diagnostico={
                         descripcion:null,
                         dias: 1,
+                        costo: 0,
                     };
                     swal({
                         title: "Diagnosticado",

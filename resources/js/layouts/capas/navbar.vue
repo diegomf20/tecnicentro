@@ -13,7 +13,7 @@
         </div>
         <div class="nav-lateral-divider full-reset"></div>
             <div class="full-reset nav-lateral-list-menu">
-                <ul class="list-unstyled">
+                <ul v-if="cuenta.rol=='Administrador'" class="list-unstyled">
                     <router-link tag="li" to="/">
                         <a>
                             <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Home
@@ -30,6 +30,11 @@
                             <router-link tag="li" to="/reparaciones">
                                 <a>
                                     <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Lista de Reparaciones
+                                </a>
+                            </router-link>
+                            <router-link tag="li" to="/finalizados">
+                                <a>
+                                    <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Historial de Reparaciones Terminadas
                                 </a>
                             </router-link>
                         </ul>
@@ -67,6 +72,85 @@
                                     <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Cliente
                                 </router-link>
                             </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul v-if="cuenta.rol=='Secretaria'" class="list-unstyled">
+                    <router-link tag="li" to="/">
+                        <a>
+                            <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Home
+                        </a>
+                    </router-link>
+                    <li>
+                        <div class="dropdown-menu-button"><i class="zmdi zmdi-case zmdi-hc-fw"></i>&nbsp;&nbsp; Reparaciones <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw icon-sub-menu"></i></div>
+                        <ul class="list-unstyled">
+                            <router-link tag="li" to="/nota">
+                                <a>
+                                    <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Nota de Entrada
+                                </a>
+                            </router-link>
+                            <router-link tag="li" to="/reparaciones">
+                                <a>
+                                    <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Lista de Reparaciones
+                                </a>
+                            </router-link>
+                            <router-link tag="li" to="/finalizados">
+                                <a>
+                                    <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Historial de Reparaciones Terminadas
+                                </a>
+                            </router-link>
+                        </ul>
+                    </li>
+                    <li>
+                        <div class="dropdown-menu-button"><i class="zmdi zmdi-case zmdi-hc-fw"></i>&nbsp;&nbsp; Objetos <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw icon-sub-menu"></i></div>
+                        <ul class="list-unstyled">
+                            <router-link tag="li" to="/herramienta">
+                                <a>
+                                    <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Herramienta
+                                </a>
+                            </router-link>
+                        </ul>
+                    </li>
+                    <li>
+                        <div class="dropdown-menu-button"><i class="zmdi zmdi-case zmdi-hc-fw"></i>&nbsp;&nbsp; Contactos <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw icon-sub-menu"></i></div>
+                        <ul class="list-unstyled">
+                            <li>
+                                <router-link to="/cliente">
+                                    <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Cliente
+                                </router-link>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul v-if="cuenta.rol=='Tecnico'" class="list-unstyled">
+                    <router-link tag="li" to="/">
+                        <a>
+                            <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Home
+                        </a>
+                    </router-link>
+                    <li>
+                        <div class="dropdown-menu-button"><i class="zmdi zmdi-case zmdi-hc-fw"></i>&nbsp;&nbsp; Reparaciones <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw icon-sub-menu"></i></div>
+                        <ul class="list-unstyled">
+                            <router-link tag="li" to="/reparaciones">
+                                <a>
+                                    <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Lista de Reparaciones
+                                </a>
+                            </router-link>
+                        </ul>
+                    </li>
+                    <li>
+                        <div class="dropdown-menu-button"><i class="zmdi zmdi-case zmdi-hc-fw"></i>&nbsp;&nbsp; Objetos <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw icon-sub-menu"></i></div>
+                        <ul class="list-unstyled">
+                            <router-link tag="li" to="/herramienta">
+                                <a>
+                                    <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Herramienta
+                                </a>
+                            </router-link>
+                            <router-link tag="li" to="/pieza">
+                                <a>
+                                    <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Pieza
+                                </a>
+                            </router-link>
                         </ul>
                     </li>
                 </ul>

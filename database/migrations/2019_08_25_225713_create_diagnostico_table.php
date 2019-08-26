@@ -17,6 +17,7 @@ class CreateDiagnosticoTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('reparacion_id');               
             $table->integer('dias');               
+            $table->double('costo','8,2');               
             $table->string('descripcion',150)->nullable();
             $table->timestamps();
         });

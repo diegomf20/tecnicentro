@@ -19,14 +19,6 @@
               <span class="bar-login"></span>
               <label><i class="zmdi zmdi-lock"></i> &nbsp; Contraseña</label>
             </div>
-            <div class="group-material">
-                <select class="material-control-login">
-                    <option value="" disabled="" selected="">Tipo de usuario</option>
-                    <option value="Student">Secretaria</option>
-                    <option value="Teacher">Tecnico</option>
-                    <option value="Admin">Administrador</option>
-                </select>
-            </div>
             <button class="btn-login" type="submit">Ingresar al sistema &nbsp; <i class="zmdi zmdi-arrow-right"></i></button>
         </form>
     </div>   
@@ -52,16 +44,7 @@ export default {
                     cuenta=respuesta.data;
                     local.setItem('cuenta',JSON.stringify(respuesta.data));
                     this.$router.push({path: "/home"} );
-                    $.notify({
-                        message: 'Bienvenido a Gestión de Empresa' 
-                    },{
-                        placement: {
-                            from: "botoon",
-                            align: "right"
-                        },
-                        timer: 500,
-                        type: 'info'
-                    });
+                    
                 }
                 if (respuesta.status=="WARNING") {
                     swal({

@@ -37,6 +37,20 @@ var routes =[
         },
     },
     { 
+        path: '/comprobante2/:id', 
+        component: require('./view/comprobante/Comprobante2.vue').default,
+        meta:{
+            layout: "empty",
+        },
+    },
+    { 
+        path: '/comprobante3/:id', 
+        component: require('./view/comprobante/Comprobante3.vue').default,
+        meta:{
+            layout: "empty",
+        },
+    },
+    { 
         path: '/resumen/:id', 
         component: require('./view/Resumen.vue').default,
     },
@@ -77,6 +91,11 @@ var routes =[
     { 
         path: '/reparaciones', 
         component: require('./view/Reparaciones.vue').default,
+        // beforeEnter: auth
+    },
+    { 
+        path: '/finalizados', 
+        component: require('./view/Finalizados.vue').default,
         // beforeEnter: auth
     },
     { 

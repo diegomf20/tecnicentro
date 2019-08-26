@@ -25,6 +25,25 @@
                         <td>{{ reparacion.serie }}</td>
                     </tr>
                 </table>
+                <div class="row">
+                    <div class="col-xs-12" v-if="reparacion.diagnostico!=null">
+                        <legend><i class="zmdi zmdi-account-box"></i> &nbsp; Diagnostico</legend><br>
+                        <table class="table-padding">
+                            <tr>
+                                <td><b>Tiempo de reparación (días):</b></td>
+                                <td>{{ reparacion.diagnostico.dias }}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Costo:</b></td>
+                                <td>{{ reparacion.diagnostico.costo }}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Descripcion:</b></td>
+                                <td>{{ reparacion.diagnostico.descripcion }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
