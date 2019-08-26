@@ -37,6 +37,14 @@ var routes =[
         },
     },
     { 
+        path: '/resumen/:id', 
+        component: require('./view/Resumen.vue').default,
+    },
+    { 
+        path: '/diagnosticar/:id', 
+        component: require('./view/Diagnosticar.vue').default,
+    },
+    { 
         path: '/nota', 
         component: require('./view/Nota.vue').default,
         // beforeEnter: auth
@@ -64,6 +72,11 @@ var routes =[
     { 
         path: '/proveedor', 
         component: require('./view/contactos/Proveedor.vue').default,
+        // beforeEnter: auth
+    },
+    { 
+        path: '/reparaciones', 
+        component: require('./view/Reparaciones.vue').default,
         // beforeEnter: auth
     },
     { 

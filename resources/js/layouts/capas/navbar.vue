@@ -27,6 +27,11 @@
                                     <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Nota de Entrada
                                 </a>
                             </router-link>
+                            <router-link tag="li" to="/reparaciones">
+                                <a>
+                                    <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Lista de Reparaciones
+                                </a>
+                            </router-link>
                         </ul>
                     </li>
                     <li>

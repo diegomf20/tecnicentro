@@ -15,6 +15,7 @@ class CreateReparacionTable extends Migration
     {
         Schema::create('reparacion', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('codigo',8)->nullable();               
             $table->unsignedInteger('cliente_id');               
             $table->unsignedInteger('herramienta_id');
             $table->string('modelo',20)->nullable();               
