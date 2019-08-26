@@ -14,6 +14,18 @@
         </div>
         <div class="container-flat-form">
             <div class="title-flat-form title-flat-blue">Nota de Entrada</div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-5 text-right nuevo" style="margin: 10px;">
+                    <router-link to="/cliente">
+                        <a href="" class="btn btn-info" role="button"> Cliente Nuevo</a>
+                    </router-link>
+                </div>
+                <div class="col-xs-12 col-sm-6  nuevo" style="margin: 10px;">
+                    <router-link to="/herramienta">
+                        <a href="" class="btn btn-info" role="button" >Herramienta nuevo</a>
+                    </router-link>
+                </div>
+            </div>
             <form v-on:submit.prevent="guardar()" class="form-padding">
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 form-group">
@@ -50,6 +62,14 @@
         </div>
     </div>
 </template>
+<style >
+    @media (min-width: 768px){
+        .nuevo {
+           text-align: center !important;
+        }
+    }
+
+</style>
 <script>
 export default {
     data() {
