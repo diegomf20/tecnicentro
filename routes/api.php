@@ -25,5 +25,5 @@ Route::resource('user', 'UserController');
 Route::resource('proveedor', 'ProveedorController');
 Route::resource('cliente', 'ClienteController');
 Route::resource('herramienta', 'HerramientaController');
-Route::resource('pieza', 'PiezaController');
+Route::resource('accesorio', 'AccesorioController');
 Route::resource('compra', 'CompraController');

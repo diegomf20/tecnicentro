@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePiezaTable extends Migration
+class CreateAccesorioTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreatePiezaTable extends Migration
      */
     public function up()
     {
-        Schema::create('pieza', function (Blueprint $table) {
+        Schema::create('accesorio', function (Blueprint $table) {
             $table->increments('id');
             $table->string('codigo',5);
             $table->string('nombre',50);
+            $table->string('modelo',50);
+            $table->integer('stock');
         });
     }
 
@@ -27,6 +29,6 @@ class CreatePiezaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pieza');
+        Schema::dropIfExists('accesorio');
     }
 }

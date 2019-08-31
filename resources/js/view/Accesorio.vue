@@ -5,17 +5,33 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <i class="zmdi zmdi-account-box"></i> EDITAR PIEZA<br>
+                            <i class="zmdi zmdi-account-box"></i> EDITAR ACCESORIO<br>
                         </div>
                         <div class="modal-body">
                             <form v-on:submit.prevent="update()" class="form-padding">
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <div class="group-material">
-                                            <input v-model="pieza_edit.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre de la pieza" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del pieza">
+                                            <input v-model="accesorio_edit.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre de la accesorio" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del accesorio">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>Nombre</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="group-material">
+                                            <input v-model="accesorio_edit.modelo" type="text" class="tooltips-general material-control" placeholder="Escribe aquí modelo de la accesorio" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el modelo del accesorio">
+                                            <span class="highlight"></span>
+                                            <span class="bar"></span>
+                                            <label>Modelo</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="group-material">
+                                            <input v-model="accesorio_edit.stock" type="text" class="tooltips-general material-control" placeholder="Escribe aquí stock de la accesorio" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el stock del accesorio">
+                                            <span class="highlight"></span>
+                                            <span class="bar"></span>
+                                            <label>Stock</label>
                                         </div>
                                     </div>
                                     <div class="col-xs-12">
@@ -30,17 +46,34 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                     <div class="container-flat-form">
-                        <div class="title-flat-form title-flat-blue">Nueva pieza</div>
+                        <div class="title-flat-form title-flat-blue">Nuevo Accesorio</div>
                         <form v-on:submit.prevent="guardar()" class="form-padding">
                             <div class="row">
+                                <br>
                                 <div class="col-xs-12">
                                     <div class="group-material">
-                                        <input v-model="pieza.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre de la pieza" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del pieza">
+                                        <input v-model="accesorio.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre de la accesorio" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del accesorio">
                                         <span class="highlight"></span>
                                         <span class="bar"></span>
                                         <label>Nombre</label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="group-material">
+                                        <input v-model="accesorio.modelo" type="text" class="tooltips-general material-control" placeholder="Escribe aquí modelo de la accesorio" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el modelo del accesorio">
+                                        <span class="highlight"></span>
+                                        <span class="bar"></span>
+                                        <label>Modelo</label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="group-material">
+                                        <input v-model="accesorio.stock" type="text" class="tooltips-general material-control" placeholder="Escribe aquí stock de la accesorio" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el stock del accesorio">
+                                        <span class="highlight"></span>
+                                        <span class="bar"></span>
+                                        <label>Stock</label>
                                     </div>
                                 </div>
                                 <div class="col-xs-12">
@@ -52,24 +85,28 @@
                         </form>
                     </div>
                 </div>
-                <div class="col-sm-7">
+                <div class="col-sm-8">
                     <div class="container-flat-form">
-                    <div class="title-flat-form title-flat-blue">Lista de piezas</div>
+                    <div class="title-flat-form title-flat-blue">Lista de accesorios</div>
                         <div class="form-padding">
                             <table class="table table-striped">
                                 <thead style="background-color:#DFF0D8; font-weight:bold;">
                                     <tr>
                                         <th class="div-table-cell">Codigo</th>
                                         <th class="div-table-cell">Nombre</th>
+                                        <th class="div-table-cell">Modelo</th>
+                                        <th class="div-table-cell">Stock</th>
                                         <th class="div-table-cell">Opciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="pieza in piezas">
-                                        <td>{{ pieza.codigo }}</td>
-                                        <td>{{ pieza.nombre }}</td>
+                                    <tr v-for="accesorio in accesorios">
+                                        <td>{{ accesorio.codigo }}</td>
+                                        <td>{{ accesorio.nombre }}</td>
+                                        <td>{{ accesorio.modelo }}</td>
+                                        <td>{{ accesorio.stock }}</td>
                                         <td>
-                                            <button  @click="abrirEditar(pieza.id)" class="btn btn-success">
+                                            <button  @click="abrirEditar(accesorio.id)" class="btn btn-success">
                                                 Editar
                                             </button>
                                         </td>
@@ -91,13 +128,17 @@ export default {
              */
             btn_bloquear:false,
 
-            pieza: {
+            accesorio: {
                 nombre:"",
+                modelo:"",
+                stock: 0
             },
-            pieza_edit: {
+            accesorio_edit: {
                 nombre:"",
+                modelo:"",
+                stock: 0
             },
-            piezas:[]
+            accesorios:[]
         }
     },
     mounted() {
@@ -105,9 +146,9 @@ export default {
     },
     methods: {
         listar(){
-            axios.get(api_url+'/pieza')
+            axios.get(api_url+'/accesorio')
             .then(response=>{
-                this.piezas=response.data;
+                this.accesorios=response.data;
             });
         },
         abrir(){
@@ -115,17 +156,19 @@ export default {
         },
         guardar(){
             this.btn_bloquear=true;
-            axios.post(api_url+'/pieza',this.pieza)
+            axios.post(api_url+'/accesorio',this.accesorio)
             .then(response=>{
                 var respuesta=response.data;
                 if(respuesta.status=='OK'){
                     this.limpiarErrores();
-                    this.piezas.push(respuesta.data);
-                    this.pieza={
+                    this.accesorios.push(respuesta.data);
+                    this.accesorio={
                         nombre:"",
+                        modelo:"",
+                        stock: 0
                     };
                     swal({
-                        title: "pieza Registrada",
+                        title: "accesorio Registrada",
                         icon: "success",
                         timer: "2000"
                     });
@@ -140,15 +183,15 @@ export default {
             });
         },
         abrirEditar(id){
-            axios.get(api_url+'/pieza/'+id)
+            axios.get(api_url+'/accesorio/'+id)
             .then(response=>{
-                this.pieza_edit=response.data;
+                this.accesorio_edit=response.data;
             });
             $('#modal-editar').modal();
         },
         update(){
             this.btn_bloquear=true;
-            axios.post(api_url+'/pieza/'+this.pieza_edit.id+'?_method=PUT',this.pieza_edit)
+            axios.post(api_url+'/accesorio/'+this.accesorio_edit.id+'?_method=PUT',this.accesorio_edit)
             .then(response=>{
                 this.error_editar=null;
                 var respuesta=response.data;
@@ -156,7 +199,7 @@ export default {
                     this.limpiarErrores();
                     this.listar();
                     $('#modal-editar').modal('hide');
-                    swal({title: "pieza Actualizada",icon: "success",timer: "2000"});
+                    swal({title: "accesorio Actualizada",icon: "success",timer: "2000"});
                 }
                 if (respuesta.status=="VALIDATION") {
                     this.mostrarErrores('form-editar', respuesta.data)
@@ -168,7 +211,7 @@ export default {
             });
         },
         cambiarEstado(id){
-            axios.post(api_url+'/pieza/'+id+'/estado')
+            axios.post(api_url+'/accesorio/'+id+'/estado')
             .then(response=>{
                 var respuesta=response.data;
                 if (respuesta.status=="OK") {

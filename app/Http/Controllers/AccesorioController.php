@@ -5,15 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-use App\Model\Pieza;
+use App\Model\Accesorio;
 use Carbon\Carbon;
 
-class PiezaController extends Controller
+class AccesorioController extends Controller
 {
     public function index(Request $request)
     {
-        $Piezas=Pieza::all();
-        return response()->json($Piezas);
+        $Accesorios=Accesorio::all();
+        return response()->json($Accesorios);
     }
 
     /**
@@ -24,16 +24,18 @@ class PiezaController extends Controller
         DB::beginTransaction();
 
         try {
-            $siguiente=Pieza::select(DB::raw('count(id)+1 as siguiente'))
+            $siguiente=Accesorio::select(DB::raw('count(id)+1 as siguiente'))
                 ->first()->siguiente;
-            $Pieza= new Pieza();
-            $Pieza->codigo=str_pad($siguiente,5, "0", STR_PAD_LEFT);
-            $Pieza->nombre=$request->nombre;
-            $Pieza->save();
+            $Accesorio= new Accesorio();
+            $Accesorio->codigo=str_pad($siguiente,5, "0", STR_PAD_LEFT);
+            $Accesorio->nombre=$request->nombre;
+            $Accesorio->modelo=$request->modelo;
+            $Accesorio->stock=$request->stock;
+            $Accesorio->save();
             DB::commit();
             return response()->json([
                 "status"    =>  "OK",
-                "data"      =>  $Pieza
+                "data"      =>  $Accesorio
             ]);
         } catch (\Exception $e) {
             DB::rollback();
@@ -52,8 +54,8 @@ class PiezaController extends Controller
      */
     public function show($id)
     {
-        $Pieza= Pieza::where('id',$id)->first();
-        return response()->json($Pieza);
+        $Accesorio= Accesorio::where('id',$id)->first();
+        return response()->json($Accesorio);
     }
 
     /**
@@ -64,14 +66,16 @@ class PiezaController extends Controller
         DB::beginTransaction();
 
         try {
-            $Pieza= Pieza::where('id',$id)->first();
-            $Pieza->nombre=$request->nombre;
-            $Pieza->save();
+            $Accesorio= Accesorio::where('id',$id)->first();
+            $Accesorio->nombre=$request->nombre;
+            $Accesorio->modelo=$request->modelo;
+            $Accesorio->stock=$request->stock;
+            $Accesorio->save();
 
             DB::commit();
             return response()->json([
                 "status"    =>  "OK",
-                "data"      =>  $Pieza,
+                "data"      =>  $Accesorio,
             ]);
         } catch (\Exception $e) {
             DB::rollback();

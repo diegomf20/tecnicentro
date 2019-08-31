@@ -21,7 +21,7 @@
         </nav>
         <div class="container-fluid">
             <div class="page-header">
-                <h1 class="all-tittles">Sistema De Reparacion - Herramientas Electricas</h1>
+                <h2 class="all-tittles">Sistema De Reparacion - Herramientas Electricas</h2>
             </div>
         </div>
     </div>

@@ -22,6 +22,7 @@
                             <th class="div-table-cell">Herramienta</th>
                             <th class="div-table-cell">Modelo</th>
                             <th class="div-table-cell">Serie</th>
+                            <th class="div-table-cell">Estado</th>
                             <th class="div-table-cell">Opciones</th>
                         </tr>
                     </thead>
@@ -31,6 +32,7 @@
                             <td>{{ reparacion.herramienta.nombre}}</td>
                             <td>{{ reparacion.modelo}}</td>
                             <td>{{ reparacion.serie}}</td>
+                            <td>{{ stringEstado(reparacion.estado)}}</td>
                             <td>
                                 <router-link :to="'/resumen/'+reparacion.id" class="btn btn-info">
                                     Ver
@@ -67,7 +69,33 @@ export default {
     mounted() {
         this.listar();
     },
+    computed: {
+        
+    },
     methods: {
+        stringEstado(est){
+            var estado="";
+            switch (est) {
+                case '0':
+                    estado="Ingresado";
+                    break;
+                case '1':
+                    estado="Diagnosticado";
+                    break;
+                case '2':
+                    estado="Aprobado";
+                    break;
+                case '3':
+                    estado="Reparado";
+                    break;
+                case '4':
+                    estado="Finalizado";
+                    break;
+                default:
+                    break;
+            }
+            return estado;
+        },
         listar(){
             axios.get(api_url+'/reparacion')
             .then(response=>{

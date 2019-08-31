@@ -24,7 +24,6 @@ html, body {
 }
 .media-hover{padding: 7px; border-radius: 4px;}
 .media-hover:hover{ background-color: #F5F5F5; }
-.all-tittles{ font-family: "Titulos" !important; }
 .center-box{ margin: 0 auto; }
 .full-reset{
     margin: 0;
@@ -676,4 +675,10 @@ input.material-control:focus ~ .highlight {
 }
 .nav-lateral-scroll{
     overflow-y: auto;
+}
+*{
+    font-family: 'Roboto', sans-serif;
+}
+h1,h2,h3,h4,h5{
+    font-family: 'Roboto', sans-serif;
 }

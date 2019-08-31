@@ -3,6 +3,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="Shortcut Icon" type="image/x-icon" href="assets/icons/book.ico" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('css/sweet-alert.css') }}">
         <link rel="stylesheet" href="{{ asset('css/material-design-iconic-font.min.css') }}">
         <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">

@@ -219,6 +219,7 @@ export default {
                         icon: "success",
                         timer: "2000"
                     });
+                    $('#modal-nuevo').modal('hide');
                 }
                 if(respuesta.status=='VALIDATION'){
                     this.mostrarErrores('form-nuevo', respuesta.data);

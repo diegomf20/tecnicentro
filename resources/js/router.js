@@ -75,8 +75,8 @@ var routes =[
         beforeEnter: auth
     },
     { 
-        path: '/pieza', 
-        component: require('./view/Pieza.vue').default,
+        path: '/accesorio', 
+        component: require('./view/Accesorio.vue').default,
         beforeEnter: auth
     },
     { 

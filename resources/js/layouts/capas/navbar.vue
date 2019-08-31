@@ -47,9 +47,9 @@
                                     <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Herramienta
                                 </a>
                             </router-link>
-                            <router-link tag="li" to="/pieza">
+                            <router-link tag="li" to="/accesorio">
                                 <a>
-                                    <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Pieza
+                                    <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; accesorio
                                 </a>
                             </router-link>
                         </ul>
@@ -161,9 +161,9 @@
                                     <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Herramienta
                                 </a>
                             </router-link>
-                            <router-link tag="li" to="/pieza">
+                            <router-link tag="li" to="/accesorio">
                                 <a>
-                                    <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Pieza
+                                    <i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; accesorio
                                 </a>
                             </router-link>
                         </ul>

@@ -12,7 +12,7 @@
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <div class="group-material">
-                                            <input v-model="herramienta_edit.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre de la herramienta" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del herramienta">
+                                            <input v-model="herramienta_edit.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre de la herramienta" required="" maxlength="5" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del herramienta">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>Nombre</label>
@@ -35,6 +35,7 @@
                         <div class="title-flat-form title-flat-blue">Nueva herramienta</div>
                         <form v-on:submit.prevent="guardar()" class="form-padding">
                             <div class="row">
+                                <br>
                                 <div class="col-xs-12">
                                     <div class="group-material">
                                         <input v-model="herramienta.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre de la herramienta" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del herramienta">
