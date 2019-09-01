@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AccesorioVAlidation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -19,7 +20,7 @@ class AccesorioController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AccesorioVAlidation $request)
     {
         DB::beginTransaction();
 
@@ -62,7 +63,7 @@ class AccesorioController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(AccesorioVAlidation $request, $id)
     {
         DB::beginTransaction();
 

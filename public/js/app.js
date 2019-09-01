@@ -2305,16 +2305,21 @@ __webpack_require__.r(__webpack_exports__);
         var indexName = arrKeys[index];
 
         if (index == 0) {
-          $('#' + form + ' [name=' + indexName + ']').focus().parents('div.form-group').addClass('has-error').append("<div class=text-center><span>" + errores[indexName] + "</span></div>");
+          $('#' + form + ' [name=' + indexName + ']').focus().parents('div.group-material').addClass('has-error').append("<div class=text-center><span class=error>" + errores[indexName] + "</span></div>");
         } else {
-          $('#' + form + ' [name=' + indexName + ']').parents('div.form-group').addClass('has-error').append("<div class=text-center><span>" + errores[indexName] + "</span></div>");
+          $('#' + form + ' [name=' + indexName + ']').parents('div.group-material').addClass('has-error').append("<div class=text-center><span class=error>" + errores[indexName] + "</span></div>");
         }
       }
     },
     limpiarErrores: function limpiarErrores() {
       $('.has-error span').remove();
+      $('.has-error').removeClass("has-error");
     }
   }
+});
+$('body').on('hidden.bs.modal', '#modal-editar', function (event) {
+  $('.has-error span').remove();
+  $('.has-error').removeClass("has-error");
 });
 
 /***/ }),
@@ -3033,16 +3038,21 @@ __webpack_require__.r(__webpack_exports__);
         var indexName = arrKeys[index];
 
         if (index == 0) {
-          $('#' + form + ' [name=' + indexName + ']').focus().parents('div.form-group').addClass('has-error').append("<div class=text-center><span>" + errores[indexName] + "</span></div>");
+          $('#' + form + ' [name=' + indexName + ']').focus().parents('div.group-material').addClass('has-error').append("<div class=text-center><span class=error>" + errores[indexName] + "</span></div>");
         } else {
-          $('#' + form + ' [name=' + indexName + ']').parents('div.form-group').addClass('has-error').append("<div class=text-center><span>" + errores[indexName] + "</span></div>");
+          $('#' + form + ' [name=' + indexName + ']').parents('div.group-material').addClass('has-error').append("<div class=text-center><span class=error>" + errores[indexName] + "</span></div>");
         }
       }
     },
     limpiarErrores: function limpiarErrores() {
       $('.has-error span').remove();
+      $('.has-error').removeClass("has-error");
     }
   }
+});
+$('body').on('hidden.bs.modal', '#modal-editar', function (event) {
+  $('.has-error span').remove();
+  $('.has-error').removeClass("has-error");
 });
 
 /***/ }),
@@ -4242,26 +4252,21 @@ __webpack_require__.r(__webpack_exports__);
       if (this.cliente.dni.length == 8) {
         axios.get(api_url + '/cliente/consulta?&dni=' + this.cliente.dni).then(function (response) {
           var resultado = response.data;
-          console.log(resultado);
-          console.log(resultado.length);
 
           if (resultado.length != undefined) {
-            _this2.bloquear = false;
+            // this.bloquear=false;                        
             _this2.cliente.nombre = "";
             _this2.cliente.apellido = "";
           } else {
             _this2.cliente.nombre = resultado.nombres;
-            _this2.cliente.apellido = resultado.apellidoPaterno + ' ' + resultado.apellidoMaterno;
-            _this2.bloquear = true;
+            _this2.cliente.apellido = resultado.apellidoPaterno + ' ' + resultado.apellidoMaterno; // this.bloquear=true;                        
           }
         });
+      } else {
+        // this.bloquear=false;                        
+        this.cliente.nombre = "";
+        this.cliente.apellido = "";
       }
-      /* else{
-         // this.bloquear=false;                        
-         this.cliente.nombre="";
-         this.cliente.apellido="";
-      } */
-
     },
     abrir: function abrir() {
       $('#modal-nuevo').modal();
@@ -4386,16 +4391,21 @@ __webpack_require__.r(__webpack_exports__);
         var indexName = arrKeys[index];
 
         if (index == 0) {
-          $('#' + form + ' [name=' + indexName + ']').focus().parents('div.form-group').addClass('has-error').append("<div class=text-center><span>" + errores[indexName] + "</span></div>");
+          $('#' + form + ' [name=' + indexName + ']').focus().parents('div.group-material').addClass('has-error').append("<div class=text-center><span class=error>" + errores[indexName] + "</span></div>");
         } else {
-          $('#' + form + ' [name=' + indexName + ']').parents('div.form-group').addClass('has-error').append("<div class=text-center><span>" + errores[indexName] + "</span></div>");
+          $('#' + form + ' [name=' + indexName + ']').parents('div.group-material').addClass('has-error').append("<div class=text-center><span class=error>" + errores[indexName] + "</span></div>");
         }
       }
     },
     limpiarErrores: function limpiarErrores() {
       $('.has-error span').remove();
+      $('.has-error').removeClass("has-error");
     }
   }
+});
+$('body').on('hidden.bs.modal', '#modal-editar, #modal-nuevo', function (event) {
+  $('.has-error span').remove();
+  $('.has-error').removeClass("has-error");
 });
 
 /***/ }),
@@ -4595,22 +4605,41 @@ __webpack_require__.r(__webpack_exports__);
         _this.proveedors = response.data;
       });
     },
+    consulta: function consulta() {
+      var _this2 = this;
+
+      if (this.proveedor.ruc.length == 11) {
+        axios.get(api_url + '/proveedor/consulta?&ruc=' + this.proveedor.ruc).then(function (response) {
+          var resultado = response.data;
+
+          if (resultado.length != undefined) {
+            // this.bloquear=false;                        
+            _this2.proveedor.nombre = "";
+          } else {
+            _this2.proveedor.nombre = resultado.razonSocial; // this.bloquear=true;                        
+          }
+        });
+      } else {
+        // this.bloquear=false;                        
+        this.proveedor.nombre = "";
+      }
+    },
     abrir: function abrir() {
       $('#modal-nuevo').modal();
     },
     guardar: function guardar() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.btn_bloquear = true;
       axios.post(api_url + '/proveedor', this.proveedor).then(function (response) {
         var respuesta = response.data;
 
         if (respuesta.status == 'OK') {
-          _this2.limpiarErrores();
+          _this3.limpiarErrores();
 
-          _this2.proveedors.push(respuesta.data);
+          _this3.proveedors.push(respuesta.data);
 
-          _this2.proveedor = {
+          _this3.proveedor = {
             ruc: "",
             nombre: "",
             email: "",
@@ -4625,7 +4654,7 @@ __webpack_require__.r(__webpack_exports__);
         }
 
         if (respuesta.status == 'VALIDATION') {
-          _this2.mostrarErrores('form-nuevo', respuesta.data);
+          _this3.mostrarErrores('form-nuevo', respuesta.data);
         }
 
         if (respuesta.status == 'DANGER') {
@@ -4636,29 +4665,29 @@ __webpack_require__.r(__webpack_exports__);
           });
         }
 
-        _this2.btn_bloquear = false;
+        _this3.btn_bloquear = false;
       });
     },
     abrirEditar: function abrirEditar(id) {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get(api_url + '/proveedor/' + id).then(function (response) {
-        _this3.proveedor_edit = response.data;
+        _this4.proveedor_edit = response.data;
       });
       $('#modal-editar').modal();
     },
     update: function update() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.btn_bloquear = true;
       axios.post(api_url + '/proveedor/' + this.proveedor_edit.id + '?_method=PUT', this.proveedor_edit).then(function (response) {
-        _this4.error_editar = null;
+        _this5.error_editar = null;
         var respuesta = response.data;
 
         if (respuesta.status == "OK") {
-          _this4.limpiarErrores();
+          _this5.limpiarErrores();
 
-          _this4.listar();
+          _this5.listar();
 
           $('#modal-editar').modal('hide');
           swal({
@@ -4669,7 +4698,7 @@ __webpack_require__.r(__webpack_exports__);
         }
 
         if (respuesta.status == "VALIDATION") {
-          _this4.mostrarErrores('form-editar', respuesta.data);
+          _this5.mostrarErrores('form-editar', respuesta.data);
         }
 
         if (respuesta.status == 'DANGER') {
@@ -4680,17 +4709,17 @@ __webpack_require__.r(__webpack_exports__);
           });
         }
 
-        _this4.btn_bloquear = false;
+        _this5.btn_bloquear = false;
       });
     },
     cambiarEstado: function cambiarEstado(id) {
-      var _this5 = this;
+      var _this6 = this;
 
       axios.post(api_url + '/proveedor/' + id + '/estado').then(function (response) {
         var respuesta = response.data;
 
         if (respuesta.status == "OK") {
-          _this5.listar();
+          _this6.listar();
 
           swal({
             title: respuesta.data,
@@ -4717,16 +4746,21 @@ __webpack_require__.r(__webpack_exports__);
         var indexName = arrKeys[index];
 
         if (index == 0) {
-          $('#' + form + ' [name=' + indexName + ']').focus().parents('div.form-group').addClass('has-error').append("<div class=text-center><span>" + errores[indexName] + "</span></div>");
+          $('#' + form + ' [name=' + indexName + ']').focus().parents('div.group-material').addClass('has-error').append("<div class=text-center><span class=error>" + errores[indexName] + "</span></div>");
         } else {
-          $('#' + form + ' [name=' + indexName + ']').parents('div.form-group').addClass('has-error').append("<div class=text-center><span>" + errores[indexName] + "</span></div>");
+          $('#' + form + ' [name=' + indexName + ']').parents('div.group-material').addClass('has-error').append("<div class=text-center><span class=error>" + errores[indexName] + "</span></div>");
         }
       }
     },
     limpiarErrores: function limpiarErrores() {
       $('.has-error span').remove();
+      $('.has-error').removeClass("has-error");
     }
   }
+});
+$('body').on('hidden.bs.modal', '#modal-editar, #modal-nuevo', function (event) {
+  $('.has-error span').remove();
+  $('.has-error').removeClass("has-error");
 });
 
 /***/ }),
@@ -4740,6 +4774,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
 //
 //
 //
@@ -5088,16 +5126,21 @@ __webpack_require__.r(__webpack_exports__);
         var indexName = arrKeys[index];
 
         if (index == 0) {
-          $('#' + form + ' [name=' + indexName + ']').focus().parents('div.form-group').addClass('has-error').append("<div class=text-center><span>" + errores[indexName] + "</span></div>");
+          $('#' + form + ' [name=' + indexName + ']').focus().parents('div.group-material').addClass('has-error').append("<div class=text-center><span class=error>" + errores[indexName] + "</span></div>");
         } else {
-          $('#' + form + ' [name=' + indexName + ']').parents('div.form-group').addClass('has-error').append("<div class=text-center><span>" + errores[indexName] + "</span></div>");
+          $('#' + form + ' [name=' + indexName + ']').parents('div.group-material').addClass('has-error').append("<div class=text-center><span class=error>" + errores[indexName] + "</span></div>");
         }
       }
     },
     limpiarErrores: function limpiarErrores() {
       $('.has-error span').remove();
+      $('.has-error').removeClass("has-error");
     }
   }
+});
+$('body').on('hidden.bs.modal', '#modal-editar, #modal-nuevo', function (event) {
+  $('.has-error span').remove();
+  $('.has-error').removeClass("has-error");
 });
 
 /***/ }),
@@ -42600,6 +42643,7 @@ var render = function() {
                 "form",
                 {
                   staticClass: "form-padding",
+                  attrs: { id: "form-editar" },
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
@@ -42622,6 +42666,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "nombre",
                             type: "text",
                             placeholder: "Escribe aquí nombre de la accesorio",
                             required: "",
@@ -42666,6 +42711,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "modelo",
                             type: "text",
                             placeholder: "Escribe aquí modelo de la accesorio",
                             required: "",
@@ -42710,7 +42756,8 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
-                            type: "text",
+                            name: "stock",
+                            type: "number",
                             placeholder: "Escribe aquí stock de la accesorio",
                             required: "",
                             maxlength: "70",
@@ -42780,6 +42827,7 @@ var render = function() {
             "form",
             {
               staticClass: "form-padding",
+              attrs: { id: "form-nuevo" },
               on: {
                 submit: function($event) {
                   $event.preventDefault()
@@ -42804,6 +42852,7 @@ var render = function() {
                       ],
                       staticClass: "tooltips-general material-control",
                       attrs: {
+                        name: "nombre",
                         type: "text",
                         placeholder: "Escribe aquí nombre de la accesorio",
                         required: "",
@@ -42844,6 +42893,7 @@ var render = function() {
                       ],
                       staticClass: "tooltips-general material-control",
                       attrs: {
+                        name: "modelo",
                         type: "text",
                         placeholder: "Escribe aquí modelo de la accesorio",
                         required: "",
@@ -42884,7 +42934,8 @@ var render = function() {
                       ],
                       staticClass: "tooltips-general material-control",
                       attrs: {
-                        type: "text",
+                        name: "stock",
+                        type: "number",
                         placeholder: "Escribe aquí stock de la accesorio",
                         required: "",
                         maxlength: "70",
@@ -43882,6 +43933,7 @@ var render = function() {
                 "form",
                 {
                   staticClass: "form-padding",
+                  attrs: { id: "form-editar" },
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
@@ -43904,11 +43956,11 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "nombre",
                             type: "text",
                             placeholder:
                               "Escribe aquí nombre de la herramienta",
                             required: "",
-                            maxlength: "5",
                             "data-toggle": "tooltip",
                             "data-placement": "top",
                             title: "Escribe el nombre del herramienta"
@@ -43975,6 +44027,7 @@ var render = function() {
             "form",
             {
               staticClass: "form-padding",
+              attrs: { id: "form-nuevo" },
               on: {
                 submit: function($event) {
                   $event.preventDefault()
@@ -43999,6 +44052,7 @@ var render = function() {
                       ],
                       staticClass: "tooltips-general material-control",
                       attrs: {
+                        name: "nombre",
                         type: "text",
                         placeholder: "Escribe aquí nombre de la herramienta",
                         required: "",
@@ -45808,6 +45862,7 @@ var render = function() {
                 "form",
                 {
                   staticClass: "form-padding",
+                  attrs: { id: "form-nuevo" },
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
@@ -45830,6 +45885,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "dni",
                             type: "text",
                             placeholder: "Escribe aquí el DNI",
                             required: "",
@@ -45870,6 +45926,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "nombre",
                             type: "text",
                             placeholder: "Escribe aquí nombre del cliente",
                             required: "",
@@ -45914,6 +45971,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "apellido",
                             type: "text",
                             placeholder: "Escribe aquí los apellidos ",
                             required: "",
@@ -45958,6 +46016,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "direccion",
                             type: "text",
                             placeholder: "Escribe aquí el dirección ",
                             required: "",
@@ -45999,6 +46058,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "numero",
                             type: "text",
                             placeholder: "Escribe aquí el Número",
                             required: "",
@@ -46071,6 +46131,7 @@ var render = function() {
                 "form",
                 {
                   staticClass: "form-padding",
+                  attrs: { id: "form-editar" },
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
@@ -46093,6 +46154,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "dni",
                             type: "text",
                             placeholder: "Escribe aquí el DNI",
                             required: "",
@@ -46134,6 +46196,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "nombre",
                             type: "text",
                             placeholder: "Escribe aquí nombre del cliente",
                             required: "",
@@ -46178,6 +46241,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "apellido",
                             type: "text",
                             placeholder: "Escribe aquí los apellidos ",
                             required: "",
@@ -46222,6 +46286,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "direccion",
                             type: "text",
                             placeholder: "Escribe aquí el dirección ",
                             required: "",
@@ -46263,6 +46328,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "numero",
                             type: "text",
                             placeholder: "Escribe aquí el Número",
                             required: "",
@@ -46531,6 +46597,7 @@ var render = function() {
                 "form",
                 {
                   staticClass: "form-padding",
+                  attrs: { id: "form-nuevo" },
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
@@ -46553,6 +46620,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "ruc",
                             type: "text",
                             placeholder: "Escribe aquí el RUC",
                             required: "",
@@ -46560,6 +46628,9 @@ var render = function() {
                           },
                           domProps: { value: _vm.proveedor.ruc },
                           on: {
+                            keyup: function($event) {
+                              return _vm.consulta()
+                            },
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
@@ -46594,6 +46665,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "nombre",
                             type: "text",
                             placeholder: "Escribe aquí nombre del proveedor",
                             required: "",
@@ -46638,6 +46710,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "email",
                             type: "text",
                             placeholder: "Escribe aquí el email",
                             required: "",
@@ -46679,6 +46752,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "numero",
                             type: "text",
                             placeholder: "Escribe aquí el Número",
                             required: "",
@@ -46751,6 +46825,7 @@ var render = function() {
                 "form",
                 {
                   staticClass: "form-padding",
+                  attrs: { id: "form-editar" },
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
@@ -46773,6 +46848,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "ruc",
                             type: "text",
                             placeholder: "Escribe aquí el RUC",
                             required: "",
@@ -46814,6 +46890,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "nombre",
                             type: "text",
                             placeholder: "Escribe aquí nombre del proveedor",
                             required: "",
@@ -46858,6 +46935,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "email",
                             type: "text",
                             placeholder: "Escribe aquí el email ",
                             required: "",
@@ -46899,6 +46977,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "numero",
                             type: "text",
                             placeholder: "Escribe aquí el Número",
                             required: "",
@@ -47165,6 +47244,7 @@ var render = function() {
                 "form",
                 {
                   staticClass: "form-padding",
+                  attrs: { id: "form-nuevo" },
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
@@ -47187,6 +47267,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "nombre",
                             type: "text",
                             placeholder: "Escribe aquí nombre del usuario",
                             required: "",
@@ -47231,6 +47312,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "apellido",
                             type: "text",
                             placeholder: "Escribe aquí los apellidos ",
                             required: "",
@@ -47275,6 +47357,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "usuario",
                             type: "text",
                             placeholder: "Escribe aquí el usuario ",
                             required: "",
@@ -47319,6 +47402,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "password",
                             type: "text",
                             placeholder: "Escribe aquí el password ",
                             required: "",
@@ -47360,6 +47444,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "numero",
                             type: "text",
                             placeholder: "Escribe aquí el Número",
                             required: "",
@@ -47389,52 +47474,57 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-xs-12 col-sm-6" }, [
-                      _c(
-                        "select",
-                        {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.usuario.rol,
-                              expression: "usuario.rol"
+                      _c("div", { staticClass: "group-material" }, [
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.usuario.rol,
+                                expression: "usuario.rol"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { name: "rol" },
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.usuario,
+                                  "rol",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              }
                             }
-                          ],
-                          staticClass: "form-control",
-                          on: {
-                            change: function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
-                                })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.$set(
-                                _vm.usuario,
-                                "rol",
-                                $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              )
-                            }
-                          }
-                        },
-                        [
-                          _c("option", { attrs: { value: "Administrador" } }, [
-                            _vm._v("Administrador")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "Secretaria" } }, [
-                            _vm._v("Secretaria")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "Tecnico" } }, [
-                            _vm._v("Tecnico")
-                          ])
-                        ]
-                      )
+                          },
+                          [
+                            _c(
+                              "option",
+                              { attrs: { value: "Administrador" } },
+                              [_vm._v("Administrador")]
+                            ),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "Secretaria" } }, [
+                              _vm._v("Secretaria")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "Tecnico" } }, [
+                              _vm._v("Tecnico")
+                            ])
+                          ]
+                        )
+                      ])
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-xs-12" }, [
@@ -47481,6 +47571,7 @@ var render = function() {
                 "form",
                 {
                   staticClass: "form-padding",
+                  attrs: { id: "form-editar" },
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
@@ -47503,6 +47594,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "nombre",
                             type: "text",
                             placeholder: "Escribe aquí nombre del usuario",
                             required: "",
@@ -47544,6 +47636,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "apellido",
                             type: "text",
                             placeholder: "Escribe aquí los apellidos ",
                             required: "",
@@ -47585,6 +47678,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "usuario",
                             type: "text",
                             placeholder: "Escribe aquí el usuario ",
                             required: "",
@@ -47626,6 +47720,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "password",
                             type: "text",
                             placeholder: "Escribe aquí el password ",
                             required: "",
@@ -47667,6 +47762,7 @@ var render = function() {
                           ],
                           staticClass: "tooltips-general material-control",
                           attrs: {
+                            name: "numero",
                             type: "text",
                             placeholder: "Escribe aquí el Número",
                             required: "",
@@ -47696,52 +47792,57 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-xs-12 col-sm-6" }, [
-                      _c(
-                        "select",
-                        {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.usuario_edit.rol,
-                              expression: "usuario_edit.rol"
+                      _c("div", { staticClass: "group-material" }, [
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.usuario_edit.rol,
+                                expression: "usuario_edit.rol"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { name: "rol" },
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.usuario_edit,
+                                  "rol",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              }
                             }
-                          ],
-                          staticClass: "form-control",
-                          on: {
-                            change: function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
-                                })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.$set(
-                                _vm.usuario_edit,
-                                "rol",
-                                $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              )
-                            }
-                          }
-                        },
-                        [
-                          _c("option", { attrs: { value: "Administrador" } }, [
-                            _vm._v("Administrador")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "Secretaria" } }, [
-                            _vm._v("Secretaria")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "Tecnico" } }, [
-                            _vm._v("Tecnico")
-                          ])
-                        ]
-                      )
+                          },
+                          [
+                            _c(
+                              "option",
+                              { attrs: { value: "Administrador" } },
+                              [_vm._v("Administrador")]
+                            ),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "Secretaria" } }, [
+                              _vm._v("Secretaria")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "Tecnico" } }, [
+                              _vm._v("Tecnico")
+                            ])
+                          ]
+                        )
+                      ])
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-xs-12" }, [

@@ -682,3 +682,12 @@ input.material-control:focus ~ .highlight {
 h1,h2,h3,h4,h5{
     font-family: 'Roboto', sans-serif;
 }
+
+/* validaciones  */
+.has-error input {
+    border-bottom: 1px solid red;
+}
+
+.has-error .error{
+    color: red;
+}

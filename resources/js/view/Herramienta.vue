@@ -8,11 +8,11 @@
                             <i class="zmdi zmdi-account-box"></i> EDITAR HERRAMIENTA<br>
                         </div>
                         <div class="modal-body">
-                            <form v-on:submit.prevent="update()" class="form-padding">
+                            <form id="form-editar" v-on:submit.prevent="update()" class="form-padding">
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <div class="group-material">
-                                            <input v-model="herramienta_edit.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre de la herramienta" required="" maxlength="5" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del herramienta">
+                                            <input name="nombre" v-model="herramienta_edit.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre de la herramienta" required="" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del herramienta">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>Nombre</label>
@@ -33,12 +33,12 @@
                 <div class="col-sm-5">
                     <div class="container-flat-form">
                         <div class="title-flat-form title-flat-blue">Nueva herramienta</div>
-                        <form v-on:submit.prevent="guardar()" class="form-padding">
+                        <form id="form-nuevo" v-on:submit.prevent="guardar()" class="form-padding">
                             <div class="row">
                                 <br>
                                 <div class="col-xs-12">
                                     <div class="group-material">
-                                        <input v-model="herramienta.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre de la herramienta" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del herramienta">
+                                        <input name="nombre" v-model="herramienta.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre de la herramienta" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del herramienta">
                                         <span class="highlight"></span>
                                         <span class="bar"></span>
                                         <label>Nombre</label>
@@ -197,17 +197,23 @@ export default {
             for (let index = 0; index < arrKeys.length; index++) {
                 var indexName=arrKeys[index];
                 if(index==0){
-                    $('#'+form+' [name='+indexName+']').focus().parents('div.form-group').addClass('has-error')
-                        .append("<div class=text-center><span>"+errores[indexName]+"</span></div>");
+                    $('#'+form+' [name='+indexName+']').focus().parents('div.group-material').addClass('has-error')
+                        .append("<div class=text-center><span class=error>"+errores[indexName]+"</span></div>");
                     }else{
-                        $('#'+form+' [name='+indexName+']').parents('div.form-group').addClass('has-error')
-                        .append("<div class=text-center><span>"+errores[indexName]+"</span></div>");
+                        $('#'+form+' [name='+indexName+']').parents('div.group-material').addClass('has-error')
+                        .append("<div class=text-center><span class=error>"+errores[indexName]+"</span></div>");
                 }
             }
         },
         limpiarErrores() {
             $('.has-error span').remove();
+            $('.has-error').removeClass("has-error");
         }
     },
 }
+
+    $('body').on('hidden.bs.modal', '#modal-editar', function(event) {
+        $('.has-error span').remove();
+        $('.has-error').removeClass("has-error");
+    })
 </script>

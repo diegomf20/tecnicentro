@@ -8,11 +8,11 @@
                             <i class="zmdi zmdi-account-box"></i> NUEVO CLIENTE<br>
                         </div>
                         <div class="modal-body">
-                            <form v-on:submit.prevent="guardar()" class="form-padding">
+                            <form id="form-nuevo" v-on:submit.prevent="guardar()" class="form-padding">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="group-material">
-                                            <input  v-model="cliente.dni" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el DNI" required="" maxlength="8" v-on:keyup="consulta()">
+                                            <input name="dni" v-model="cliente.dni" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el DNI" required="" maxlength="8" v-on:keyup="consulta()">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>DNI</label>
@@ -20,7 +20,7 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="group-material">
-                                            <input v-model="cliente.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre del cliente" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del cliente"  >
+                                            <input name="nombre" v-model="cliente.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre del cliente" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del cliente"  >
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>Nombre</label>
@@ -28,7 +28,7 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="group-material">
-                                            <input v-model="cliente.apellido" type="text" class="tooltips-general material-control" placeholder="Escribe aquí los apellidos " required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el apellido del cliente" >
+                                            <input name="apellido" v-model="cliente.apellido" type="text" class="tooltips-general material-control" placeholder="Escribe aquí los apellidos " required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el apellido del cliente" >
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>Apellidos</label>
@@ -36,7 +36,7 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="group-material">
-                                            <input v-model="cliente.direccion" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el dirección " required="" maxlength="50">
+                                            <input name="direccion" v-model="cliente.direccion" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el dirección " required="" maxlength="50">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>Direccion</label>
@@ -44,7 +44,7 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="group-material">
-                                            <input v-model="cliente.numero" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el Número" required="" maxlength="20" >
+                                            <input name="numero" v-model="cliente.numero" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el Número" required="" maxlength="20" >
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>Número</label>
@@ -69,11 +69,11 @@
                             <i class="zmdi zmdi-account-box"></i> EDITAR cliente<br>
                         </div>
                         <div class="modal-body">
-                            <form v-on:submit.prevent="update()" class="form-padding">
+                            <form id="form-editar" v-on:submit.prevent="update()" class="form-padding">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="group-material">
-                                            <input v-model="cliente_edit.dni" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el DNI" required="" maxlength="50">
+                                            <input name="dni" v-model="cliente_edit.dni" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el DNI" required="" maxlength="50">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>DNI</label>
@@ -81,7 +81,7 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="group-material">
-                                            <input v-model="cliente_edit.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre del cliente" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del cliente">
+                                            <input name="nombre" v-model="cliente_edit.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre del cliente" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del cliente">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>Nombre</label>
@@ -89,7 +89,7 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="group-material">
-                                            <input v-model="cliente_edit.apellido" type="text" class="tooltips-general material-control" placeholder="Escribe aquí los apellidos " required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el apellido del cliente">
+                                            <input name="apellido" v-model="cliente_edit.apellido" type="text" class="tooltips-general material-control" placeholder="Escribe aquí los apellidos " required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el apellido del cliente">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>Apellidos</label>
@@ -97,7 +97,7 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="group-material">
-                                            <input v-model="cliente_edit.direccion" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el dirección " required="" maxlength="50">
+                                            <input name="direccion" v-model="cliente_edit.direccion" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el dirección " required="" maxlength="50">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>Direccion</label>
@@ -105,7 +105,7 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="group-material">
-                                            <input v-model="cliente_edit.numero" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el Número" required="" maxlength="20" >
+                                            <input name="numero" v-model="cliente_edit.numero" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el Número" required="" maxlength="20" >
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>Número</label>
@@ -213,24 +213,22 @@ export default {
                     axios.get(api_url+'/cliente/consulta?&dni='+this.cliente.dni)
                     .then(response=>{
                         var resultado=response.data;
-                        console.log(resultado);
-                        console.log(resultado.length);
                         
                         if(resultado.length!=undefined){
-                            this.bloquear=false;                        
+                            // this.bloquear=false;                        
                             this.cliente.nombre="";
                             this.cliente.apellido="";
                         }else{
                             this.cliente.nombre=resultado.nombres;
                             this.cliente.apellido=resultado.apellidoPaterno+' '+resultado.apellidoMaterno;
-                            this.bloquear=true;                        
+                            // this.bloquear=true;                        
                         }
                     });
-            }/* else{
+            }else{
                 // this.bloquear=false;                        
                 this.cliente.nombre="";
                 this.cliente.apellido="";
-            } */
+            }
         },
         abrir(){
             $('#modal-nuevo').modal();
@@ -314,17 +312,22 @@ export default {
             for (let index = 0; index < arrKeys.length; index++) {
                 var indexName=arrKeys[index];
                 if(index==0){
-                    $('#'+form+' [name='+indexName+']').focus().parents('div.form-group').addClass('has-error')
-                        .append("<div class=text-center><span>"+errores[indexName]+"</span></div>");
+                    $('#'+form+' [name='+indexName+']').focus().parents('div.group-material').addClass('has-error')
+                        .append("<div class=text-center><span class=error>"+errores[indexName]+"</span></div>");
                     }else{
-                        $('#'+form+' [name='+indexName+']').parents('div.form-group').addClass('has-error')
-                        .append("<div class=text-center><span>"+errores[indexName]+"</span></div>");
+                        $('#'+form+' [name='+indexName+']').parents('div.group-material').addClass('has-error')
+                        .append("<div class=text-center><span class=error>"+errores[indexName]+"</span></div>");
                 }
             }
         },
         limpiarErrores() {
             $('.has-error span').remove();
+            $('.has-error').removeClass("has-error");
         }
     },
 }
+    $('body').on('hidden.bs.modal', '#modal-editar, #modal-nuevo', function(event) {
+        $('.has-error span').remove();
+        $('.has-error').removeClass("has-error");
+    })
 </script>

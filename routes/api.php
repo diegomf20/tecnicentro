@@ -25,6 +25,7 @@ Route::post('cliente/{id}/estado','ClienteController@estado');
 Route::post('herramienta/{id}/estado','HerramientaController@estado');
 Route::post('accesorio/{id}/estado','AccesorioController@estado');
 Route::get('cliente/consulta', 'ClienteController@consulta');
+Route::get('proveedor/consulta', 'ProveedorController@consulta');
 
 Route::resource('reparacion', 'ReparacionController');
 Route::resource('user', 'UserController');

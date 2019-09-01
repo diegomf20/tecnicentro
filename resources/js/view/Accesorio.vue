@@ -8,11 +8,11 @@
                             <i class="zmdi zmdi-account-box"></i> EDITAR ACCESORIO<br>
                         </div>
                         <div class="modal-body">
-                            <form v-on:submit.prevent="update()" class="form-padding">
+                            <form id="form-editar" v-on:submit.prevent="update()" class="form-padding">
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <div class="group-material">
-                                            <input v-model="accesorio_edit.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre de la accesorio" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del accesorio">
+                                            <input name="nombre" v-model="accesorio_edit.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre de la accesorio" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del accesorio">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>Nombre</label>
@@ -20,7 +20,7 @@
                                     </div>
                                     <div class="col-xs-12">
                                         <div class="group-material">
-                                            <input v-model="accesorio_edit.modelo" type="text" class="tooltips-general material-control" placeholder="Escribe aquí modelo de la accesorio" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el modelo del accesorio">
+                                            <input name="modelo" v-model="accesorio_edit.modelo" type="text" class="tooltips-general material-control" placeholder="Escribe aquí modelo de la accesorio" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el modelo del accesorio">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>Modelo</label>
@@ -28,7 +28,7 @@
                                     </div>
                                     <div class="col-xs-12">
                                         <div class="group-material">
-                                            <input v-model="accesorio_edit.stock" type="text" class="tooltips-general material-control" placeholder="Escribe aquí stock de la accesorio" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el stock del accesorio">
+                                            <input name="stock" v-model="accesorio_edit.stock" type="number" class="tooltips-general material-control" placeholder="Escribe aquí stock de la accesorio" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el stock del accesorio">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>Stock</label>
@@ -49,12 +49,12 @@
                 <div class="col-sm-4">
                     <div class="container-flat-form">
                         <div class="title-flat-form title-flat-blue">Nuevo Accesorio</div>
-                        <form v-on:submit.prevent="guardar()" class="form-padding">
+                        <form id="form-nuevo" v-on:submit.prevent="guardar()" class="form-padding">
                             <div class="row">
                                 <br>
                                 <div class="col-xs-12">
                                     <div class="group-material">
-                                        <input v-model="accesorio.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre de la accesorio" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del accesorio">
+                                        <input name="nombre" v-model="accesorio.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre de la accesorio" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del accesorio">
                                         <span class="highlight"></span>
                                         <span class="bar"></span>
                                         <label>Nombre</label>
@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="col-xs-12">
                                     <div class="group-material">
-                                        <input v-model="accesorio.modelo" type="text" class="tooltips-general material-control" placeholder="Escribe aquí modelo de la accesorio" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el modelo del accesorio">
+                                        <input name="modelo" v-model="accesorio.modelo" type="text" class="tooltips-general material-control" placeholder="Escribe aquí modelo de la accesorio" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el modelo del accesorio">
                                         <span class="highlight"></span>
                                         <span class="bar"></span>
                                         <label>Modelo</label>
@@ -70,7 +70,7 @@
                                 </div>
                                 <div class="col-xs-12">
                                     <div class="group-material">
-                                        <input v-model="accesorio.stock" type="text" class="tooltips-general material-control" placeholder="Escribe aquí stock de la accesorio" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el stock del accesorio">
+                                        <input name="stock" v-model="accesorio.stock" type="number" class="tooltips-general material-control" placeholder="Escribe aquí stock de la accesorio" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el stock del accesorio">
                                         <span class="highlight"></span>
                                         <span class="bar"></span>
                                         <label>Stock</label>
@@ -238,17 +238,23 @@ export default {
             for (let index = 0; index < arrKeys.length; index++) {
                 var indexName=arrKeys[index];
                 if(index==0){
-                    $('#'+form+' [name='+indexName+']').focus().parents('div.form-group').addClass('has-error')
-                        .append("<div class=text-center><span>"+errores[indexName]+"</span></div>");
+                    $('#'+form+' [name='+indexName+']').focus().parents('div.group-material').addClass('has-error')
+                        .append("<div class=text-center><span class=error>"+errores[indexName]+"</span></div>");
                     }else{
-                        $('#'+form+' [name='+indexName+']').parents('div.form-group').addClass('has-error')
-                        .append("<div class=text-center><span>"+errores[indexName]+"</span></div>");
+                        $('#'+form+' [name='+indexName+']').parents('div.group-material').addClass('has-error')
+                        .append("<div class=text-center><span class=error>"+errores[indexName]+"</span></div>");
                 }
             }
         },
         limpiarErrores() {
             $('.has-error span').remove();
+            $('.has-error').removeClass("has-error");
         }
     },
 }
+
+    $('body').on('hidden.bs.modal', '#modal-editar', function(event) {
+        $('.has-error span').remove();
+        $('.has-error').removeClass("has-error");
+    })
 </script>
