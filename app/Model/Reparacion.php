@@ -19,4 +19,8 @@ class Reparacion extends Model
     {
         return $this->hasOne('App\Model\Diagnostico');
     }    
+    public function detalles()
+    {
+        return $this->hasMany('App\Model\ReparacionHerramienta')->with('herramienta');
+    }
 }

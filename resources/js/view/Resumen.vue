@@ -12,18 +12,29 @@
                         <td><b>Cliente:</b></td>
                         <td>{{ reparacion.cliente.nombre+ ' '+reparacion.cliente.apellido }}</td>
                     </tr>
-                    <tr>
-                        <td><b>Herramienta:</b></td>
-                        <td>{{ reparacion.herramienta.nombre }}</td>
-                    </tr>
-                    <tr>
-                        <td><b>Modelo:</b></td>
-                        <td>{{ reparacion.modelo }}</td>
-                    </tr>
-                    <tr>
-                        <td><b>Serie:</b></td>
-                        <td>{{ reparacion.serie }}</td>
-                    </tr>
+                </table>
+                <div class="col-xs-12">
+                    <legend><i class="zmdi zmdi-border-all"></i> &nbsp; Detalles de Herramientas ingresadas</legend>
+                </div>
+                <table class="table table-striped">
+                    <thead style="background-color:#DFF0D8; font-weight:bold;">
+                        <tr>
+                            <th class="div-table-cell">Herramienta</th>
+                            <th class="div-table-cell">Serie</th>
+                            <th class="div-table-cell">Diagnóstico</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="detalle in reparacion.detalles">
+                            <td>{{ detalle.herramienta.nombre }}</td>
+                            <td>{{ detalle.serie}}</td>
+                            <td>
+                                <router-link v-if="detalle.estado=='1'" class="btn-danger btn" :to="'/diagnostico/'+detalle.id">
+                                    Diagnóstico
+                                </router-link>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
                 <div class="row">
                     <div class="col-xs-12" v-if="reparacion.diagnostico!=null">

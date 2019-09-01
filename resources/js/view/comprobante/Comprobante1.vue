@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="ticket">
         <button class="btn btn-primary" @click="imprimir()">
             imprimir
         </button>
@@ -17,17 +17,16 @@
                     <td><b>Servicio:</b></td>
                     <td>Diagnostico de su herramienta </td>
                 </tr>
+            </table>
+            
+            <table class="table table-striped">
                 <tr>
-                    <td><b>Herramienta:</b></td>
-                    <td>{{ reparacion.herramienta.nombre }}</td>
+                    <td><b>Herramienta</b></td>
+                    <td><b>Serie</b></td>
                 </tr>
-                <tr>
-                    <td><b>Modelo:</b></td>
-                    <td>{{ reparacion.modelo }}</td>
-                </tr>
-                <tr>
-                    <td><b>Serie:</b></td>
-                    <td>{{ reparacion.serie }}</td>
+                <tr v-for="item in reparacion.detalles">
+                    <td>{{ item.herramienta.nombre }}</td>
+                    <td>{{ item.serie }}</td>
                 </tr>                
             </table>
         </div>

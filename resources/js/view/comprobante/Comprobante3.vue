@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="ticket">
         <button class="btn btn-primary" @click="imprimir()">
             imprimir
         </button>
@@ -16,45 +16,27 @@
                 <tr>
                     <td><b>Servicio:</b></td>
                     <td>Reparación de su herramienta </td>
-                </tr>
-                <tr>
-                    <td><b>Herramienta:</b></td>
-                    <td>{{ reparacion.herramienta.nombre }}</td>
-                </tr>
-                <tr>
-                    <td><b>Modelo:</b></td>
-                    <td>{{ reparacion.modelo }}</td>
-                </tr>
-                <tr>
-                    <td><b>Serie:</b></td>
-                    <td>{{ reparacion.serie }}</td>
-                </tr>
-                <tr style="height: 8px;">
-                    <td> </td>
-                    <td> </td>
                 </tr> 
-                <tr>
-                    <td colspan="2">
-                      <b> Piezas a usar en la reparación </b>
-                    </td>
-                </tr>             
-                <tr>
-                    <td> <b>Pieza</b> </td>
-                    <td><b>Cantidad</b></td>
-                </tr>
                 
-                <tr v-for="(item) in piezas">
-                    <td>{{item.pieza.nombre}}</td>
-                    <td>{{item.cantidad}}</td>
+            </table>
+            <table class="table table-striped">
+                <tr>
+                    <td><b>Herramienta Reparada</b></td>
+                    <td><b>Precio</b></td>
                 </tr>
-                 <tr style="height: 8px;">
-                    <td> </td>
-                    <td> </td>
+                <tr v-for="item in reparacion.detalles">
+                    <td>
+                        <b>{{ item.herramienta.nombre }}</b>
+                        <p>
+                            {{ item.diagnostico }}
+                        </p>
+                    </td>
+                    <td>S/ {{ item.costo.toFixed(2) }}</td>
                 </tr> 
                 <tr>
                     <td> <b>Total</b> </td>
-                    <td><b>{{ reparacion.diagnostico.costo }}</b></td>
-                </tr>
+                    <td><b>S/ {{ total }}</b></td>
+                </tr>               
             </table>
         </div>
         
@@ -65,6 +47,16 @@ export default {
     data() {
         return {
             reparacion: null
+        }
+    },
+    computed: {
+        total(){
+            var total=0;
+            for (let i = 0; i < this.reparacion.detalles.length; i++) {
+                const element = this.reparacion.detalles[i];
+                total+=element.costo;
+            }
+            return total.toFixed(2);
         }
     },
     mounted() {

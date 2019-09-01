@@ -1,5 +1,5 @@
 <template>
-    <div class="form-padding">
+    <div id="ticket" class="form-padding">
         <button class="btn btn-primary" @click="imprimir()">
             imprimir
         </button>
@@ -16,36 +16,22 @@
                 <tr>
                     <td><b>Servicio:</b></td>
                     <td>Reparación de su herramienta </td>
-                </tr>
+                </tr>    
+            </table>
+            <table class="table table-striped">
                 <tr>
-                    <td><b>Herramienta:</b></td>
-                    <td>{{ reparacion.herramienta.nombre }}</td>
+                    <td><b>Herramienta/Diagnóstico</b></td>
+                    <td><b>Precio</b></td>
                 </tr>
-                <tr>
-                    <td><b>Modelo:</b></td>
-                    <td>{{ reparacion.modelo }}</td>
-                </tr>
-                <tr>
-                    <td><b>Serie:</b></td>
-                    <td>{{ reparacion.serie }}</td>
-                </tr>
-                <tr style="height: 8px;">
-                    <td> </td>
-                    <td> </td>
-                </tr> 
-                <tr>
-                    <td colspan="2">
-                      <b> Piezas a usar en la reparación </b>
+                <tr v-for="item in reparacion.detalles">
+                    <td>
+                        <b>{{ item.herramienta.nombre }}</b>
+                        <p>
+                            {{ item.diagnostico }}
+                        </p>
                     </td>
-                </tr>             
-                <tr>
-                    <td> <b>Pieza</b> </td>
-                    <td><b>Cantidad</b></td>
-                </tr>
-                <tr v-for="(item) in piezas">
-                    <td>{{item.pieza.nombre}}</td>
-                    <td>{{item.cantidad}}</td>
-                </tr>           
+                    <td>S/ {{ item.costo.toFixed(2) }}</td>
+                </tr>                
             </table>
         </div>
     </div>

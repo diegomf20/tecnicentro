@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDiagnósticoPiezaTable extends Migration
+class CreateDiagnosticoAccesorioTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateDiagnósticoPiezaTable extends Migration
      */
     public function up()
     {
-        Schema::create('diagnóstico_pieza', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('diagnostico_accesorio', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('cantidad');
-            $table->unsignedInteger('pieza_id');
-            $table->unsignedInteger('diagnostico_id');
+            $table->unsignedInteger('accesorio_id');
+            $table->unsignedInteger('reparacion_herramienta_id');
         });
     }
 
@@ -28,6 +28,6 @@ class CreateDiagnósticoPiezaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('diagnóstico_pieza');
+        Schema::dropIfExists('diagnostico_accesorio');
     }
 }

@@ -6,17 +6,18 @@ use App\Model\DetalleDiagnostico;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Model\Reparacion;
+use App\Model\ReparacionHerramienta;
 use App\Model\Diagnostico;
 
 class ReparacionController extends Controller
 {
     public function index(Request $request){
         if ($request->data=="Finalizado") {
-            $Reparaciones=Reparacion::with('cliente')->with('herramienta')
+            $Reparaciones=Reparacion::with('cliente')
                 ->whereIn('estado',['4'])
                 ->get();
         }else{
-            $Reparaciones=Reparacion::with('cliente')->with('herramienta')
+            $Reparaciones=Reparacion::with('cliente')
                 ->whereNotIn('estado',['4'])
                 ->get();
         }
@@ -24,20 +25,19 @@ class ReparacionController extends Controller
     }
     public function show($id){
 
-        $Reparacion=Reparacion::with('cliente')->with('herramienta')
-                ->with('diagnostico')
+        $Reparacion=Reparacion::with('cliente')
+                ->with('detalles')
                 ->where('id',$id)->first();
-        
-        $piezas=[];
-        if($Reparacion->diagnostico!=null){
-            $piezas=DetalleDiagnostico::with('pieza')->where('diagnostico_id',$Reparacion->diagnostico->id)->get();
-        }
         return response()->json([
             "reparacion"    =>  $Reparacion,
-            "piezas"      =>  $piezas,
         ]);
 
         // return response()->json($Reparacion);
+    }
+    public function show2($id){
+        $rh=ReparacionHerramienta::with('herramienta')->with('detalles')
+            ->where('id',$id)->first();
+        return response()->json($rh);
     }
 
     public function nota(Request $request){
@@ -46,10 +46,15 @@ class ReparacionController extends Controller
         $Reparacion=new Reparacion();
         $Reparacion->codigo=str_pad($siguiente,8, "0", STR_PAD_LEFT);
         $Reparacion->cliente_id=$request->cliente_id;
-        $Reparacion->herramienta_id=$request->herramienta_id;
-        $Reparacion->modelo=$request->modelo;
-        $Reparacion->serie=$request->serie;
         $Reparacion->save();
+        foreach ($request->detalles as $key => $item) {
+            $reparacionHerramienta=new ReparacionHerramienta();
+            $reparacionHerramienta->serie=$item['serie'];
+            $reparacionHerramienta->herramienta_id=$item['herramienta_id'];
+            $reparacionHerramienta->reparacion_id=$Reparacion->id;
+            $reparacionHerramienta->estado="0";
+            $reparacionHerramienta->save();
+        }
         return response()->json([
             "status" => "OK",
             "data"  => $Reparacion
@@ -57,7 +62,7 @@ class ReparacionController extends Controller
     }
 
     public function diagnosticar(Request $request,$id){
-
+        
         $Reparacion=Reparacion::where('id',$id)->first();
         $Reparacion->estado='1';
         $Reparacion->save();

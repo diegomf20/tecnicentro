@@ -65,6 +65,16 @@ var routes =[
         beforeEnter: auth
     },
     { 
+        path: '/diagnostico/:id', 
+        component: require('./view/Diagnostico.vue').default,
+        beforeEnter: auth
+    },
+    { 
+        path: '/diagnosticar-herramienta/:id', 
+        component: require('./view/DiagnosticarHerramienta.vue').default,
+        beforeEnter: auth
+    },
+    { 
         path: '/nota', 
         component: require('./view/Nota.vue').default,
         beforeEnter: auth

@@ -379,7 +379,7 @@ select.material-control-login:hover{
 }
 .title-flat-form{
    background-color: #E34724;
-   height: 50px;
+   /* height: 50px; */
    color: #fff;
    text-align: center;
    font-size: 25px;
@@ -396,7 +396,8 @@ select.material-control-login:hover{
 /*Controles de formularios material desing ================*/
 .group-material{ 
   position:relative; 
-  margin-bottom:45px; 
+  margin-bottom: 30px;
+  margin-top: 15px; 
 }
 input.material-control,
 select.material-control{
@@ -457,8 +458,8 @@ input.material-control:invalid ~ label{
   font-weight: normal;
 }
 input.material-control:focus:invalid ~ label::after{
-    content: "Formato no válido o campo vacío";
-    margin: 0 5px;
+    content: "Formato no válido";
+    margin: 0 10px;
     padding: 0 5px;
     font-size: 14px;
     color: #fff;
@@ -681,4 +682,10 @@ input.material-control:focus ~ .highlight {
 }
 h1,h2,h3,h4,h5{
     font-family: 'Roboto', sans-serif;
+}
+.btn{
+    white-space: normal;
+}
+#ticket table td,#ticket table th{
+    font-size: 14px;
 }

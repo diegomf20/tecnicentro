@@ -2594,6 +2594,97 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      reparacion: null,
+      detalle_seleccionado: null
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get(api_url + '/reparacion/' + this.$route.params.id).then(function (response) {
+      var respuesta = response.data;
+      _this.reparacion = respuesta.reparacion;
+      _this.piezas = respuesta.piezas; // this.reparacion=response.data;
+    });
+  },
+  methods: {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/view/DiagnosticarHerramienta.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/view/DiagnosticarHerramienta.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2628,66 +2719,61 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      /**
-       * bloquear el btn guardar
-       */
-      btn_bloquear: false,
-      reparacion: null,
-      diagnostico: {
-        descripcion: null,
-        dias: 1,
-        costo: 0,
-        items: []
+      detalle_seleccionado: null,
+      accesorios: [],
+      pre_detalle: {
+        accesorio: null,
+        cantidad: 0
       },
-      piezas: [],
-      itemMomentaneo: {
-        pieza: null,
-        cantidad: 1
-      }
+      detalles: []
     };
   },
   mounted: function mounted() {
     var _this = this;
 
-    axios.get(api_url + '/reparacion/' + this.$route.params.id).then(function (response) {
-      var respuesta = response.data;
-      _this.reparacion = respuesta.reparacion;
-      _this.piezas = respuesta.piezas; // this.reparacion=response.data;
-    });
-    axios.get(api_url + '/pieza').then(function (response) {
+    axios.get(api_url + '/accesorio').then(function (response) {
       for (var i = 0; i < response.data.length; i++) {
-        var pieza = response.data[i];
+        var accesorio = response.data[i];
 
-        _this.piezas.push({
-          label: pieza.codigo + " - " + pieza.nombre,
-          codigo: pieza.codigo,
-          nombre: pieza.nombre,
-          id: pieza.id
+        _this.accesorios.push({
+          label: accesorio.codigo + " - " + accesorio.nombre + " - " + accesorio.modelo,
+          id: accesorio.id
         });
       }
     });
+    axios.get(api_url + '/reparacion-herramienta/' + this.$route.params.id).then(function (response) {
+      _this.detalle_seleccionado = response.data;
+    });
   },
   methods: {
+    agregar: function agregar() {
+      this.detalles.push({
+        cantidad: Number(this.pre_detalle.cantidad),
+        accesorio_id: Number(this.pre_detalle.accesorio.id),
+        nombre: this.pre_detalle.accesorio.label
+      });
+      this.pre_detalle = {
+        accesorio: null,
+        cantidad: 0
+      };
+    },
     guardar: function guardar() {
       var _this2 = this;
 
-      this.btn_bloquear = axios.post(api_url + '/reparacion/' + this.$route.params.id + '/diagnosticar', this.diagnostico).then(function (response) {
+      this.detalle_seleccionado.detalles = this.detalles;
+      console.log(this.detalle_seleccionado);
+      axios.post(api_url + '/reparacion-herramienta/' + this.$route.params.id, this.detalle_seleccionado).then(function (response) {
         var respuesta = response.data;
 
         if (respuesta.status == 'OK') {
-          _this2.diagnostico = {
-            descripcion: null,
-            dias: 1,
-            costo: 0
-          };
           swal({
-            title: "Diagnosticado",
+            title: respuesta.data,
             icon: "success",
             timer: "2000"
           });
 
           _this2.$router.push({
-            path: "/reparaciones"
+            path: "/diagnosticar/" + _this2.detalle_seleccionado.reparacion_id
           });
         }
 
@@ -2704,19 +2790,80 @@ __webpack_require__.r(__webpack_exports__);
     },
     eliminarItem: function eliminarItem(index) {
       this.diagnostico.items.splice(index, 1);
-    },
-    agregarItem: function agregarItem() {
-      this.diagnostico.items.push({
-        pieza_id: this.itemMomentaneo.pieza.id,
-        codigo: this.itemMomentaneo.pieza.codigo,
-        nombre: this.itemMomentaneo.pieza.nombre,
-        cantidad: this.itemMomentaneo.cantidad
-      });
-      this.itemMomentaneo = {
-        pieza: null,
-        cantidad: 1
-      };
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/view/Diagnostico.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/view/Diagnostico.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      reparacion_herramienta: null
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get(api_url + '/reparacion-herramienta/' + this.$route.params.id).then(function (response) {
+      _this.reparacion_herramienta = response.data;
+    });
   }
 });
 
@@ -2731,12 +2878,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -3367,21 +3508,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      /**
-       * bloquear el btn guardar
-       */
-      btn_bloquear: false,
       url: "",
       clientes: [],
       herramientas: [],
+      pre_item: {
+        herramienta: null,
+        serie: null
+      },
       nota: {
         cliente: null,
-        herramienta: null,
-        modelo: null,
-        serie: null
+        detalles: []
       }
     };
   },
@@ -3414,15 +3566,27 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
+    eliminar: function eliminar(index) {
+      this.nota.detalles.splice(index, 1);
+    },
+    add: function add() {
+      this.nota.detalles.push({
+        herramienta_id: this.pre_item.herramienta.id,
+        nombre: this.pre_item.herramienta.label,
+        serie: this.pre_item.serie
+      });
+      this.pre_item = {
+        herramienta: null,
+        serie: ''
+      };
+    },
     guardar: function guardar() {
       var _this2 = this;
 
-      this.btn_bloquear = true;
+      //  this.btn_bloquear=true;
       axios.post(api_url + '/nota', {
         cliente_id: this.nota.cliente.id,
-        herramienta_id: this.nota.herramienta.id,
-        modelo: this.nota.modelo,
-        serie: this.nota.serie
+        detalles: this.nota.detalles
       }).then(function (response) {
         var respuesta = response.data;
 
@@ -3431,9 +3595,7 @@ __webpack_require__.r(__webpack_exports__);
           _this2.url = "comprobante1/" + respuesta.data.id;
           _this2.nota = {
             cliente: null,
-            herramienta: null,
-            modelo: null,
-            serie: null
+            detalles: []
           };
           swal({
             title: "Nota Registrada",
@@ -3448,9 +3610,8 @@ __webpack_require__.r(__webpack_exports__);
             icon: "error",
             timer: "4000"
           });
-        }
+        } //  this.btn_bloquear=false;
 
-        _this2.btn_bloquear = false;
       });
     }
   }
@@ -3467,10 +3628,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
 //
 //
 //
@@ -3742,6 +3899,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3771,7 +3939,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
 //
 //
 //
@@ -3839,20 +4006,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -3968,29 +4121,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       reparacion: null
     };
+  },
+  computed: {
+    total: function total() {
+      var total = 0;
+
+      for (var i = 0; i < this.reparacion.detalles.length; i++) {
+        var element = this.reparacion.detalles[i];
+        total += element.costo;
+      }
+
+      return total.toFixed(2);
+    }
   },
   mounted: function mounted() {
     var _this = this;
@@ -43266,6 +43413,25 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container-fluid" }, [
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: { id: "modal-diagnosticar", tabindex: "-1" }
+      },
+      [
+        _c("div", { staticClass: "modal-dialog" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _vm.detalle_seleccionado != null
+              ? _c("div", { staticClass: "modal-body" })
+              : _vm._e()
+          ])
+        ])
+      ]
+    ),
+    _vm._v(" "),
     _c("div", { staticClass: "container-flat-form" }, [
       _c("div", { staticClass: "title-flat-form title-flat-blue" }, [
         _vm._v("Diagnosticar")
@@ -43274,13 +43440,13 @@ var render = function() {
       _c("div", { staticClass: "form-padding" }, [
         _c("table", { staticClass: "table-padding" }, [
           _c("tr", [
-            _vm._m(0),
+            _vm._m(1),
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(_vm.reparacion.created_at))])
           ]),
           _vm._v(" "),
           _c("tr", [
-            _vm._m(1),
+            _vm._m(2),
             _vm._v(" "),
             _c("td", [
               _vm._v(
@@ -43291,331 +43457,87 @@ var render = function() {
                 )
               )
             ])
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _vm._m(2),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.reparacion.herramienta.nombre))])
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _vm._m(3),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.reparacion.modelo))])
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _vm._m(4),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.reparacion.serie))])
           ])
         ]),
         _vm._v(" "),
         _c("br"),
         _vm._v(" "),
-        _c(
-          "form",
-          {
-            on: {
-              submit: function($event) {
-                $event.preventDefault()
-                return _vm.guardar()
-              }
-            }
-          },
-          [
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-xs-12 col-sm-4" }, [
-                _c("div", { staticClass: "group-material" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.diagnostico.dias,
-                        expression: "diagnostico.dias"
-                      }
-                    ],
-                    staticClass: "tooltips-general material-control",
-                    attrs: {
-                      type: "number",
-                      placeholder: "Escribe aquí el DNI",
-                      required: "",
-                      maxlength: "50"
-                    },
-                    domProps: { value: _vm.diagnostico.dias },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.diagnostico, "dias", $event.target.value)
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "highlight" }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "bar" }),
-                  _vm._v(" "),
-                  _c("label", [_vm._v("Tiempo de reparación (días)")])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-xs-12 col-sm-4" }, [
-                _c("div", { staticClass: "group-material" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.diagnostico.costo,
-                        expression: "diagnostico.costo"
-                      }
-                    ],
-                    staticClass: "tooltips-general material-control",
-                    attrs: {
-                      type: "number",
-                      placeholder: "Escribe aquí el DNI",
-                      required: "",
-                      maxlength: "50"
-                    },
-                    domProps: { value: _vm.diagnostico.costo },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.diagnostico, "costo", $event.target.value)
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "highlight" }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "bar" }),
-                  _vm._v(" "),
-                  _c("label", [_vm._v("Costo")])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-sm-8" }, [
-                _c("div", { staticClass: "form-padding" }, [
-                  _vm._m(5),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "row" }, [
-                    _c(
-                      "div",
-                      { staticClass: "col-md-6 form-group" },
-                      [
-                        _c("label", { attrs: { for: "" } }, [
-                          _vm._v("Seleccionar Pieza")
-                        ]),
-                        _vm._v(" "),
-                        _c("v-select", {
-                          attrs: { options: _vm.piezas },
-                          model: {
-                            value: _vm.itemMomentaneo.pieza,
-                            callback: function($$v) {
-                              _vm.$set(_vm.itemMomentaneo, "pieza", $$v)
-                            },
-                            expression: "itemMomentaneo.pieza"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-md-3 col-lg-2 form-group" }, [
-                      _c("label", { attrs: { for: "" } }, [_vm._v("Cantidad")]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.itemMomentaneo.cantidad,
-                            expression: "itemMomentaneo.cantidad"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: { type: "number", min: "1" },
-                        domProps: { value: _vm.itemMomentaneo.cantidad },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.itemMomentaneo,
-                              "cantidad",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "col-md-3 col-lg-2 form-group text-center"
-                      },
-                      [
-                        _c("label", { attrs: { for: "" } }, [_vm._v(".")]),
-                        _vm._v(" "),
-                        _c(
-                          "a",
-                          {
-                            staticClass: "btn btn-info",
-                            on: {
-                              click: function($event) {
-                                return _vm.agregarItem()
-                              }
-                            }
-                          },
-                          [_vm._v("Agregar Item")]
-                        )
-                      ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "table-responsive" }, [
-                    _c("table", { staticClass: "table" }, [
-                      _vm._m(6),
-                      _vm._v(" "),
-                      _c(
-                        "tbody",
-                        [
-                          _vm._l(_vm.diagnostico.items, function(item, index) {
-                            return _c("tr", [
-                              _c("td", [_vm._v(_vm._s(item.nombre))]),
-                              _vm._v(" "),
-                              _c("td", [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: item.cantidad,
-                                      expression: "item.cantidad"
-                                    }
-                                  ],
-                                  staticClass: "form-control",
-                                  attrs: { type: "number" },
-                                  domProps: { value: item.cantidad },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        item,
-                                        "cantidad",
-                                        $event.target.value
-                                      )
-                                    }
-                                  }
-                                })
-                              ]),
-                              _vm._v(" "),
-                              _c("td", [
-                                _c(
-                                  "button",
-                                  {
-                                    staticClass:
-                                      "btn btn-danger btn-link btn-sm",
-                                    attrs: { type: "button" },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.eliminarItem(index)
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("i", {
-                                      staticClass:
-                                        "zmdi zmdi zmdi-delete zmdi-hc-fw"
-                                    })
-                                  ]
-                                )
-                              ])
-                            ])
-                          }),
-                          _vm._v(" "),
-                          _vm.diagnostico.items.length == 0
-                            ? _c("tr", [
-                                _c(
-                                  "td",
-                                  {
-                                    staticClass: "text-center",
-                                    attrs: { colspan: "6" }
-                                  },
-                                  [_vm._v("Sin Items de compra")]
-                                )
-                              ])
-                            : _vm._e()
-                        ],
-                        2
-                      )
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-sm-8 form-group " }, [
-                _c("label", { attrs: { for: "" } }, [_vm._v("Descripción")]),
+        _c("table", { staticClass: "table table-striped" }, [
+          _vm._m(3),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.reparacion.detalles, function(detalle, index) {
+              return _c("tr", [
+                _c("td", [_vm._v(_vm._s(detalle.herramienta.nombre))]),
                 _vm._v(" "),
-                _c("textarea", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.diagnostico.descripcion,
-                      expression: "diagnostico.descripcion"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { rows: "3" },
-                  domProps: { value: _vm.diagnostico.descripcion },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(
-                        _vm.diagnostico,
-                        "descripcion",
-                        $event.target.value
+                _c("td", [_vm._v(_vm._s(detalle.serie))]),
+                _vm._v(" "),
+                _c("td", [
+                  detalle.estado == "0"
+                    ? _c(
+                        "div",
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "btn btn-danger",
+                              attrs: {
+                                to: "/diagnosticar-herramienta/" + detalle.id
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                    Diagnosticar\n                                "
+                              )
+                            ]
+                          )
+                        ],
+                        1
                       )
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-xs-12" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-primary",
-                    staticStyle: { "margin-right": "20px" },
-                    attrs: { disabled: _vm.btn_bloquear, type: "submit" }
-                  },
-                  [
-                    _c("i", { staticClass: "zmdi zmdi-floppy" }),
-                    _vm._v("    Guardar")
-                  ]
-                )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  detalle.estado == "1"
+                    ? _c("div", [
+                        _vm._v(
+                          "\n                                Diagnósticado\n                            "
+                        )
+                      ])
+                    : _vm._e()
+                ])
               ])
-            ])
-          ]
-        )
+            }),
+            0
+          )
+        ])
       ])
     ])
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      ),
+      _vm._v(" "),
+      _c("i", { staticClass: "zmdi zmdi-account-box" }),
+      _vm._v(" Diagnosticar Herramienta"),
+      _c("br")
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -43632,13 +43554,299 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [_c("b", [_vm._v("Herramienta:")])])
-  },
+    return _c(
+      "thead",
+      { staticStyle: { "background-color": "#DFF0D8", "font-weight": "bold" } },
+      [
+        _c("tr", [
+          _c("th", { staticClass: "div-table-cell" }, [_vm._v("Herramienta")]),
+          _vm._v(" "),
+          _c("th", { staticClass: "div-table-cell" }, [_vm._v("Serie")]),
+          _vm._v(" "),
+          _c("th", { staticClass: "div-table-cell" }, [_vm._v("Diagnóstico")])
+        ])
+      ]
+    )
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/view/DiagnosticarHerramienta.vue?vue&type=template&id=0edb2032&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/view/DiagnosticarHerramienta.vue?vue&type=template&id=0edb2032& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container-fluid" }, [
+    _c("div", { staticClass: "container-flat-form" }, [
+      _c("div", { staticClass: "title-flat-form title-flat-blue" }, [
+        _vm._v("Herramienta a Diagnosticar")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-padding" }, [
+        _c("table", { staticClass: "table-padding" }, [
+          _c("tr", [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("td", [
+              _vm._v(_vm._s(_vm.detalle_seleccionado.herramienta.nombre))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _vm._m(1),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(_vm.detalle_seleccionado.serie))])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("form", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-xs-12 col-sm-6 form-group" }, [
+            _c("label", [_vm._v("Descripción de diagnóstico")]),
+            _vm._v(" "),
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.detalle_seleccionado.diagnostico,
+                  expression: "detalle_seleccionado.diagnostico"
+                }
+              ],
+              staticClass: "form-control",
+              domProps: { value: _vm.detalle_seleccionado.diagnostico },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(
+                    _vm.detalle_seleccionado,
+                    "diagnostico",
+                    $event.target.value
+                  )
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-6 col-sm-3" }, [
+            _c("div", { staticClass: "group-material" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.detalle_seleccionado.costo,
+                    expression: "detalle_seleccionado.costo"
+                  }
+                ],
+                staticClass: "tooltips-general material-control",
+                attrs: {
+                  type: "text",
+                  placeholder: "Escribe aquí el Precio",
+                  required: "",
+                  maxlength: "5"
+                },
+                domProps: { value: _vm.detalle_seleccionado.costo },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.detalle_seleccionado,
+                      "costo",
+                      $event.target.value
+                    )
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("span", { staticClass: "highlight" }),
+              _vm._v(" "),
+              _c("span", { staticClass: "bar" }),
+              _vm._v(" "),
+              _c("label", [_vm._v("Precio del Servicio:")])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-6  col-sm-3" }, [
+            _c("div", { staticClass: "group-material" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.detalle_seleccionado.dias,
+                    expression: "detalle_seleccionado.dias"
+                  }
+                ],
+                staticClass: "tooltips-general material-control",
+                attrs: {
+                  type: "text",
+                  placeholder: "Escribe el Tiempo (Días)",
+                  required: ""
+                },
+                domProps: { value: _vm.detalle_seleccionado.dias },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.detalle_seleccionado,
+                      "dias",
+                      $event.target.value
+                    )
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("span", { staticClass: "highlight" }),
+              _vm._v(" "),
+              _c("span", { staticClass: "bar" }),
+              _vm._v(" "),
+              _c("label", [_vm._v("Días:")])
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _vm._m(2),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-xs-12 col-sm-7 form-group" },
+            [
+              _c("label", [_vm._v("Seleccionar Accesorio")]),
+              _vm._v(" "),
+              _c("v-select", {
+                attrs: { options: _vm.accesorios },
+                model: {
+                  value: _vm.pre_detalle.accesorio,
+                  callback: function($$v) {
+                    _vm.$set(_vm.pre_detalle, "accesorio", $$v)
+                  },
+                  expression: "pre_detalle.accesorio"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-3" }, [
+            _c("div", { staticClass: "group-material" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.pre_detalle.cantidad,
+                    expression: "pre_detalle.cantidad"
+                  }
+                ],
+                staticClass: "tooltips-general material-control",
+                attrs: {
+                  type: "text",
+                  placeholder: "Escribe la cantidad",
+                  required: ""
+                },
+                domProps: { value: _vm.pre_detalle.cantidad },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.pre_detalle, "cantidad", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("span", { staticClass: "highlight" }),
+              _vm._v(" "),
+              _c("span", { staticClass: "bar" }),
+              _vm._v(" "),
+              _c("label", [_vm._v("Cantidad:")])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-6 col-sm-2" }, [
+            _c(
+              "button",
+              { staticClass: "btn btn-success", on: { click: _vm.agregar } },
+              [
+                _vm._v(
+                  "\n                        Agregar Accesorio\n                    "
+                )
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-12" }, [
+            _c("table", { staticClass: "table table-striped" }, [
+              _vm._m(3),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.detalles, function(detalle) {
+                  return _c("tr", [
+                    _c("td", [_vm._v(_vm._s(detalle.nombre))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(detalle.cantidad))]),
+                    _vm._v(" "),
+                    _vm._m(4, true)
+                  ])
+                }),
+                0
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-12 text-center" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                on: {
+                  click: function($event) {
+                    return _vm.guardar()
+                  }
+                }
+              },
+              [
+                _vm._v(
+                  "\n                        GUARDAR\n                    "
+                )
+              ]
+            )
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [_c("b", [_vm._v("Modelo:")])])
+    return _c("td", [_c("b", [_vm._v("Herramienta:")])])
   },
   function() {
     var _vm = this
@@ -43650,21 +43858,190 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("h4", [_c("b", [_vm._v(" ITEMS PARA REPARACION")])])
+    return _c("div", { staticClass: "col-xs-12" }, [
+      _c("legend", [
+        _c("i", { staticClass: "zmdi zmdi-border-all" }),
+        _vm._v("   Lista de accesorios a cambiar")
+      ])
+    ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("Nombre")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Cantidad")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Quitar")])
+    return _c(
+      "thead",
+      { staticStyle: { "background-color": "#DFF0D8", "font-weight": "bold" } },
+      [
+        _c("tr", [
+          _c("th", { staticClass: "div-table-cell" }, [_vm._v("Accesorio")]),
+          _vm._v(" "),
+          _c("th", { staticClass: "div-table-cell" }, [_vm._v("Cantidad")]),
+          _vm._v(" "),
+          _c("th", { staticClass: "div-table-cell" }, [_vm._v("Eliminar")])
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c("button", { staticClass: "btn btn-danger" }, [
+        _vm._v(
+          "\n                                        X\n                                    "
+        )
       ])
     ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/view/Diagnostico.vue?vue&type=template&id=32c082c8&":
+/*!********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/view/Diagnostico.vue?vue&type=template&id=32c082c8& ***!
+  \********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container-fluid" }, [
+    _c("div", { staticClass: "container-flat-form" }, [
+      _c("div", { staticClass: "title-flat-form title-flat-blue" }, [
+        _vm._v("Resumen de Diagnóstico")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-padding" }, [
+        _c("table", { staticClass: "table-padding" }, [
+          _c("tr", [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("td", [
+              _vm._v(_vm._s(_vm.reparacion_herramienta.herramienta.nombre))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _vm._m(1),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(_vm.reparacion_herramienta.serie))])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _vm._m(2),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(_vm.reparacion_herramienta.dias))])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _vm._m(3),
+            _vm._v(" "),
+            _c("td", [
+              _vm._v(
+                "S/ " + _vm._s(_vm.reparacion_herramienta.costo.toFixed(2))
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _vm._m(4),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(_vm.reparacion_herramienta.diagnostico))])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _vm._m(5),
+        _vm._v(" "),
+        _c("table", { staticClass: "table table-striped" }, [
+          _vm._m(6),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.reparacion_herramienta.detalles, function(detalle) {
+              return _c("tr", [
+                _c("td", [_vm._v(_vm._s(detalle.accesorio.nombre))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(detalle.cantidad))])
+              ])
+            }),
+            0
+          )
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_c("b", [_vm._v("Herramienta:")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_c("b", [_vm._v("Serie:")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_c("b", [_vm._v("Días en reparar:")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_c("b", [_vm._v("Precio de Reparación:")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_c("b", [_vm._v("Diagnóstico:")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("legend", [
+      _c("i", { staticClass: "zmdi zmdi-border-all" }),
+      _vm._v("   Accesorios a Cambiar")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "thead",
+      { staticStyle: { "background-color": "#DFF0D8", "font-weight": "bold" } },
+      [
+        _c("tr", [
+          _c("th", { staticClass: "div-table-cell" }, [
+            _vm._v("Nombre de Accesorio")
+          ]),
+          _vm._v(" "),
+          _c("th", { staticClass: "div-table-cell" }, [_vm._v("Cantidad")])
+        ])
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -43714,12 +44091,6 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(reparacion.herramienta.nombre))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(reparacion.modelo))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(reparacion.serie))]),
-                _vm._v(" "),
                 _c(
                   "td",
                   [
@@ -43760,12 +44131,6 @@ var staticRenderFns = [
           _c("th", { staticClass: "div-table-cell" }, [
             _vm._v("Nombre y Apellidos")
           ]),
-          _vm._v(" "),
-          _c("th", { staticClass: "div-table-cell" }, [_vm._v("Herramienta")]),
-          _vm._v(" "),
-          _c("th", { staticClass: "div-table-cell" }, [_vm._v("Modelo")]),
-          _vm._v(" "),
-          _c("th", { staticClass: "div-table-cell" }, [_vm._v("Serie")]),
           _vm._v(" "),
           _c("th", { staticClass: "div-table-cell" }, [_vm._v("Opciones")])
         ])
@@ -44508,196 +44873,184 @@ var render = function() {
         _vm._v("Nota de Entrada")
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "row" }, [
-        _c(
-          "div",
-          {
-            staticClass: "col-xs-12 col-sm-5 text-right nuevo",
-            staticStyle: { margin: "10px" }
-          },
-          [
-            _c("router-link", { attrs: { to: "/cliente" } }, [
-              _c(
-                "a",
-                {
-                  staticClass: "btn btn-info",
-                  attrs: { href: "", role: "button" }
-                },
-                [_vm._v(" Cliente Nuevo")]
-              )
-            ])
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "col-xs-12 col-sm-6  nuevo",
-            staticStyle: { margin: "10px" }
-          },
-          [
-            _c("router-link", { attrs: { to: "/herramienta" } }, [
-              _c(
-                "a",
-                {
-                  staticClass: "btn btn-info",
-                  attrs: { href: "", role: "button" }
-                },
-                [_vm._v("Herramienta nuevo")]
-              )
-            ])
-          ],
-          1
-        )
-      ]),
-      _vm._v(" "),
-      _c(
-        "form",
-        {
-          staticClass: "form-padding",
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              return _vm.guardar()
-            }
-          }
-        },
-        [
-          _c("div", { staticClass: "row" }, [
-            _c(
-              "div",
-              { staticClass: "col-xs-12 col-sm-6 form-group" },
-              [
-                _c("label", [_vm._v("Cliente")]),
-                _vm._v(" "),
-                _c("v-select", {
-                  attrs: { options: _vm.clientes },
-                  model: {
-                    value: _vm.nota.cliente,
-                    callback: function($$v) {
-                      _vm.$set(_vm.nota, "cliente", $$v)
-                    },
-                    expression: "nota.cliente"
-                  }
-                })
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col-xs-12 col-sm-6 form-group" },
-              [
-                _c("label", [_vm._v("Herramienta")]),
-                _vm._v(" "),
-                _c("v-select", {
-                  attrs: { options: _vm.herramientas },
-                  model: {
-                    value: _vm.nota.herramienta,
-                    callback: function($$v) {
-                      _vm.$set(_vm.nota, "herramienta", $$v)
-                    },
-                    expression: "nota.herramienta"
-                  }
-                })
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-xs-12 col-sm-6" }, [
-              _c("div", { staticClass: "group-material" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.nota.modelo,
-                      expression: "nota.modelo"
-                    }
-                  ],
-                  staticClass: "tooltips-general material-control",
-                  attrs: {
-                    type: "text",
-                    placeholder: "Escribe aquí el Modelo",
-                    required: "",
-                    maxlength: "20"
+      _c("div", { staticClass: "form-padding" }, [
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-xs-12 col-sm-6 form-group" },
+            [
+              _c("label", [_vm._v("Cliente")]),
+              _vm._v(" "),
+              _c("v-select", {
+                attrs: { options: _vm.clientes },
+                model: {
+                  value: _vm.nota.cliente,
+                  callback: function($$v) {
+                    _vm.$set(_vm.nota, "cliente", $$v)
                   },
-                  domProps: { value: _vm.nota.modelo },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.nota, "modelo", $event.target.value)
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c("span", { staticClass: "highlight" }),
-                _vm._v(" "),
-                _c("span", { staticClass: "bar" }),
-                _vm._v(" "),
-                _c("label", [_vm._v("Modelo")])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-xs-12 col-sm-6" }, [
-              _c("div", { staticClass: "group-material" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.nota.serie,
-                      expression: "nota.serie"
-                    }
-                  ],
-                  staticClass: "tooltips-general material-control",
-                  attrs: {
-                    type: "text",
-                    placeholder: "Escribe aquí el Serie",
-                    required: "",
-                    maxlength: "20"
-                  },
-                  domProps: { value: _vm.nota.serie },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.nota, "serie", $event.target.value)
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c("span", { staticClass: "highlight" }),
-                _vm._v(" "),
-                _c("span", { staticClass: "bar" }),
-                _vm._v(" "),
-                _c("label", [_vm._v("Serie")])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-xs-12" }, [
-              _c("p", { staticClass: "text-center" }, [
+                  expression: "nota.cliente"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "col-xs-12 col-sm-5 text-right nuevo",
+              staticStyle: { margin: "10px" }
+            },
+            [
+              _c("router-link", { attrs: { to: "/cliente" } }, [
                 _c(
-                  "button",
+                  "a",
                   {
-                    staticClass: "btn btn-primary",
-                    staticStyle: { "margin-right": "20px" },
-                    attrs: { disabled: _vm.btn_bloquear, type: "submit" }
+                    staticClass: "btn btn-info",
+                    attrs: { href: "", role: "button" }
                   },
-                  [
-                    _c("i", { staticClass: "zmdi zmdi-floppy" }),
-                    _vm._v("    Guardar")
-                  ]
+                  [_vm._v(" Cliente Nuevo")]
                 )
               ])
+            ],
+            1
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _vm._m(1),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-xs-12 col-sm-6 form-group" },
+            [
+              _c("label", [_vm._v("Herramienta")]),
+              _vm._v(" "),
+              _c("v-select", {
+                attrs: { options: _vm.herramientas },
+                model: {
+                  value: _vm.pre_item.herramienta,
+                  callback: function($$v) {
+                    _vm.$set(_vm.pre_item, "herramienta", $$v)
+                  },
+                  expression: "pre_item.herramienta"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-12 col-sm-4" }, [
+            _c("div", { staticClass: "group-material" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.pre_item.serie,
+                    expression: "pre_item.serie"
+                  }
+                ],
+                staticClass: "tooltips-general material-control",
+                attrs: {
+                  type: "text",
+                  placeholder: "Escribe aquí el Serie",
+                  required: "",
+                  maxlength: "20"
+                },
+                domProps: { value: _vm.pre_item.serie },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.pre_item, "serie", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("span", { staticClass: "highlight" }),
+              _vm._v(" "),
+              _c("span", { staticClass: "bar" }),
+              _vm._v(" "),
+              _c("label", [_vm._v("Serie")])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-12 col-sm-2" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-success",
+                on: {
+                  click: function($event) {
+                    return _vm.add()
+                  }
+                }
+              },
+              [_vm._v("Agregar a Nota")]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-12" }, [
+            _c("table", { staticClass: "table" }, [
+              _vm._m(2),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.nota.detalles, function(item, index) {
+                  return _c("tr", [
+                    _c("td", [_vm._v(_vm._s(item.nombre))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(item.serie))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-sm btn-danger",
+                          on: {
+                            click: function($event) {
+                              return _vm.eliminar(index)
+                            }
+                          }
+                        },
+                        [_vm._v("X")]
+                      )
+                    ])
+                  ])
+                }),
+                0
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-12" }, [
+            _c("p", { staticClass: "text-center" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  staticStyle: { "margin-right": "20px" },
+                  attrs: {
+                    disabled: _vm.nota.detalles.length == 0,
+                    type: "submit"
+                  },
+                  on: {
+                    click: function($event) {
+                      return _vm.guardar()
+                    }
+                  }
+                },
+                [
+                  _c("i", { staticClass: "zmdi zmdi-floppy" }),
+                  _vm._v("    Guardar")
+                ]
+              )
             ])
           ])
-        ]
-      )
+        ])
+      ])
     ])
   ])
 }
@@ -44719,6 +45072,31 @@ var staticRenderFns = [
         },
         [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
       )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-xs-12" }, [
+      _c("legend", [
+        _c("i", { staticClass: "zmdi zmdi-border-all" }),
+        _vm._v("   Detalles de Nota")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Nombre de Herramienta")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Serie")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Eliminar")])
+      ])
     ])
   }
 ]
@@ -44792,6 +45170,8 @@ var render = function() {
             "tbody",
             _vm._l(_vm.reparaciones, function(reparacion) {
               return _c("tr", [
+                _c("td", [_vm._v(_vm._s(reparacion.codigo))]),
+                _vm._v(" "),
                 _c("td", [
                   _vm._v(
                     _vm._s(
@@ -44803,12 +45183,6 @@ var render = function() {
                     )
                   )
                 ]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(reparacion.herramienta.nombre))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(reparacion.modelo))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(reparacion.serie))]),
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(_vm.stringEstado(reparacion.estado)))]),
                 _vm._v(" "),
@@ -44940,15 +45314,11 @@ var staticRenderFns = [
       { staticStyle: { "background-color": "#DFF0D8", "font-weight": "bold" } },
       [
         _c("tr", [
+          _c("th", { staticClass: "div-table-cell" }, [_vm._v("Código")]),
+          _vm._v(" "),
           _c("th", { staticClass: "div-table-cell" }, [
             _vm._v("Nombre y Apellidos")
           ]),
-          _vm._v(" "),
-          _c("th", { staticClass: "div-table-cell" }, [_vm._v("Herramienta")]),
-          _vm._v(" "),
-          _c("th", { staticClass: "div-table-cell" }, [_vm._v("Modelo")]),
-          _vm._v(" "),
-          _c("th", { staticClass: "div-table-cell" }, [_vm._v("Serie")]),
           _vm._v(" "),
           _c("th", { staticClass: "div-table-cell" }, [_vm._v("Estado")]),
           _vm._v(" "),
@@ -45005,48 +45375,69 @@ var render = function() {
                 )
               )
             ])
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _vm._m(2),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.reparacion.herramienta.nombre))])
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _vm._m(3),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.reparacion.modelo))])
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _vm._m(4),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.reparacion.serie))])
           ])
+        ]),
+        _vm._v(" "),
+        _vm._m(2),
+        _vm._v(" "),
+        _c("table", { staticClass: "table table-striped" }, [
+          _vm._m(3),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.reparacion.detalles, function(detalle) {
+              return _c("tr", [
+                _c("td", [_vm._v(_vm._s(detalle.herramienta.nombre))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(detalle.serie))]),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  [
+                    detalle.estado == "1"
+                      ? _c(
+                          "router-link",
+                          {
+                            staticClass: "btn-danger btn",
+                            attrs: { to: "/diagnostico/" + detalle.id }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                Diagnóstico\n                            "
+                            )
+                          ]
+                        )
+                      : _vm._e()
+                  ],
+                  1
+                )
+              ])
+            }),
+            0
+          )
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "row" }, [
           _vm.reparacion.diagnostico != null
             ? _c("div", { staticClass: "col-xs-12" }, [
-                _vm._m(5),
+                _vm._m(4),
                 _c("br"),
                 _vm._v(" "),
                 _c("table", { staticClass: "table-padding" }, [
                   _c("tr", [
-                    _vm._m(6),
+                    _vm._m(5),
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(_vm.reparacion.diagnostico.dias))])
                   ]),
                   _vm._v(" "),
                   _c("tr", [
-                    _vm._m(7),
+                    _vm._m(6),
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(_vm.reparacion.diagnostico.costo))])
                   ]),
                   _vm._v(" "),
                   _c("tr", [
-                    _vm._m(8),
+                    _vm._m(7),
                     _vm._v(" "),
                     _c("td", [
                       _vm._v(_vm._s(_vm.reparacion.diagnostico.descripcion))
@@ -45058,11 +45449,11 @@ var render = function() {
           _vm._v(" "),
           _vm.piezas.length != 0
             ? _c("div", { staticClass: "col-xs-12" }, [
-                _vm._m(9),
+                _vm._m(8),
                 _c("br"),
                 _vm._v(" "),
                 _c("table", { staticClass: "table-padding" }, [
-                  _vm._m(10),
+                  _vm._m(9),
                   _vm._v(" "),
                   _c(
                     "tbody",
@@ -45100,19 +45491,30 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [_c("b", [_vm._v("Herramienta:")])])
+    return _c("div", { staticClass: "col-xs-12" }, [
+      _c("legend", [
+        _c("i", { staticClass: "zmdi zmdi-border-all" }),
+        _vm._v("   Detalles de Herramientas ingresadas")
+      ])
+    ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [_c("b", [_vm._v("Modelo:")])])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [_c("b", [_vm._v("Serie:")])])
+    return _c(
+      "thead",
+      { staticStyle: { "background-color": "#DFF0D8", "font-weight": "bold" } },
+      [
+        _c("tr", [
+          _c("th", { staticClass: "div-table-cell" }, [_vm._v("Herramienta")]),
+          _vm._v(" "),
+          _c("th", { staticClass: "div-table-cell" }, [_vm._v("Serie")]),
+          _vm._v(" "),
+          _c("th", { staticClass: "div-table-cell" }, [_vm._v("Diagnóstico")])
+        ])
+      ]
+    )
   },
   function() {
     var _vm = this
@@ -45184,7 +45586,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
+  return _c("div", { attrs: { id: "ticket" } }, [
     _c(
       "button",
       {
@@ -45220,26 +45622,25 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(2),
-        _vm._v(" "),
-        _c("tr", [
+        _vm._m(2)
+      ]),
+      _vm._v(" "),
+      _c(
+        "table",
+        { staticClass: "table table-striped" },
+        [
           _vm._m(3),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.reparacion.herramienta.nombre))])
-        ]),
-        _vm._v(" "),
-        _c("tr", [
-          _vm._m(4),
-          _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.reparacion.modelo))])
-        ]),
-        _vm._v(" "),
-        _c("tr", [
-          _vm._m(5),
-          _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.reparacion.serie))])
-        ])
-      ])
+          _vm._l(_vm.reparacion.detalles, function(item) {
+            return _c("tr", [
+              _c("td", [_vm._v(_vm._s(item.herramienta.nombre))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(item.serie))])
+            ])
+          })
+        ],
+        2
+      )
     ])
   ])
 }
@@ -45270,19 +45671,11 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [_c("b", [_vm._v("Herramienta:")])])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [_c("b", [_vm._v("Modelo:")])])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [_c("b", [_vm._v("Serie:")])])
+    return _c("tr", [
+      _c("td", [_c("b", [_vm._v("Herramienta")])]),
+      _vm._v(" "),
+      _c("td", [_c("b", [_vm._v("Serie")])])
+    ])
   }
 ]
 render._withStripped = true
@@ -45306,7 +45699,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "form-padding" }, [
+  return _c("div", { staticClass: "form-padding", attrs: { id: "ticket" } }, [
     _c(
       "button",
       {
@@ -45321,61 +45714,51 @@ var render = function() {
     ),
     _vm._v(" "),
     _c("div", { staticClass: "form-padding" }, [
+      _c("table", { staticClass: "table table-striped" }, [
+        _c("tr", [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("td", [_vm._v(_vm._s(_vm.reparacion.updated_at))])
+        ]),
+        _vm._v(" "),
+        _c("tr", [
+          _vm._m(1),
+          _vm._v(" "),
+          _c("td", [
+            _vm._v(
+              _vm._s(
+                _vm.reparacion.cliente.nombre +
+                  " " +
+                  _vm.reparacion.cliente.apellido
+              )
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(2)
+      ]),
+      _vm._v(" "),
       _c(
         "table",
         { staticClass: "table table-striped" },
         [
-          _c("tr", [
-            _vm._m(0),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.reparacion.updated_at))])
-          ]),
+          _vm._m(3),
           _vm._v(" "),
-          _c("tr", [
-            _vm._m(1),
-            _vm._v(" "),
-            _c("td", [
-              _vm._v(
-                _vm._s(
-                  _vm.reparacion.cliente.nombre +
-                    " " +
-                    _vm.reparacion.cliente.apellido
-                )
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _vm._m(2),
-          _vm._v(" "),
-          _c("tr", [
-            _vm._m(3),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.reparacion.herramienta.nombre))])
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _vm._m(4),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.reparacion.modelo))])
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _vm._m(5),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.reparacion.serie))])
-          ]),
-          _vm._v(" "),
-          _vm._m(6),
-          _vm._v(" "),
-          _vm._m(7),
-          _vm._v(" "),
-          _vm._m(8),
-          _vm._v(" "),
-          _vm._l(_vm.piezas, function(item) {
+          _vm._l(_vm.reparacion.detalles, function(item) {
             return _c("tr", [
-              _c("td", [_vm._v(_vm._s(item.pieza.nombre))]),
+              _c("td", [
+                _c("b", [_vm._v(_vm._s(item.herramienta.nombre))]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(item.diagnostico) +
+                      "\n                    "
+                  )
+                ])
+              ]),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.cantidad))])
+              _c("td", [_vm._v("S/ " + _vm._s(item.costo.toFixed(2)))])
             ])
           })
         ],
@@ -45411,48 +45794,10 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [_c("b", [_vm._v("Herramienta:")])])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [_c("b", [_vm._v("Modelo:")])])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [_c("b", [_vm._v("Serie:")])])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", { staticStyle: { height: "8px" } }, [
-      _c("td"),
-      _vm._v(" "),
-      _c("td")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("tr", [
-      _c("td", { attrs: { colspan: "2" } }, [
-        _c("b", [_vm._v(" Piezas a usar en la reparación ")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("td", [_c("b", [_vm._v("Pieza")])]),
+      _c("td", [_c("b", [_vm._v("Herramienta/Diagnóstico")])]),
       _vm._v(" "),
-      _c("td", [_c("b", [_vm._v("Cantidad")])])
+      _c("td", [_c("b", [_vm._v("Precio")])])
     ])
   }
 ]
@@ -45477,7 +45822,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
+  return _c("div", { attrs: { id: "ticket" } }, [
     _c(
       "button",
       {
@@ -45492,72 +45837,58 @@ var render = function() {
     ),
     _vm._v(" "),
     _c("div", { staticClass: "form-padding" }, [
+      _c("table", { staticClass: "table table-striped" }, [
+        _c("tr", [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("td", [_vm._v(_vm._s(_vm.reparacion.updated_at))])
+        ]),
+        _vm._v(" "),
+        _c("tr", [
+          _vm._m(1),
+          _vm._v(" "),
+          _c("td", [
+            _vm._v(
+              _vm._s(
+                _vm.reparacion.cliente.nombre +
+                  " " +
+                  _vm.reparacion.cliente.apellido
+              )
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(2)
+      ]),
+      _vm._v(" "),
       _c(
         "table",
         { staticClass: "table table-striped" },
         [
-          _c("tr", [
-            _vm._m(0),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.reparacion.updated_at))])
-          ]),
+          _vm._m(3),
           _vm._v(" "),
-          _c("tr", [
-            _vm._m(1),
-            _vm._v(" "),
-            _c("td", [
-              _vm._v(
-                _vm._s(
-                  _vm.reparacion.cliente.nombre +
-                    " " +
-                    _vm.reparacion.cliente.apellido
-                )
-              )
+          _vm._l(_vm.reparacion.detalles, function(item) {
+            return _c("tr", [
+              _c("td", [
+                _c("b", [_vm._v(_vm._s(item.herramienta.nombre))]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(item.diagnostico) +
+                      "\n                    "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("td", [_vm._v("S/ " + _vm._s(item.costo.toFixed(2)))])
             ])
-          ]),
-          _vm._v(" "),
-          _vm._m(2),
-          _vm._v(" "),
-          _c("tr", [
-            _vm._m(3),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.reparacion.herramienta.nombre))])
-          ]),
+          }),
           _vm._v(" "),
           _c("tr", [
             _vm._m(4),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.reparacion.modelo))])
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _vm._m(5),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.reparacion.serie))])
-          ]),
-          _vm._v(" "),
-          _vm._m(6),
-          _vm._v(" "),
-          _vm._m(7),
-          _vm._v(" "),
-          _vm._m(8),
-          _vm._v(" "),
-          _vm._l(_vm.piezas, function(item) {
-            return _c("tr", [
-              _c("td", [_vm._v(_vm._s(item.pieza.nombre))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(item.cantidad))])
-            ])
-          }),
-          _vm._v(" "),
-          _vm._m(9),
-          _vm._v(" "),
-          _c("tr", [
-            _vm._m(10),
-            _vm._v(" "),
-            _c("td", [
-              _c("b", [_vm._v(_vm._s(_vm.reparacion.diagnostico.costo))])
-            ])
+            _c("td", [_c("b", [_vm._v("S/ " + _vm._s(_vm.total))])])
           ])
         ],
         2
@@ -45592,58 +45923,10 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [_c("b", [_vm._v("Herramienta:")])])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [_c("b", [_vm._v("Modelo:")])])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [_c("b", [_vm._v("Serie:")])])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", { staticStyle: { height: "8px" } }, [
-      _c("td"),
-      _vm._v(" "),
-      _c("td")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("tr", [
-      _c("td", { attrs: { colspan: "2" } }, [
-        _c("b", [_vm._v(" Piezas a usar en la reparación ")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("td", [_c("b", [_vm._v("Pieza")])]),
+      _c("td", [_c("b", [_vm._v("Herramienta Reparada")])]),
       _vm._v(" "),
-      _c("td", [_c("b", [_vm._v("Cantidad")])])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", { staticStyle: { height: "8px" } }, [
-      _c("td"),
-      _vm._v(" "),
-      _c("td")
+      _c("td", [_c("b", [_vm._v("Precio")])])
     ])
   },
   function() {
@@ -63270,6 +63553,14 @@ var routes = [{
   component: __webpack_require__(/*! ./view/Diagnosticar.vue */ "./resources/js/view/Diagnosticar.vue")["default"],
   beforeEnter: auth
 }, {
+  path: '/diagnostico/:id',
+  component: __webpack_require__(/*! ./view/Diagnostico.vue */ "./resources/js/view/Diagnostico.vue")["default"],
+  beforeEnter: auth
+}, {
+  path: '/diagnosticar-herramienta/:id',
+  component: __webpack_require__(/*! ./view/DiagnosticarHerramienta.vue */ "./resources/js/view/DiagnosticarHerramienta.vue")["default"],
+  beforeEnter: auth
+}, {
   path: '/nota',
   component: __webpack_require__(/*! ./view/Nota.vue */ "./resources/js/view/Nota.vue")["default"],
   beforeEnter: auth
@@ -63546,6 +63837,144 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Diagnosticar_vue_vue_type_template_id_4ddc7458___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Diagnosticar_vue_vue_type_template_id_4ddc7458___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/view/DiagnosticarHerramienta.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/view/DiagnosticarHerramienta.vue ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _DiagnosticarHerramienta_vue_vue_type_template_id_0edb2032___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DiagnosticarHerramienta.vue?vue&type=template&id=0edb2032& */ "./resources/js/view/DiagnosticarHerramienta.vue?vue&type=template&id=0edb2032&");
+/* harmony import */ var _DiagnosticarHerramienta_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DiagnosticarHerramienta.vue?vue&type=script&lang=js& */ "./resources/js/view/DiagnosticarHerramienta.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _DiagnosticarHerramienta_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _DiagnosticarHerramienta_vue_vue_type_template_id_0edb2032___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _DiagnosticarHerramienta_vue_vue_type_template_id_0edb2032___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/view/DiagnosticarHerramienta.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/view/DiagnosticarHerramienta.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/view/DiagnosticarHerramienta.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DiagnosticarHerramienta_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./DiagnosticarHerramienta.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/view/DiagnosticarHerramienta.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DiagnosticarHerramienta_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/view/DiagnosticarHerramienta.vue?vue&type=template&id=0edb2032&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/view/DiagnosticarHerramienta.vue?vue&type=template&id=0edb2032& ***!
+  \**************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DiagnosticarHerramienta_vue_vue_type_template_id_0edb2032___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./DiagnosticarHerramienta.vue?vue&type=template&id=0edb2032& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/view/DiagnosticarHerramienta.vue?vue&type=template&id=0edb2032&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DiagnosticarHerramienta_vue_vue_type_template_id_0edb2032___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DiagnosticarHerramienta_vue_vue_type_template_id_0edb2032___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/view/Diagnostico.vue":
+/*!*******************************************!*\
+  !*** ./resources/js/view/Diagnostico.vue ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Diagnostico_vue_vue_type_template_id_32c082c8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Diagnostico.vue?vue&type=template&id=32c082c8& */ "./resources/js/view/Diagnostico.vue?vue&type=template&id=32c082c8&");
+/* harmony import */ var _Diagnostico_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Diagnostico.vue?vue&type=script&lang=js& */ "./resources/js/view/Diagnostico.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Diagnostico_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Diagnostico_vue_vue_type_template_id_32c082c8___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Diagnostico_vue_vue_type_template_id_32c082c8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/view/Diagnostico.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/view/Diagnostico.vue?vue&type=script&lang=js&":
+/*!********************************************************************!*\
+  !*** ./resources/js/view/Diagnostico.vue?vue&type=script&lang=js& ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Diagnostico_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Diagnostico.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/view/Diagnostico.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Diagnostico_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/view/Diagnostico.vue?vue&type=template&id=32c082c8&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/view/Diagnostico.vue?vue&type=template&id=32c082c8& ***!
+  \**************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Diagnostico_vue_vue_type_template_id_32c082c8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Diagnostico.vue?vue&type=template&id=32c082c8& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/view/Diagnostico.vue?vue&type=template&id=32c082c8&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Diagnostico_vue_vue_type_template_id_32c082c8___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Diagnostico_vue_vue_type_template_id_32c082c8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

@@ -20,6 +20,8 @@ Route::post('reparacion/{id}/aprobar','ReparacionController@aprobar');
 Route::post('reparacion/{id}/reparar','ReparacionController@reparar');
 Route::post('reparacion/{id}/cobrar','ReparacionController@cobrar');
 Route::post('user/{id}/estado','UserController@estado');
+Route::get('reparacion-herramienta/{id}','ReparacionController@show2');
+Route::post('reparacion-herramienta/{id}','DiagnosticoController@storage');
 Route::resource('reparacion', 'ReparacionController');
 Route::resource('user', 'UserController');
 Route::resource('proveedor', 'ProveedorController');
