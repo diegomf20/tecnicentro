@@ -31,6 +31,7 @@ class AccesorioController extends Controller
             $Accesorio->nombre=$request->nombre;
             $Accesorio->modelo=$request->modelo;
             $Accesorio->stock=$request->stock;
+            $Accesorio->estado='0';
             $Accesorio->save();
             DB::commit();
             return response()->json([
@@ -76,6 +77,35 @@ class AccesorioController extends Controller
             return response()->json([
                 "status"    =>  "OK",
                 "data"      =>  $Accesorio,
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                "status"    =>  "DANGER",
+                "data"      =>  $e->getMessage()
+            ]);
+        }
+    }
+
+    public function estado($id)
+    {
+        DB::beginTransaction();
+
+        try {
+
+            $Accesorio= Accesorio::where('id',$id)->first();
+            
+            $estado = ($Accesorio->estado=='0') ? '1': '0'; //saber el estado actual y cambiarlo
+            
+            $Accesorio->estado=$estado;
+            $Accesorio->save();
+
+            $estado = ($Accesorio->estado=='0') ? '|Accesorio activado ': '|Accesorio desactivado'; //saber el estado cambiado para mostrar el mensaje
+
+            DB::commit();
+            return response()->json([
+                "status"    =>  "OK",
+                "data"      =>  $estado,
             ]);
         } catch (\Exception $e) {
             DB::rollback();

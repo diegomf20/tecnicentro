@@ -17,6 +17,7 @@ class CreateHerramientaTable extends Migration
             $table->increments('id');
             $table->string('codigo',5);
             $table->string('nombre',50);
+            $table->enum('estado',["0","1"])->default('0');
         });
     }
 

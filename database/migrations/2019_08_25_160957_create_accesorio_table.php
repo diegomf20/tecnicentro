@@ -19,6 +19,7 @@ class CreateAccesorioTable extends Migration
             $table->string('nombre',50);
             $table->string('modelo',50);
             $table->integer('stock');
+            $table->enum('estado',["0","1"])->default('0');
         });
     }
 

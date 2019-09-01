@@ -3,24 +3,17 @@
     <div class="container-flat-form">
         <div class="title-flat-form title-flat-blue">Nueva compra</div>
         <div class="form-padding">
-            <form id="" class="row">
-                <div class="col-md-3 form-group">
-                    <label for="">Documento</label>
-                    <input v-model="compra.documento" type="text" class="form-control">
-                </div>
+            <div class="row">
                 <div class="col-md-6">
                     <div class="form-group bmd-form-group">
                         <label class="">Proveedor</label>
                         <v-select :options="proveedores" @input="seleccionarProveedor"></v-select>
                     </div>
                 </div>
-            </form>
-        </div>
-    </div>
-    <div class="container-flat-form">
-        <div class="form-padding">
+            </div>
             <h4><b> ITEMS DE COMPRA</b></h4>
             <div class="row">
+                
                 <div class="col-md-6 form-group">
                     <label for="">Seleccionar Pieza</label>
                     <v-select v-model="itemMomentaneo.pieza" :options="piezas"></v-select>
@@ -53,7 +46,7 @@
                             </td>
                             <td>
                                 <button @click="eliminarItem(index)" type="button" class="btn btn-danger btn-link btn-sm">
-                                    <i class="zmdi zmdi zmdi-delete zmdi-hc-fw"></i>
+                                    <i class="zmdi zmdi-delete zmdi-hc-lg text-danger"></i>
                                 </button>
                             </td>
                         </tr>
@@ -96,7 +89,6 @@ export default {
             piezas: [],
             compra:{
                 proveedor_id:null,
-                documento: null,
                 items: [],
             },
             itemMomentaneo:{
@@ -117,7 +109,7 @@ export default {
                 });
             }
         });
-        axios.get(api_url+'/pieza')
+        axios.get(api_url+'/accesorio')
         .then(response=>{
             for (let i = 0; i < response.data.length; i++) {
                 var pieza = response.data[i];
@@ -166,7 +158,6 @@ export default {
                     });
                     this.compra={
                         proveedor_id:null,
-                        documento: null,
                         total: 0,
                         items: [],
                     };

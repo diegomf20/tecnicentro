@@ -77,15 +77,15 @@
                         <thead style="background-color:#DFF0D8; font-weight:bold;">
                             <tr>
                                 <th>Código</th>
-                                <th>Pieza</th>
+                                <th>Accesorio</th>
                                 <th>Cantidad</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($detalle as $item)
                                 <tr>
-                                    <td>{{$item->pieza->codigo}}</td>
-                                    <td>{{$item->pieza->nombre}}</td>
+                                    <td>{{$item->accesorio->codigo}}</td>
+                                    <td>{{$item->accesorio->nombre}}</td>
                                     <td>{{$item->cantidad}}</td>
                                 </tr>
                             @endforeach

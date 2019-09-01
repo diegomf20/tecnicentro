@@ -166,14 +166,14 @@
                                     <td>{{ user.rol }}</td>
                                     <td>{{ (user.estado=="0")? 'Activo': 'Inactivo' }}</td>
                                     <td>
-                                        <button @click="abrirEditar(user.id)" class="btn btn-success">
-                                            Editar
+                                        <button @click="abrirEditar(user.id)" class="btn btn-link  btn-sm">
+                                            <i class="zmdi zmdi-edit zmdi-hc-lg text-warning"></i>
                                         </button>
-                                        <button @click="cambiarEstado(user.id)" v-if="user.estado=='0'" class="btn btn-danger">
-                                            Desactivar
+                                        <button @click="cambiarEstado(user.id)" v-if="user.estado=='0'" class="btn btn-link  btn-sm">
+                                            <i class="zmdi zmdi-dot-circle zmdi-hc-lg text-success"></i>
                                         </button>
-                                        <button @click="cambiarEstado(user.id)" v-else class="btn btn-primary">
-                                            Activar
+                                        <button @click="cambiarEstado(user.id)" v-else class="btn btn-link  btn-sm">
+                                            <i class="zmdi zmdi-circle-o zmdi-hc-lg text-success"></i>
                                         </button>
                                     </td>
                                 </tr>

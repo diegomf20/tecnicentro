@@ -16,7 +16,7 @@ class CreateDetallecompraTable extends Migration
         Schema::create('detallecompra', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('cantidad');
-            $table->unsignedInteger('pieza_id');
+            $table->unsignedInteger('accesorio_id');
             $table->unsignedInteger('compra_id');
         });
     }

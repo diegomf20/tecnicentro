@@ -29,6 +29,7 @@ class HerramientaController extends Controller
             $Herramienta= new Herramienta();
             $Herramienta->codigo=str_pad($siguiente,5, "0", STR_PAD_LEFT);
             $Herramienta->nombre=$request->nombre;
+            $Herramienta->estado='0';
             $Herramienta->save();
             DB::commit();
             return response()->json([
@@ -72,6 +73,35 @@ class HerramientaController extends Controller
             return response()->json([
                 "status"    =>  "OK",
                 "data"      =>  $Herramienta,
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                "status"    =>  "DANGER",
+                "data"      =>  $e->getMessage()
+            ]);
+        }
+    }
+
+    public function estado($id)
+    {
+        DB::beginTransaction();
+
+        try {
+
+            $Herramienta= Herramienta::where('id',$id)->first();
+            
+            $estado = ($Herramienta->estado=='0') ? '1': '0'; //saber el estado actual y cambiarlo
+            
+            $Herramienta->estado=$estado;
+            $Herramienta->save();
+
+            $estado = ($Herramienta->estado=='0') ? 'Herramienta activado ': 'Herramienta desactivado'; //saber el estado cambiado para mostrar el mensaje
+
+            DB::commit();
+            return response()->json([
+                "status"    =>  "OK",
+                "data"      =>  $estado,
             ]);
         } catch (\Exception $e) {
             DB::rollback();

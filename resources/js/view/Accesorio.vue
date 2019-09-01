@@ -96,6 +96,7 @@
                                         <th class="div-table-cell">Nombre</th>
                                         <th class="div-table-cell">Modelo</th>
                                         <th class="div-table-cell">Stock</th>
+                                        <th class="div-table-cell">Estado</th>
                                         <th class="div-table-cell">Opciones</th>
                                     </tr>
                                 </thead>
@@ -105,9 +106,16 @@
                                         <td>{{ accesorio.nombre }}</td>
                                         <td>{{ accesorio.modelo }}</td>
                                         <td>{{ accesorio.stock }}</td>
-                                        <td>
-                                            <button  @click="abrirEditar(accesorio.id)" class="btn btn-success">
-                                                Editar
+                                        <td>{{ (accesorio.estado=="0")? 'Activo': 'Inactivo' }}</td>
+                                        <td class="text-center">
+                                            <button @click="abrirEditar(accesorio.id)" class="btn btn-link  btn-sm">
+                                                <i class="zmdi zmdi-edit zmdi-hc-lg text-warning"></i>
+                                            </button>
+                                            <button @click="cambiarEstado(accesorio.id)" v-if="accesorio.estado=='0'" class="btn btn-link  btn-sm">
+                                                <i class="zmdi zmdi-dot-circle zmdi-hc-lg text-success"></i>
+                                            </button>
+                                            <button @click="cambiarEstado(accesorio.id)" v-else class="btn btn-link  btn-sm">
+                                                <i class="zmdi zmdi-circle-o zmdi-hc-lg text-success"></i>
                                             </button>
                                         </td>
                                     </tr>

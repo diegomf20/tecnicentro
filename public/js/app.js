@@ -2146,6 +2146,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2397,13 +2405,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2415,7 +2416,6 @@ __webpack_require__.r(__webpack_exports__);
       piezas: [],
       compra: {
         proveedor_id: null,
-        documento: null,
         items: []
       },
       itemMomentaneo: {
@@ -2437,7 +2437,7 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
     });
-    axios.get(api_url + '/pieza').then(function (response) {
+    axios.get(api_url + '/accesorio').then(function (response) {
       for (var i = 0; i < response.data.length; i++) {
         var pieza = response.data[i];
 
@@ -2488,7 +2488,6 @@ __webpack_require__.r(__webpack_exports__);
           });
           _this2.compra = {
             proveedor_id: null,
-            documento: null,
             total: 0,
             items: []
           };
@@ -2796,6 +2795,14 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4181,6 +4188,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4188,6 +4203,11 @@ __webpack_require__.r(__webpack_exports__);
        * bloquear el btn guardar
        */
       btn_bloquear: false,
+
+      /**
+       * Bloquear campo de nombre y apellidos
+       */
+      bloquear: true,
       cliente: {
         dni: "",
         nombre: "",
@@ -4216,22 +4236,49 @@ __webpack_require__.r(__webpack_exports__);
         _this.clientes = response.data;
       });
     },
+    consulta: function consulta() {
+      var _this2 = this;
+
+      if (this.cliente.dni.length == 8) {
+        axios.get(api_url + '/cliente/consulta?&dni=' + this.cliente.dni).then(function (response) {
+          var resultado = response.data;
+          console.log(resultado);
+          console.log(resultado.length);
+
+          if (resultado.length != undefined) {
+            _this2.bloquear = false;
+            _this2.cliente.nombre = "";
+            _this2.cliente.apellido = "";
+          } else {
+            _this2.cliente.nombre = resultado.nombres;
+            _this2.cliente.apellido = resultado.apellidoPaterno + ' ' + resultado.apellidoMaterno;
+            _this2.bloquear = true;
+          }
+        });
+      }
+      /* else{
+         // this.bloquear=false;                        
+         this.cliente.nombre="";
+         this.cliente.apellido="";
+      } */
+
+    },
     abrir: function abrir() {
       $('#modal-nuevo').modal();
     },
     guardar: function guardar() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.btn_bloquear = true;
       axios.post(api_url + '/cliente', this.cliente).then(function (response) {
         var respuesta = response.data;
 
         if (respuesta.status == 'OK') {
-          _this2.limpiarErrores();
+          _this3.limpiarErrores();
 
-          _this2.clientes.push(respuesta.data);
+          _this3.clientes.push(respuesta.data);
 
-          _this2.cliente = {
+          _this3.cliente = {
             dni: "",
             nombre: "",
             apellido: "",
@@ -4247,7 +4294,7 @@ __webpack_require__.r(__webpack_exports__);
         }
 
         if (respuesta.status == 'VALIDATION') {
-          _this2.mostrarErrores('form-nuevo', respuesta.data);
+          _this3.mostrarErrores('form-nuevo', respuesta.data);
         }
 
         if (respuesta.status == 'DANGER') {
@@ -4258,29 +4305,29 @@ __webpack_require__.r(__webpack_exports__);
           });
         }
 
-        _this2.btn_bloquear = false;
+        _this3.btn_bloquear = false;
       });
     },
     abrirEditar: function abrirEditar(id) {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get(api_url + '/cliente/' + id).then(function (response) {
-        _this3.cliente_edit = response.data;
+        _this4.cliente_edit = response.data;
       });
       $('#modal-editar').modal();
     },
     update: function update() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.btn_bloquear = true;
       axios.post(api_url + '/cliente/' + this.cliente_edit.id + '?_method=PUT', this.cliente_edit).then(function (response) {
-        _this4.error_editar = null;
+        _this5.error_editar = null;
         var respuesta = response.data;
 
         if (respuesta.status == "OK") {
-          _this4.limpiarErrores();
+          _this5.limpiarErrores();
 
-          _this4.listar();
+          _this5.listar();
 
           $('#modal-editar').modal('hide');
           swal({
@@ -4291,7 +4338,7 @@ __webpack_require__.r(__webpack_exports__);
         }
 
         if (respuesta.status == "VALIDATION") {
-          _this4.mostrarErrores('form-editar', respuesta.data);
+          _this5.mostrarErrores('form-editar', respuesta.data);
         }
 
         if (respuesta.status == 'DANGER') {
@@ -4302,17 +4349,17 @@ __webpack_require__.r(__webpack_exports__);
           });
         }
 
-        _this4.btn_bloquear = false;
+        _this5.btn_bloquear = false;
       });
     },
     cambiarEstado: function cambiarEstado(id) {
-      var _this5 = this;
+      var _this6 = this;
 
       axios.post(api_url + '/cliente/' + id + '/estado').then(function (response) {
         var respuesta = response.data;
 
         if (respuesta.status == "OK") {
-          _this5.listar();
+          _this6.listar();
 
           swal({
             title: respuesta.data,
@@ -4362,6 +4409,14 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -42901,10 +42956,16 @@ var render = function() {
                     _c("td", [_vm._v(_vm._s(accesorio.stock))]),
                     _vm._v(" "),
                     _c("td", [
+                      _vm._v(
+                        _vm._s(accesorio.estado == "0" ? "Activo" : "Inactivo")
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "text-center" }, [
                       _c(
                         "button",
                         {
-                          staticClass: "btn btn-success",
+                          staticClass: "btn btn-link  btn-sm",
                           on: {
                             click: function($event) {
                               return _vm.abrirEditar(accesorio.id)
@@ -42912,11 +42973,48 @@ var render = function() {
                           }
                         },
                         [
-                          _vm._v(
-                            "\n                                        Editar\n                                    "
-                          )
+                          _c("i", {
+                            staticClass:
+                              "zmdi zmdi-edit zmdi-hc-lg text-warning"
+                          })
                         ]
-                      )
+                      ),
+                      _vm._v(" "),
+                      accesorio.estado == "0"
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-link  btn-sm",
+                              on: {
+                                click: function($event) {
+                                  return _vm.cambiarEstado(accesorio.id)
+                                }
+                              }
+                            },
+                            [
+                              _c("i", {
+                                staticClass:
+                                  "zmdi zmdi-dot-circle zmdi-hc-lg text-success"
+                              })
+                            ]
+                          )
+                        : _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-link  btn-sm",
+                              on: {
+                                click: function($event) {
+                                  return _vm.cambiarEstado(accesorio.id)
+                                }
+                              }
+                            },
+                            [
+                              _c("i", {
+                                staticClass:
+                                  "zmdi zmdi-circle-o zmdi-hc-lg text-success"
+                              })
+                            ]
+                          )
                     ])
                   ])
                 }),
@@ -42970,6 +43068,8 @@ var staticRenderFns = [
           _vm._v(" "),
           _c("th", { staticClass: "div-table-cell" }, [_vm._v("Stock")]),
           _vm._v(" "),
+          _c("th", { staticClass: "div-table-cell" }, [_vm._v("Estado")]),
+          _vm._v(" "),
           _c("th", { staticClass: "div-table-cell" }, [_vm._v("Opciones")])
         ])
       ]
@@ -43004,33 +43104,7 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "form-padding" }, [
-        _c("form", { staticClass: "row", attrs: { id: "" } }, [
-          _c("div", { staticClass: "col-md-3 form-group" }, [
-            _c("label", { attrs: { for: "" } }, [_vm._v("Documento")]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.compra.documento,
-                  expression: "compra.documento"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: { type: "text" },
-              domProps: { value: _vm.compra.documento },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.compra, "documento", $event.target.value)
-                }
-              }
-            })
-          ]),
-          _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
           _c("div", { staticClass: "col-md-6" }, [
             _c(
               "div",
@@ -43046,12 +43120,8 @@ var render = function() {
               1
             )
           ])
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "container-flat-form" }, [
-      _c("div", { staticClass: "form-padding" }, [
+        ]),
+        _vm._v(" "),
         _vm._m(0),
         _vm._v(" "),
         _c("div", { staticClass: "row" }, [
@@ -43176,7 +43246,8 @@ var render = function() {
                         },
                         [
                           _c("i", {
-                            staticClass: "zmdi zmdi zmdi-delete zmdi-hc-fw"
+                            staticClass:
+                              "zmdi zmdi-delete zmdi-hc-lg text-danger"
                           })
                         ]
                       )
@@ -43985,11 +44056,18 @@ var render = function() {
                     _c("td", [_vm._v(_vm._s(herramienta.nombre))]),
                     _vm._v(" "),
                     _c("td", [
+                      _vm._v(
+                        _vm._s(
+                          herramienta.estado == "0" ? "Activo" : "Inactivo"
+                        )
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "text-center" }, [
                       _c(
                         "button",
                         {
-                          staticClass: "btn btn-success",
-                          attrs: { disabled: _vm.btn_bloquear },
+                          staticClass: "btn btn-link  btn-sm",
                           on: {
                             click: function($event) {
                               return _vm.abrirEditar(herramienta.id)
@@ -43997,11 +44075,48 @@ var render = function() {
                           }
                         },
                         [
-                          _vm._v(
-                            "\n                                            Editar\n                                        "
-                          )
+                          _c("i", {
+                            staticClass:
+                              "zmdi zmdi-edit zmdi-hc-lg text-warning"
+                          })
                         ]
-                      )
+                      ),
+                      _vm._v(" "),
+                      herramienta.estado == "0"
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-link  btn-sm",
+                              on: {
+                                click: function($event) {
+                                  return _vm.cambiarEstado(herramienta.id)
+                                }
+                              }
+                            },
+                            [
+                              _c("i", {
+                                staticClass:
+                                  "zmdi zmdi-dot-circle zmdi-hc-lg text-success"
+                              })
+                            ]
+                          )
+                        : _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-link  btn-sm",
+                              on: {
+                                click: function($event) {
+                                  return _vm.cambiarEstado(herramienta.id)
+                                }
+                              }
+                            },
+                            [
+                              _c("i", {
+                                staticClass:
+                                  "zmdi zmdi-circle-o zmdi-hc-lg text-success"
+                              })
+                            ]
+                          )
                     ])
                   ])
                 }),
@@ -44068,6 +44183,8 @@ var staticRenderFns = [
           _c("th", { staticClass: "div-table-cell" }, [_vm._v("Codigo")]),
           _vm._v(" "),
           _c("th", { staticClass: "div-table-cell" }, [_vm._v("Nombre")]),
+          _vm._v(" "),
+          _c("th", { staticClass: "div-table-cell" }, [_vm._v("Estado")]),
           _vm._v(" "),
           _c("th", { staticClass: "div-table-cell" }, [_vm._v("Opciones")])
         ])
@@ -45716,10 +45833,13 @@ var render = function() {
                             type: "text",
                             placeholder: "Escribe aquí el DNI",
                             required: "",
-                            maxlength: "50"
+                            maxlength: "8"
                           },
                           domProps: { value: _vm.cliente.dni },
                           on: {
+                            keyup: function($event) {
+                              return _vm.consulta()
+                            },
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
@@ -46233,10 +46353,14 @@ var render = function() {
                 _c("td", [_vm._v(_vm._s(cliente.numero))]),
                 _vm._v(" "),
                 _c("td", [
+                  _vm._v(_vm._s(cliente.estado == "0" ? "Activo" : "Inactivo"))
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "text-center" }, [
                   _c(
                     "button",
                     {
-                      staticClass: "btn btn-success",
+                      staticClass: "btn btn-link  btn-sm",
                       on: {
                         click: function($event) {
                           return _vm.abrirEditar(cliente.id)
@@ -46244,11 +46368,47 @@ var render = function() {
                       }
                     },
                     [
-                      _vm._v(
-                        "\n                                Editar\n                            "
-                      )
+                      _c("i", {
+                        staticClass: "zmdi zmdi-edit zmdi-hc-lg text-warning"
+                      })
                     ]
-                  )
+                  ),
+                  _vm._v(" "),
+                  cliente.estado == "0"
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-link  btn-sm",
+                          on: {
+                            click: function($event) {
+                              return _vm.cambiarEstado(cliente.id)
+                            }
+                          }
+                        },
+                        [
+                          _c("i", {
+                            staticClass:
+                              "zmdi zmdi-dot-circle zmdi-hc-lg text-success"
+                          })
+                        ]
+                      )
+                    : _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-link  btn-sm",
+                          on: {
+                            click: function($event) {
+                              return _vm.cambiarEstado(cliente.id)
+                            }
+                          }
+                        },
+                        [
+                          _c("i", {
+                            staticClass:
+                              "zmdi zmdi-circle-o zmdi-hc-lg text-success"
+                          })
+                        ]
+                      )
                 ])
               ])
             }),
@@ -46321,9 +46481,11 @@ var staticRenderFns = [
           _vm._v(" "),
           _c("th", { staticClass: "div-table-cell" }, [_vm._v("Apellido")]),
           _vm._v(" "),
-          _c("th", { staticClass: "div-table-cell" }, [_vm._v("DIrección")]),
+          _c("th", { staticClass: "div-table-cell" }, [_vm._v("Dirección")]),
           _vm._v(" "),
           _c("th", { staticClass: "div-table-cell" }, [_vm._v("Número")]),
+          _vm._v(" "),
+          _c("th", { staticClass: "div-table-cell" }, [_vm._v("Estado")]),
           _vm._v(" "),
           _c("th", { staticClass: "div-table-cell" }, [_vm._v("Opciones")])
         ])
@@ -46825,10 +46987,16 @@ var render = function() {
                 _c("td", [_vm._v(_vm._s(proveedor.numero))]),
                 _vm._v(" "),
                 _c("td", [
+                  _vm._v(
+                    _vm._s(proveedor.estado == "0" ? "Activo" : "Inactivo")
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "text-center" }, [
                   _c(
                     "button",
                     {
-                      staticClass: "btn btn-success",
+                      staticClass: "btn btn-link  btn-sm",
                       on: {
                         click: function($event) {
                           return _vm.abrirEditar(proveedor.id)
@@ -46836,11 +47004,47 @@ var render = function() {
                       }
                     },
                     [
-                      _vm._v(
-                        "\n                                    Editar\n                                "
-                      )
+                      _c("i", {
+                        staticClass: "zmdi zmdi-edit zmdi-hc-lg text-warning"
+                      })
                     ]
-                  )
+                  ),
+                  _vm._v(" "),
+                  proveedor.estado == "0"
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-link  btn-sm",
+                          on: {
+                            click: function($event) {
+                              return _vm.cambiarEstado(proveedor.id)
+                            }
+                          }
+                        },
+                        [
+                          _c("i", {
+                            staticClass:
+                              "zmdi zmdi-dot-circle zmdi-hc-lg text-success"
+                          })
+                        ]
+                      )
+                    : _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-link  btn-sm",
+                          on: {
+                            click: function($event) {
+                              return _vm.cambiarEstado(proveedor.id)
+                            }
+                          }
+                        },
+                        [
+                          _c("i", {
+                            staticClass:
+                              "zmdi zmdi-circle-o zmdi-hc-lg text-success"
+                          })
+                        ]
+                      )
                 ])
               ])
             }),
@@ -46914,6 +47118,8 @@ var staticRenderFns = [
           _c("th", { staticClass: "div-table-cell" }, [_vm._v("Email")]),
           _vm._v(" "),
           _c("th", { staticClass: "div-table-cell" }, [_vm._v("Número")]),
+          _vm._v(" "),
+          _c("th", { staticClass: "div-table-cell" }, [_vm._v("Estado")]),
           _vm._v(" "),
           _c("th", { staticClass: "div-table-cell" }, [_vm._v("Opciones")])
         ])
@@ -47607,7 +47813,7 @@ var render = function() {
                   _c(
                     "button",
                     {
-                      staticClass: "btn btn-success",
+                      staticClass: "btn btn-link  btn-sm",
                       on: {
                         click: function($event) {
                           return _vm.abrirEditar(user.id)
@@ -47615,9 +47821,9 @@ var render = function() {
                       }
                     },
                     [
-                      _vm._v(
-                        "\n                                    Editar\n                                "
-                      )
+                      _c("i", {
+                        staticClass: "zmdi zmdi-edit zmdi-hc-lg text-warning"
+                      })
                     ]
                   ),
                   _vm._v(" "),
@@ -47625,7 +47831,7 @@ var render = function() {
                     ? _c(
                         "button",
                         {
-                          staticClass: "btn btn-danger",
+                          staticClass: "btn btn-link  btn-sm",
                           on: {
                             click: function($event) {
                               return _vm.cambiarEstado(user.id)
@@ -47633,15 +47839,16 @@ var render = function() {
                           }
                         },
                         [
-                          _vm._v(
-                            "\n                                    Desactivar\n                                "
-                          )
+                          _c("i", {
+                            staticClass:
+                              "zmdi zmdi-dot-circle zmdi-hc-lg text-success"
+                          })
                         ]
                       )
                     : _c(
                         "button",
                         {
-                          staticClass: "btn btn-primary",
+                          staticClass: "btn btn-link  btn-sm",
                           on: {
                             click: function($event) {
                               return _vm.cambiarEstado(user.id)
@@ -47649,9 +47856,10 @@ var render = function() {
                           }
                         },
                         [
-                          _vm._v(
-                            "\n                                    Activar\n                                "
-                          )
+                          _c("i", {
+                            staticClass:
+                              "zmdi zmdi-circle-o zmdi-hc-lg text-success"
+                          })
                         ]
                       )
                 ])

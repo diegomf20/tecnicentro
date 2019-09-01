@@ -62,6 +62,7 @@
                                         <tr>
                                             <th class="div-table-cell">Codigo</th>
                                             <th class="div-table-cell">Nombre</th>
+                                            <th class="div-table-cell">Estado</th>
                                             <th class="div-table-cell">Opciones</th>
                                         </tr>
                                     </thead>
@@ -69,9 +70,16 @@
                                         <tr v-for="herramienta in herramientas">
                                             <td>{{ herramienta.codigo }}</td>
                                             <td>{{ herramienta.nombre }}</td>
-                                            <td>
-                                                <button :disabled="btn_bloquear" @click="abrirEditar(herramienta.id)" class="btn btn-success">
-                                                    Editar
+                                            <td>{{ (herramienta.estado=="0")? 'Activo': 'Inactivo' }}</td>
+                                            <td class="text-center">
+                                                <button @click="abrirEditar(herramienta.id)" class="btn btn-link  btn-sm">
+                                                    <i class="zmdi zmdi-edit zmdi-hc-lg text-warning"></i>
+                                                </button>
+                                                <button @click="cambiarEstado(herramienta.id)" v-if="herramienta.estado=='0'" class="btn btn-link  btn-sm">
+                                                    <i class="zmdi zmdi-dot-circle zmdi-hc-lg text-success"></i>
+                                                </button>
+                                                <button @click="cambiarEstado(herramienta.id)" v-else class="btn btn-link  btn-sm">
+                                                    <i class="zmdi zmdi-circle-o zmdi-hc-lg text-success"></i>
                                                 </button>
                                             </td>
                                         </tr>

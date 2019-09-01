@@ -20,6 +20,7 @@ class CreateClienteTable extends Migration
             $table->string('apellido',50)->nullable();
             $table->string('direccion',100)->nullable();
             $table->string('numero',12)->nullable();
+            $table->enum('estado',["0","1"])->default('0');
         });
     }
 

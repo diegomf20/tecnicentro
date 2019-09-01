@@ -121,6 +121,7 @@
                                     <th class="div-table-cell">Nombre</th>
                                     <th class="div-table-cell">Email</th>
                                     <th class="div-table-cell">Número</th>
+                                    <th class="div-table-cell">Estado</th>
                                     <th class="div-table-cell">Opciones</th>
                                 </tr>
                             </thead>
@@ -130,9 +131,16 @@
                                     <td>{{ proveedor.nombre }}</td>
                                     <td>{{ proveedor.email }}</td>
                                     <td>{{ proveedor.numero }}</td>
-                                    <td>
-                                        <button @click="abrirEditar(proveedor.id)" class="btn btn-success">
-                                            Editar
+                                    <td>{{ (proveedor.estado=="0")? 'Activo': 'Inactivo' }}</td>
+                                    <td class="text-center">
+                                        <button @click="abrirEditar(proveedor.id)" class="btn btn-link  btn-sm">
+                                            <i class="zmdi zmdi-edit zmdi-hc-lg text-warning"></i>
+                                        </button>
+                                        <button @click="cambiarEstado(proveedor.id)" v-if="proveedor.estado=='0'" class="btn btn-link  btn-sm">
+                                            <i class="zmdi zmdi-dot-circle zmdi-hc-lg text-success"></i>
+                                        </button>
+                                        <button @click="cambiarEstado(proveedor.id)" v-else class="btn btn-link  btn-sm">
+                                            <i class="zmdi zmdi-circle-o zmdi-hc-lg text-success"></i>
                                         </button>
                                     </td>
                                 </tr>

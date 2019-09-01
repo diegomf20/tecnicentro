@@ -12,7 +12,7 @@
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="group-material">
-                                            <input v-model="cliente.dni" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el DNI" required="" maxlength="50">
+                                            <input  v-model="cliente.dni" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el DNI" required="" maxlength="8" v-on:keyup="consulta()">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>DNI</label>
@@ -20,7 +20,7 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="group-material">
-                                            <input v-model="cliente.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre del cliente" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del cliente">
+                                            <input v-model="cliente.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre del cliente" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del cliente"  >
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>Nombre</label>
@@ -28,7 +28,7 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="group-material">
-                                            <input v-model="cliente.apellido" type="text" class="tooltips-general material-control" placeholder="Escribe aquí los apellidos " required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el apellido del cliente">
+                                            <input v-model="cliente.apellido" type="text" class="tooltips-general material-control" placeholder="Escribe aquí los apellidos " required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el apellido del cliente" >
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>Apellidos</label>
@@ -136,8 +136,9 @@
                                 <th class="div-table-cell">DNI</th>
                                 <th class="div-table-cell">Nombre</th>
                                 <th class="div-table-cell">Apellido</th>
-                                <th class="div-table-cell">DIrección</th>
+                                <th class="div-table-cell">Dirección</th>
                                 <th class="div-table-cell">Número</th>
+                                <th class="div-table-cell">Estado</th>
                                 <th class="div-table-cell">Opciones</th>
                             </tr>
                         </thead>
@@ -148,9 +149,16 @@
                                 <td>{{ cliente.apellido }}</td>
                                 <td>{{ cliente.direccion }}</td>
                                 <td>{{ cliente.numero }}</td>
-                                <td>
-                                    <button @click="abrirEditar(cliente.id)" class="btn btn-success">
-                                        Editar
+                                <td>{{ (cliente.estado=="0")? 'Activo': 'Inactivo' }}</td>
+                                <td class="text-center">
+                                    <button @click="abrirEditar(cliente.id)" class="btn btn-link  btn-sm">
+                                        <i class="zmdi zmdi-edit zmdi-hc-lg text-warning"></i>
+                                    </button>
+                                    <button @click="cambiarEstado(cliente.id)" v-if="cliente.estado=='0'" class="btn btn-link  btn-sm">
+                                        <i class="zmdi zmdi-dot-circle zmdi-hc-lg text-success"></i>
+                                    </button>
+                                    <button @click="cambiarEstado(cliente.id)" v-else class="btn btn-link  btn-sm">
+                                        <i class="zmdi zmdi-circle-o zmdi-hc-lg text-success"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -168,6 +176,10 @@ export default {
               * bloquear el btn guardar
               */
             btn_bloquear:false,
+            /**
+             * Bloquear campo de nombre y apellidos
+             */
+            bloquear: true,
 
             cliente: {
                 dni:"",
@@ -195,6 +207,30 @@ export default {
             .then(response=>{
                 this.clientes=response.data;
             });
+        },
+        consulta(){
+            if (this.cliente.dni.length==8) {
+                    axios.get(api_url+'/cliente/consulta?&dni='+this.cliente.dni)
+                    .then(response=>{
+                        var resultado=response.data;
+                        console.log(resultado);
+                        console.log(resultado.length);
+                        
+                        if(resultado.length!=undefined){
+                            this.bloquear=false;                        
+                            this.cliente.nombre="";
+                            this.cliente.apellido="";
+                        }else{
+                            this.cliente.nombre=resultado.nombres;
+                            this.cliente.apellido=resultado.apellidoPaterno+' '+resultado.apellidoMaterno;
+                            this.bloquear=true;                        
+                        }
+                    });
+            }/* else{
+                // this.bloquear=false;                        
+                this.cliente.nombre="";
+                this.cliente.apellido="";
+            } */
         },
         abrir(){
             $('#modal-nuevo').modal();
