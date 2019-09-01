@@ -3,15 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
-// use Illuminate\Http\JsonResponse;
 
-use App\Rules\NumeroRule;
-
-
-class UsuarioUpdataValidation extends FormRequest
+class HerramientaVAlidation extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,10 +26,7 @@ class UsuarioUpdataValidation extends FormRequest
     public function rules()
     {
         return [
-            'nombre'=>['required','max:30'],
-            'apellido'=>['required','max:50'],
-            'rol'=>['required'],
-            'numero'=>['required',new NumeroRule()],
+            'nombre'=>'required|max:50'
         ];
     }
 

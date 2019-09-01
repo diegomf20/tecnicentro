@@ -19,6 +19,7 @@ class CreateProveedorTable extends Migration
             $table->string('nombre',50)->nullable();
             $table->string('email',100)->nullable();
             $table->string('numero',12)->nullable();
+            $table->enum('estado',["0","1"])->default('0');
         });
     }
 

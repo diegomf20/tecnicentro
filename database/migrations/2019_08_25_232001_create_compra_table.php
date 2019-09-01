@@ -15,7 +15,6 @@ class CreateCompraTable extends Migration
     {
         Schema::create('compra', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('numcompra',30);
             $table->enum('estado',["0","1"]);//0:enviado , 1:recibido,
             $table->unsignedInteger('proveedor_id');
         });
@@ -28,8 +27,6 @@ class CreateCompraTable extends Migration
      */
     public function down()
     {
-        Schema::table('compra', function (Blueprint $table) {
-           
-        });
+        Schema::dropIfExists('compra');
     }
 }

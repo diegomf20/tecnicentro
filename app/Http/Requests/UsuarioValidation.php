@@ -8,7 +8,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 // use Illuminate\Http\JsonResponse;
 
-
+use App\Rules\NumeroRule;
 
 class UsuarioValidation extends FormRequest
 {
@@ -34,12 +34,13 @@ class UsuarioValidation extends FormRequest
             'apellido'=>['required','max:50'],
             'rol'=>['required'],
             'password'=>['required','max:100'],
+            'numero'=>['required',new NumeroRule()],
+            'usuario'=>'required|max:100|unique:user,usuario'
         ];
     }
 
     public function messages(){
         return [
-            'dni.unique'=> 'El usuario ya fue registrado.'
         ];
     }
 

@@ -8,11 +8,11 @@
                             <i class="zmdi zmdi-account-box"></i> NUEVO PROVEEDOR<br>
                         </div>
                         <div class="modal-body">
-                            <form v-on:submit.prevent="guardar()" class="form-padding">
+                            <form id="form-nuevo" v-on:submit.prevent="guardar()" class="form-padding">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="group-material">
-                                            <input v-model="proveedor.ruc" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el RUC" required="" maxlength="50">
+                                            <input name="ruc" v-model="proveedor.ruc" v-on:keyup="consulta()" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el RUC" required="" maxlength="50">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>RUC</label>
@@ -20,7 +20,7 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="group-material">
-                                            <input v-model="proveedor.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre del proveedor" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del proveedor">
+                                            <input name="nombre" v-model="proveedor.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre del proveedor" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del proveedor">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>Nombre</label>
@@ -28,7 +28,7 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="group-material">
-                                            <input v-model="proveedor.email" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el email" required="" maxlength="50">
+                                            <input name="email" v-model="proveedor.email" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el email" required="" maxlength="50">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>email</label>
@@ -36,7 +36,7 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="group-material">
-                                            <input v-model="proveedor.numero" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el Número" required="" maxlength="20" >
+                                            <input name="numero" v-model="proveedor.numero" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el Número" required="" maxlength="20" >
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>Número</label>
@@ -61,11 +61,11 @@
                             <i class="zmdi zmdi-account-box"></i> EDITAR PROVEEDOR<br>
                         </div>
                         <div class="modal-body">
-                            <form v-on:submit.prevent="update()" class="form-padding">
+                            <form id="form-editar" v-on:submit.prevent="update()" class="form-padding">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="group-material">
-                                            <input v-model="proveedor_edit.ruc" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el RUC" required="" maxlength="50">
+                                            <input name="ruc" v-model="proveedor_edit.ruc" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el RUC" required="" maxlength="50">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>RUC</label>
@@ -73,7 +73,7 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="group-material">
-                                            <input v-model="proveedor_edit.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre del proveedor" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del proveedor">
+                                            <input name="nombre" v-model="proveedor_edit.nombre" type="text" class="tooltips-general material-control" placeholder="Escribe aquí nombre del proveedor" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del proveedor">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>Nombre</label>
@@ -81,7 +81,7 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="group-material">
-                                            <input v-model="proveedor_edit.email" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el email " required="" maxlength="50">
+                                            <input name="email" v-model="proveedor_edit.email" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el email " required="" maxlength="50">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>email</label>
@@ -89,7 +89,7 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="group-material">
-                                            <input v-model="proveedor_edit.numero" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el Número" required="" maxlength="20" >
+                                            <input name="numero" v-model="proveedor_edit.numero" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el Número" required="" maxlength="20" >
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
                                             <label>Número</label>
@@ -121,6 +121,7 @@
                                     <th class="div-table-cell">Nombre</th>
                                     <th class="div-table-cell">Email</th>
                                     <th class="div-table-cell">Número</th>
+                                    <th class="div-table-cell">Estado</th>
                                     <th class="div-table-cell">Opciones</th>
                                 </tr>
                             </thead>
@@ -130,9 +131,16 @@
                                     <td>{{ proveedor.nombre }}</td>
                                     <td>{{ proveedor.email }}</td>
                                     <td>{{ proveedor.numero }}</td>
-                                    <td>
-                                        <button @click="abrirEditar(proveedor.id)" class="btn btn-success">
-                                            Editar
+                                    <td>{{ (proveedor.estado=="0")? 'Activo': 'Inactivo' }}</td>
+                                    <td class="text-center">
+                                        <button @click="abrirEditar(proveedor.id)" class="btn btn-link  btn-sm">
+                                            <i class="zmdi zmdi-edit zmdi-hc-lg text-warning"></i>
+                                        </button>
+                                        <button @click="cambiarEstado(proveedor.id)" v-if="proveedor.estado=='0'" class="btn btn-link  btn-sm">
+                                            <i class="zmdi zmdi-dot-circle zmdi-hc-lg text-success"></i>
+                                        </button>
+                                        <button @click="cambiarEstado(proveedor.id)" v-else class="btn btn-link  btn-sm">
+                                            <i class="zmdi zmdi-circle-o zmdi-hc-lg text-success"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -176,6 +184,25 @@ export default {
             .then(response=>{
                 this.proveedors=response.data;
             });
+        },
+        consulta(){
+            if (this.proveedor.ruc.length==11) {
+                    axios.get(api_url+'/proveedor/consulta?&ruc='+this.proveedor.ruc)
+                    .then(response=>{
+                        var resultado=response.data;
+                        
+                        if(resultado.length!=undefined){
+                            // this.bloquear=false;                        
+                            this.proveedor.nombre="";
+                        }else{
+                            this.proveedor.nombre=resultado.razonSocial;
+                            // this.bloquear=true;                        
+                        }
+                    });
+            }else{
+                // this.bloquear=false;                        
+                this.proveedor.nombre="";
+            }
         },
         abrir(){
             $('#modal-nuevo').modal();
@@ -258,17 +285,22 @@ export default {
             for (let index = 0; index < arrKeys.length; index++) {
                 var indexName=arrKeys[index];
                 if(index==0){
-                    $('#'+form+' [name='+indexName+']').focus().parents('div.form-group').addClass('has-error')
-                        .append("<div class=text-center><span>"+errores[indexName]+"</span></div>");
+                    $('#'+form+' [name='+indexName+']').focus().parents('div.group-material').addClass('has-error')
+                        .append("<div class=text-center><span class=error>"+errores[indexName]+"</span></div>");
                     }else{
-                        $('#'+form+' [name='+indexName+']').parents('div.form-group').addClass('has-error')
-                        .append("<div class=text-center><span>"+errores[indexName]+"</span></div>");
+                        $('#'+form+' [name='+indexName+']').parents('div.group-material').addClass('has-error')
+                        .append("<div class=text-center><span class=error>"+errores[indexName]+"</span></div>");
                 }
             }
         },
         limpiarErrores() {
             $('.has-error span').remove();
+            $('.has-error').removeClass("has-error");
         }
     },
 }
+    $('body').on('hidden.bs.modal', '#modal-editar, #modal-nuevo', function(event) {
+        $('.has-error span').remove();
+        $('.has-error').removeClass("has-error");
+    })
 </script>

@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProveedorVAlidation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\Model\Proveedor;
 use Carbon\Carbon;
+
+use Peru\Sunat\Ruc;
+use Peru\Http\ContextClient;
 
 class ProveedorController extends Controller
 {
@@ -19,7 +23,7 @@ class ProveedorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProveedorVAlidation $request)
     {
         DB::beginTransaction();
 
@@ -29,6 +33,7 @@ class ProveedorController extends Controller
             $proveedor->nombre=$request->nombre;
             $proveedor->email=$request->email;
             $proveedor->numero=$request->numero;
+            $proveedor->estado='0';
             $proveedor->save();
             DB::commit();
             return response()->json([
@@ -59,7 +64,7 @@ class ProveedorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(ProveedorVAlidation $request, $id)
     {
         DB::beginTransaction();
 
@@ -116,6 +121,24 @@ class ProveedorController extends Controller
                 "status"    =>  "DANGER",
                 "data"      =>  $e->getMessage()
             ]);
+        }
+    }
+
+    public function consulta(Request $request){
+        // echo json_encode($request->all());
+        if ($request->ruc!=null) {
+            $ruc = $request->ruc;
+
+            $cs = new Ruc();
+            $cs->setClient(new ContextClient());
+            
+            $company = $cs->get($ruc);
+            if ($company === false) {
+                echo $cs->getError();
+                exit();
+            }
+            
+            echo json_encode($company);
         }
     }
 }

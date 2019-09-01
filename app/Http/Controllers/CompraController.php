@@ -7,6 +7,7 @@ use App\Model\Compra;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Model\Accesorio;
 use Mail  ;
 
 class CompraController extends Controller
@@ -47,9 +48,6 @@ class CompraController extends Controller
         if($request->proveedor_id==null){
             return response()->json(["status"=>"ERROR","data"=>"Selecciones un proveedor"]);
         }
-        if($request->documento==null){
-            return response()->json(["status"=>"ERROR","data"=>"EL documento es necesario"]);
-        }
         if($request->items==null){
             return response()->json(["status"=>"ERROR","data"=>"La compra no contiene Items"]);
         }
@@ -59,7 +57,6 @@ class CompraController extends Controller
         try {
             
             $compra=new Compra();
-            $compra->numcompra=$request->documento;
             $compra->proveedor_id=$request->proveedor_id;;
             $compra->save();
 
@@ -69,7 +66,7 @@ class CompraController extends Controller
             foreach ($request->items as $key => $item) {
                 $detalleCompra=new DetalleCompra();
                 $detalleCompra->cantidad=$item['cantidad'];
-                $detalleCompra->pieza_id=$item['pieza_id'];
+                $detalleCompra->accesorio_id=$item['pieza_id'];
                 $detalleCompra->compra_id=$compra->id;
                 $detalleCompra->save();
             }
@@ -83,15 +80,14 @@ class CompraController extends Controller
            
             Mail::send('ordencompra.email', ["empresa"=>$empresa], function ($message) use ($compra, $pdf, $numcompra) {
                 $message->subject('orden de compra de Tecnicentro');
-                $message->to('paloominounprg@gmail.com');
-                // $message->to($compra->proveedor->email);
+                $message->to($compra->proveedor->email);
                 $message->attachData ($pdf->output(), 'tecnicento'.$numcompra.'.pdf');
             });
             
             DB::commit();
             return response()->json([
                 "status"    =>  "OK",
-                "data"      =>  $compra,
+                "data"      =>  'Compra Registrado',
             ]);
         } catch (\Exception $e) {
             DB::rollback();

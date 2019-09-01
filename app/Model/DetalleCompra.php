@@ -9,8 +9,8 @@ class DetalleCompra extends Model
     protected $table="detallecompra";
     public $timestamps = false;
 
-    public function pieza()
+    public function accesorio()
     {
-        return $this->belongsTo('App\Model\Pieza');
-    } 
+        return $this->belongsTo('App\Model\Accesorio');
+    }
 }

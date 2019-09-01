@@ -689,3 +689,12 @@ h1,h2,h3,h4,h5{
 #ticket table td,#ticket table th{
     font-size: 14px;
 }
+
+/* validaciones  */
+.has-error input {
+    border-bottom: 1px solid red;
+}
+
+.has-error .error{
+    color: red;
+}

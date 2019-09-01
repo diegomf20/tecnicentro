@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ClienteVAlidation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\Model\Cliente;
 use Carbon\Carbon;
+
+use Peru\Jne\Dni;
+use Peru\Http\ContextClient;
 
 class ClienteController extends Controller
 {
@@ -19,7 +23,7 @@ class ClienteController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ClienteVAlidation $request)
     {
         DB::beginTransaction();
 
@@ -30,6 +34,7 @@ class ClienteController extends Controller
             $cliente->apellido=$request->apellido;
             $cliente->direccion=$request->direccion;
             $cliente->numero=$request->numero;
+            $cliente->estado='0';
             $cliente->save();
             DB::commit();
             return response()->json([
@@ -60,7 +65,7 @@ class ClienteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(ClienteVAlidation $request, $id)
     {
         DB::beginTransaction();
 
@@ -93,12 +98,6 @@ class ClienteController extends Controller
         try {
 
             $cliente= Cliente::where('id',$id)->first();
-            if($cliente->estado=='2'){
-                return response()->json([
-                    "status"    =>  "WARNING",
-                    "data"      =>  "Cliente no puede desactivarse",
-                ]);
-            }
             
             $estado = ($cliente->estado=='0') ? '1': '0'; //saber el estado actual y cambiarlo
             
@@ -119,5 +118,25 @@ class ClienteController extends Controller
                 "data"      =>  $e->getMessage()
             ]);
         }
-    }    
+    } 
+
+    public function consulta(Request $request){
+        // echo json_encode($request->all());
+        if ($request->dni!=null) {
+            $dni = $request->dni;
+
+            $cs = new Dni();
+            $cs->setClient(new ContextClient());
+    
+            $person = $cs->get($dni);
+            if ($person === false) {
+                echo $cs->getError();
+                exit();
+            }
+        
+            echo json_encode($person);
+        }
+    } 
+    
+    
 }
