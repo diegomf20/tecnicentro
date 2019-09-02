@@ -153,14 +153,15 @@ export default {
                             icon: "success",
                             timer: "2000"
                         });
-
-                        let accesorio='';
-                        for (let i = 0; i < respuesta.accesorio.length; i++) {
-                            const item = respuesta.accesorio[i];
-                            accesorio='Producto: '+item['nombre']+', cant faltante: '+item['cantidad']+ "\n";
-                            accesorio+=accesorio;
+                        if(respuesta.accesorio.length!=0){
+                            let accesorio='';
+                            for (let i = 0; i < respuesta.accesorio.length; i++) {
+                                const item = respuesta.accesorio[i];
+                                accesorio='Producto: '+item['nombre']+', cant faltante: '+item['cantidad']+ "\n";
+                                accesorio+=accesorio;
+                            }
+                            swal("Accesorios faltantes", accesorio);
                         }
-                       swal("Accesorios faltantes", accesorio);
 
                         this.$router.push({path: "/diagnosticar/"+this.detalle_seleccionado.reparacion_id} );
                     }

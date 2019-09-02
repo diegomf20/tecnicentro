@@ -2791,15 +2791,18 @@ __webpack_require__.r(__webpack_exports__);
               icon: "success",
               timer: "2000"
             });
-            var accesorio = '';
 
-            for (var i = 0; i < respuesta.accesorio.length; i++) {
-              var item = respuesta.accesorio[i];
-              accesorio = 'Producto: ' + item['nombre'] + ', cant faltante: ' + item['cantidad'] + "\n";
-              accesorio += accesorio;
+            if (respuesta.accesorio.length != 0) {
+              var accesorio = '';
+
+              for (var i = 0; i < respuesta.accesorio.length; i++) {
+                var item = respuesta.accesorio[i];
+                accesorio = 'Producto: ' + item['nombre'] + ', cant faltante: ' + item['cantidad'] + "\n";
+                accesorio += accesorio;
+              }
+
+              swal("Accesorios faltantes", accesorio);
             }
-
-            swal("Accesorios faltantes", accesorio);
 
             _this2.$router.push({
               path: "/diagnosticar/" + _this2.detalle_seleccionado.reparacion_id
