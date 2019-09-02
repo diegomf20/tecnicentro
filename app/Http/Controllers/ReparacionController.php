@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Accesorio;
 use App\Model\DetalleDiagnostico;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -98,12 +99,47 @@ class ReparacionController extends Controller
         ]);
     }
     public function reparar($id){
-        $Reparacion=Reparacion::where('id',$id)->first();
-        $Reparacion->estado='3';
-        $Reparacion->save();
-        return response()->json([
-            "status" => "OK",
-        ]);
+        DB::beginTransaction();
+
+        try {
+
+            $Reparacion=Reparacion::where('id',$id)->first();
+            $Reparacion->estado='3';
+            $Reparacion->save();
+
+            $reparacionHerramientas=ReparacionHerramienta::with('detalles')->where('reparacion_id',$Reparacion->id)
+                    ->where('estado','1')
+                    ->get();
+
+            foreach ($reparacionHerramientas as $reparacionHerramienta){
+                foreach ($reparacionHerramienta->detalles as $item){
+                    $accesorio=Accesorio::where('id',$item->accesorio_id)->first();
+                    $cantidadAccesorio=$accesorio->stock-$item->cantidad;
+                    
+                    if($cantidadAccesorio<=0){
+                        DB::rollback();
+                        return response()->json([
+                            "status"    =>  "DANGER",
+                            "data"      =>  'Producto '.$accesorio->nombre.', modelo '.$accesorio->modelo.' agotado',
+                        ]);
+                    }
+                    $accesorio->stock=$cantidadAccesorio;
+                    $accesorio->save();
+                }
+            }
+            DB::commit();
+            return response()->json([
+                "status" => "OK",
+                "data"=>$reparacionHerramientas,
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                "status"    =>  "DANGER",
+                "data"      =>  $e->getMessage()
+            ]);
+        }
     }
     public function cobrar($id){
         $Reparacion=Reparacion::where('id',$id)->first();

@@ -16,7 +16,8 @@ class DiagnosticoController extends Controller
         DB::beginTransaction();
 
         try {
-
+            $accesorioBajo=[];  
+            $aux=[];
             foreach ($request->detalles as $key => $item) {
                 $da=new DiagnosticoAccesorio();
                 $da->cantidad=$item['cantidad'];
@@ -28,15 +29,15 @@ class DiagnosticoController extends Controller
                 $cantidadAccesorio=$accesorio->stock-$item['cantidad'];
                 
                 if($cantidadAccesorio<=0){
-                    DB::rollback();
-                    return response()->json([
-                        "status"    =>  "DANGER",
-                        "data"      =>  'Producto '.$accesorio->nombre.', modelo '.$accesorio->modelo.' agotado',
-                    ]);
+                    $aux=[
+                        "nombre"=>$accesorio->nombre,
+                        "serie"=>$accesorio->nombre,
+                        "cantidad"=>-($cantidadAccesorio),
+                    ];
+                    array_push( $accesorioBajo , $aux );
                 }
-                $accesorio->stock=$cantidadAccesorio;
-                $accesorio->save();
             }
+
             $detalle=ReparacionHerramienta::where('id',$herramienta_reparacion_id)
                 ->first();
             $detalle->diagnostico=$request->diagnostico;
@@ -56,13 +57,15 @@ class DiagnosticoController extends Controller
                 DB::commit();
                 return response()->json([
                     "status" => "OK",
-                    "data"  => "Se diagnóstico todas las Herramientas"
+                    "data"  => "Se diagnóstico todas las Herramientas",
+                    'accesorio'=>$accesorioBajo,
                 ]);
             }
             DB::commit();
             return response()->json([
                 "status" => "OK",
-                "data"  => "Se diagnóstico la Herramienta."
+                "data"  => "Se diagnóstico la Herramienta.",
+                'accesorio'=>$accesorioBajo,
             ]);
         } catch (\Exception $e) {
             DB::rollback();

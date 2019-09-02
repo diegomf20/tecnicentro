@@ -2773,7 +2773,6 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.detalle_seleccionado.detalles = this.detalles;
-      console.log(Number(this.detalle_seleccionado.costo));
 
       if (Number(this.detalle_seleccionado.costo) <= 0 || this.detalle_seleccionado.detalles.length == 0) {
         var aux = this.detalle_seleccionado.detalles.length == 0 ? 'Diagnostico no contiene Items' : 'Precio al menos debe ser 1';
@@ -2792,6 +2791,15 @@ __webpack_require__.r(__webpack_exports__);
               icon: "success",
               timer: "2000"
             });
+            var accesorio = '';
+
+            for (var i = 0; i < respuesta.accesorio.length; i++) {
+              var item = respuesta.accesorio[i];
+              accesorio = 'Producto: ' + item['nombre'] + ', cant faltante: ' + item['cantidad'] + "\n";
+              accesorio += accesorio;
+            }
+
+            swal("Accesorios faltantes", accesorio);
 
             _this2.$router.push({
               path: "/diagnosticar/" + _this2.detalle_seleccionado.reparacion_id
@@ -3817,6 +3825,14 @@ __webpack_require__.r(__webpack_exports__);
               title: "Reparación Terminada",
               icon: "success",
               timer: "2000"
+            });
+          }
+
+          if (respuesta.status == 'DANGER') {
+            swal({
+              title: respuesta.data,
+              icon: "error",
+              timer: "4000"
             });
           }
         });

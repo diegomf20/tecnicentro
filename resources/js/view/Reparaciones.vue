@@ -151,6 +151,9 @@ export default {
                             timer: "2000"
                         });
                     }
+                    if(respuesta.status=='DANGER'){
+                        swal({title: respuesta.data,icon: "error",timer: "4000"});
+                    }
                 });
             });
         },

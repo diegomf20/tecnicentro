@@ -137,7 +137,6 @@ export default {
         },
         guardar(){
             this.detalle_seleccionado.detalles=this.detalles;
-            console.log(Number(this.detalle_seleccionado.costo));
             
             if (Number(this.detalle_seleccionado.costo)<=0 || this.detalle_seleccionado.detalles.length==0 ) {
                 let aux=this.detalle_seleccionado.detalles.length==0?'Diagnostico no contiene Items': 'Precio al menos debe ser 1';
@@ -147,12 +146,22 @@ export default {
                  axios.post(api_url+'/reparacion-herramienta/'+this.$route.params.id,this.detalle_seleccionado)
                 .then(response=>{
                     var respuesta=response.data;
+                    
                     if(respuesta.status=='OK'){
                         swal({
                             title: respuesta.data,
                             icon: "success",
                             timer: "2000"
                         });
+
+                        let accesorio='';
+                        for (let i = 0; i < respuesta.accesorio.length; i++) {
+                            const item = respuesta.accesorio[i];
+                            accesorio='Producto: '+item['nombre']+', cant faltante: '+item['cantidad']+ "\n";
+                            accesorio+=accesorio;
+                        }
+                       swal("Accesorios faltantes", accesorio);
+
                         this.$router.push({path: "/diagnosticar/"+this.detalle_seleccionado.reparacion_id} );
                     }
                     if(respuesta.status=='DANGER'){
