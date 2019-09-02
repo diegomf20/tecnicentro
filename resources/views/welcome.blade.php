@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('css/jquery.mCustomScrollbar.css') }}">
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/print.css') }}">
         <link rel="stylesheet" href="https://unpkg.com/vue-select@latest/dist/vue-select.css">
     </head>
     <body>

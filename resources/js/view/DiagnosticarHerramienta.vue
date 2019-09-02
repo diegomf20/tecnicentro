@@ -22,7 +22,7 @@
                     </div>
                     <div class="col-xs-6 col-sm-3">
                         <div class="group-material">
-                            <input v-model="detalle_seleccionado.costo" type="text" class="tooltips-general material-control" placeholder="Escribe aquí el Precio" required="" maxlength="5">
+                            <input v-model="detalle_seleccionado.costo" type="number" class="tooltips-general material-control" placeholder="Escribe aquí el Precio" required="" maxlength="5"  step="any">
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Precio del Servicio:</label>
@@ -30,7 +30,7 @@
                     </div>
                     <div class="col-xs-6  col-sm-3">
                         <div class="group-material">
-                            <input v-model="detalle_seleccionado.dias" type="text" class="tooltips-general material-control" placeholder="Escribe el Tiempo (Días)" required="">
+                            <input v-model="detalle_seleccionado.dias" type="number" class="tooltips-general material-control" placeholder="Escribe el Tiempo (Días)" required="" step="any">
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Días:</label>
@@ -68,12 +68,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="detalle in detalles">
+                                <tr v-for="(detalle,index) in detalles">
                                     <td>{{ detalle.nombre }}</td>
                                     <td>{{ detalle.cantidad }}</td>
                                     <td>
-                                        <button class="btn btn-danger">
-                                            X
+                                        <button @click="eliminarItem(index)" type="button" class="btn btn-danger btn-link btn-sm">
+                                            <i class="zmdi zmdi-delete zmdi-hc-lg text-danger"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -121,38 +121,49 @@ export default {
     },
     methods: {
         agregar(){
-            this.detalles.push({
-                cantidad: Number(this.pre_detalle.cantidad),
-                accesorio_id: Number(this.pre_detalle.accesorio.id),
-                nombre: this.pre_detalle.accesorio.label
-            });
-            this.pre_detalle={
-                accesorio: null,
-                cantidad: 0
+            if (Number(this.pre_detalle.cantidad)>0) {
+                this.detalles.push({
+                    cantidad: Number(this.pre_detalle.cantidad),
+                    accesorio_id: Number(this.pre_detalle.accesorio.id),
+                    nombre: this.pre_detalle.accesorio.label
+                });
+                this.pre_detalle={
+                    accesorio: null,
+                    cantidad: 0
+                }
+            } else {
+                swal({title: 'Cantidad al menos debe ser 1',icon: "error",timer: "4000"});
             }
         },
         guardar(){
             this.detalle_seleccionado.detalles=this.detalles;
-            console.log(this.detalle_seleccionado);
-            axios.post(api_url+'/reparacion-herramienta/'+this.$route.params.id,this.detalle_seleccionado)
-            .then(response=>{
-                var respuesta=response.data;
-                if(respuesta.status=='OK'){
-                    swal({
-                        title: respuesta.data,
-                        icon: "success",
-                        timer: "2000"
-                    });
-                    this.$router.push({path: "/diagnosticar/"+this.detalle_seleccionado.reparacion_id} );
-                }
-                if(respuesta.status=='DANGER'){
-                    swal({title: respuesta.data,icon: "error",timer: "4000"});
-                }
-                 this.btn_bloquear=false;
-            });
+            console.log(Number(this.detalle_seleccionado.costo));
+            
+            if (Number(this.detalle_seleccionado.costo)<=0 || this.detalle_seleccionado.detalles.length==0 ) {
+                let aux=this.detalle_seleccionado.detalles.length==0?'Diagnostico no contiene Items': 'Precio al menos debe ser 1';
+                swal({title: aux,icon: "error",timer: "4000"});
+                
+            } else {
+                 axios.post(api_url+'/reparacion-herramienta/'+this.$route.params.id,this.detalle_seleccionado)
+                .then(response=>{
+                    var respuesta=response.data;
+                    if(respuesta.status=='OK'){
+                        swal({
+                            title: respuesta.data,
+                            icon: "success",
+                            timer: "2000"
+                        });
+                        this.$router.push({path: "/diagnosticar/"+this.detalle_seleccionado.reparacion_id} );
+                    }
+                    if(respuesta.status=='DANGER'){
+                        swal({title: respuesta.data,icon: "error",timer: "4000"});
+                    }
+                    this.btn_bloquear=false;
+                });
+            }
         },
         eliminarItem(index){
-            this.diagnostico.items.splice(index, 1);
+            this.detalles.splice(index, 1);
         },
     },
 }

@@ -20,8 +20,8 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="detalle in detalles">
-                                        <td>{{ detalle.pieza.codigo }}</td>
-                                        <td>{{ detalle.pieza.nombre }}</td>
+                                        <td>{{ detalle.accesorio.codigo }}</td>
+                                        <td>{{ detalle.accesorio.nombre }}</td>
                                         <td>{{ detalle.cantidad }}</td>
                                     </tr>
                                 </tbody>

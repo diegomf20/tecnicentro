@@ -106,7 +106,7 @@ class CompraController extends Controller
      */
     public function show($id)
     {
-        $compras=DetalleCompra::with('pieza')->where('compra_id',$id)->get();
+        $compras=DetalleCompra::with('accesorio')->where('compra_id',$id)->get();
         $compra=Compra::with('proveedor')->where('id',$id)->first();
         return response()->json([
             "detalles"    =>  $compras,

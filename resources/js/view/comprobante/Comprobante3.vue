@@ -1,46 +1,48 @@
 <template>
-    <div id="ticket">
-        <button class="btn btn-primary" @click="imprimir()">
-            imprimir
-        </button>
-        <div class="form-padding">
-            <table class="table table-striped">
+    <div class="ticket" >
+        <div class="text-center">
+            <button class="oculto-impresion btn-success btn btn-sm" @click="imprimir()">Imprimir</button>
+        </div>
+        <p class="centrado">Tecnicentro
+            <br>RUC: 12345678901
+            <br>Augusto B. Leguia 1231
+            <br>{{(reparacion.created_at) }}
+            <br>
+        </p>
+        <p>
+            Clt: {{ reparacion.cliente.nombre+ ' '+reparacion.cliente.apellido }}
+        </p>
+        <p>
+            Serv: Reparación de su herramienta
+        </p>
+
+        <table>
+            <thead>
                 <tr>
-                    <td><b>Fecha:</b></td>
-                    <td>{{ reparacion.updated_at }}</td>
+                    <th class="producto">Herramienta Reparada</th>
+                    <th class="precio">Precio</th>
                 </tr>
-                <tr>
-                    <td><b>Cliente:</b></td>
-                    <td>{{ reparacion.cliente.nombre+ ' '+reparacion.cliente.apellido }}</td>
-                </tr>
-                <tr>
-                    <td><b>Servicio:</b></td>
-                    <td>Reparación de su herramienta </td>
-                </tr> 
-                
-            </table>
-            <table class="table table-striped">
-                <tr>
-                    <td><b>Herramienta Reparada</b></td>
-                    <td><b>Precio</b></td>
-                </tr>
+            </thead>
+            <tbody>
                 <tr v-for="item in reparacion.detalles">
-                    <td>
+                    <td class="producto">
                         <b>{{ item.herramienta.nombre }}</b>
                         <p>
                             {{ item.diagnostico }}
                         </p>
                     </td>
-                    <td>S/ {{ item.costo.toFixed(2) }}</td>
-                </tr> 
+                    <td class="precio text-right">S/ {{ item.costo.toFixed(2) }}</td>
+                </tr>
                 <tr>
                     <td> <b>Total</b> </td>
-                    <td><b>S/ {{ total }}</b></td>
-                </tr>               
-            </table>
-        </div>
-        
+                    <td class="text-right"><b>S/ {{ total }}</b></td>
+                </tr> 
+            </tbody>
+        </table>
+        <br>
+        <p class="centrado">¡GRACIAS POR CONFIAR EN NOSOTROS!</p>
     </div>
+    
 </template>
 <script>
 export default {

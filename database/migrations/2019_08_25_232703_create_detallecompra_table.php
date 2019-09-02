@@ -28,8 +28,6 @@ class CreateDetallecompraTable extends Migration
      */
     public function down()
     {
-        Schema::table('detallecompra', function (Blueprint $table) {
-            
-        });
+        Schema::dropIfExists('detallecompra');
     }
 }

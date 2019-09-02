@@ -6,9 +6,7 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     </div>
-                    <div class="modal-body">
-                        <iframe :src="url" frameborder="0" width="300" height="500"></iframe>
-                    </div>
+                    <iframe :src="url" frameborder="0" width="200" height="500"></iframe>
                 </div>
             </div>
         </div>
@@ -16,11 +14,11 @@
             <div class="title-flat-form title-flat-blue">Nota de Entrada</div>
             <div class="form-padding">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-6 form-group">
+                    <div class="col-xs-12 col-sm-7 form-group">
                         <label>Cliente</label>
                         <v-select v-model="nota.cliente" :options="clientes"></v-select>
                     </div>
-                    <div class="col-xs-12 col-sm-5 text-right nuevo" style="margin: 10px;">
+                    <div class="col-xs-12 col-sm-4 text-right nuevo" style="margin: 10px;">
                         <router-link to="/cliente">
                             <a href="" class="btn btn-info" role="button"> Cliente Nuevo</a>
                         </router-link>

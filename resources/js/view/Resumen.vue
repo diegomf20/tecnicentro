@@ -54,7 +54,7 @@
                             </tr>
                         </table>
                     </div>
-                    <div class="col-xs-12" v-if="piezas.length!=0">
+                    <!-- <div class="col-xs-12" v-if="piezas.length!=0">
                         <legend><i class="zmdi zmdi-account-box"></i> &nbsp; Piezas</legend><br>
                         <table class="table-padding">
                            <thead>
@@ -70,7 +70,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -89,7 +89,6 @@ export default {
         .then(response=>{
             var respuesta=response.data;
             this.reparacion=respuesta.reparacion;
-            this.piezas=respuesta.piezas;
         });
     },
 }
