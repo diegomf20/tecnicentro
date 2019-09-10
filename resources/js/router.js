@@ -31,6 +31,7 @@ var auth=(to, from,next)=>{
 var routes =[
     { 
         path: '/', 
+        component: require('./view/Home.vue').default,
         beforeEnter: auth
     },
     { 

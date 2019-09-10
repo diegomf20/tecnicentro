@@ -19,7 +19,7 @@
         <table>
             <thead>
                 <tr>
-                    <th class="producto">Herramienta Reparada</th>
+                    <th class="producto">H. Reparada</th>
                     <th class="precio">Precio</th>
                 </tr>
             </thead>

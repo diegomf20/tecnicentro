@@ -703,3 +703,13 @@ iframe{
     margin-left: calc(50% - 100px);
   }
   
+
+  .home-container{
+    background-image: linear-gradient( rgba(255,255,255,.8),rgba(49, 69, 93, 0.29)),url(../assets/img/font-login.png);
+    width: 100%;
+    height: calc(100% - 210px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  

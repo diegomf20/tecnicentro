@@ -20,7 +20,7 @@
         <table>
             <thead>
                 <tr>
-                    <th class="producto">Herramienta/Diagnóstico</th>
+                    <th class="producto">H/Diagnóstico</th>
                     <th class="precio">Precio</th>
                 </tr>
             </thead>
@@ -37,7 +37,7 @@
             </tbody>
         </table>
         <br>
-        <p class="centrado">¡GRACIAS POR SU COMPRA!</p>
+        <p class="centrado">¡GRACIAS POR CONFIAR EN NOSOTROS!</p>
     </div>
 </template>
 <script>

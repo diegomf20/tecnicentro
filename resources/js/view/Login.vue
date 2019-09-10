@@ -43,7 +43,7 @@ export default {
                 if(respuesta.status=="OK"){
                     cuenta=respuesta.data;
                     local.setItem('cuenta',JSON.stringify(respuesta.data));
-                    this.$router.push({path: "/home"} );
+                    this.$router.push({path: "/"} );
                     
                 }
                 if (respuesta.status=="WARNING") {
